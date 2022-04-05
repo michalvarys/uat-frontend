@@ -1,0 +1,14 @@
+@import '../../../../../../styles/colors.scss';
+@import '../../../../../../styles/fontSizes.scss';
+@import '../../../../../../styles/breakpoints.scss';
+
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  color: $uat_dark;
+
+  @media (max-width: $medium)  {
+    flex-direction: column;
+  }
+}

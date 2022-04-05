@@ -1,0 +1,13 @@
+@import '../../../styles/breakpoints.scss';
+
+.gallery_container {
+  padding: 0 80px;
+
+  @media (max-width: $large) {
+    padding: 0 40px;
+  }
+
+  @media (max-width: $small) {
+    padding: 0 20px;
+  }
+}

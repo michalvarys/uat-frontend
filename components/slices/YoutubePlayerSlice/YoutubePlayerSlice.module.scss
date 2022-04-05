@@ -1,0 +1,48 @@
+@import '../../../styles/colors.scss';
+@import '../../../styles/breakpoints.scss';
+
+.container {
+  position: relative;
+  z-index: 10;
+
+  .cover {
+    position: absolute;
+    background-color: $uat_dark;
+    width: 100%;
+    height: 100%;
+  }
+
+  .play_button {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    &:hover {
+      filter: invert(57%) sepia(82%) saturate(2505%) hue-rotate(359deg) brightness(92%) contrast(105%);
+    }
+  }
+
+  .cover_hidden {
+    display: none !important;
+  }
+
+  .player {
+    background-color: $uat_dark;  
+  }
+
+  @media (max-width: $small) {
+    max-height: 240px;
+
+    .play_button {
+      width: 64px;
+      height: 64px;
+      left: calc(50% - 32px);
+      top: calc(50% - 32px);
+    }
+  }
+}

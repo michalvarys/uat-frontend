@@ -1,0 +1,72 @@
+@import '../../../styles/breakpoints.scss';
+
+.container {
+  display: flex;
+  flex-direction: row;
+
+  .text_side {
+    display: flex;
+    flex: 1 1 50%;
+    padding: 0 80px;
+    margin: 80px 0;
+  }
+
+  .image_side {
+    display: flex;
+    flex: 1 1 50%;
+
+    div {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: $xlarge) {
+    .text_side {
+      flex: 1 1 60%;
+    }
+  
+    .image_side {
+      flex: 1 1 40%;
+    }
+  }
+
+  @media (max-width: $large) {
+    .text_side {
+      padding: 0 40px;
+    }
+
+    .image_side {
+      max-height: 640px;
+      overflow: hidden;
+
+      div {
+        height: 100%;
+      }
+    }
+  }
+
+  @media (max-width: $medium) {
+    flex-direction: column;
+
+    &.image_right {
+      flex-direction: column-reverse;
+    }
+
+    .text_side {
+      flex: 1 1 50%;
+    }
+  
+    .image_side {
+      flex: 1 1 50%;
+    }
+  }
+
+  @media (max-width: $small) {
+    .text_side {
+      padding: 30px 20px;
+      margin: 20px 0;
+    }
+  }
+}

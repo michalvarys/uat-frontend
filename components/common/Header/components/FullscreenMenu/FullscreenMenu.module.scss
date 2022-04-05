@@ -1,0 +1,144 @@
+@import '../../../../../styles/colors.scss';
+@import '../../../../../styles/fontSizes.scss';
+
+.container_menu_0 {
+  background-color: $uat_yellow;
+}
+.container_menu_1 {
+  background-color: $uat_green;
+}
+.container_menu_2 {
+  background-color: $uat_orange;
+}
+.container_menu_3 {
+  background-color: $uat_light;
+}
+
+.container {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: auto;
+
+  .top_container {
+    color: $uat_dark;
+    height: 98px;
+    width: 100%;
+    z-index: 10;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+
+    .left_container {
+      .home {
+        font-size: 22px;
+        font-family: 'iAWriterQuattroS';
+        font-weight: 600;
+      }
+    }
+
+    .right_container {
+      .button_close {
+        font-size: $l;
+        font-family: 'iAWriterQuattroS';
+        font-style: italic;
+        font-weight: 600;
+        background-color: $uat_dark;
+        padding: 12px 20px;
+        text-transform: uppercase;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 2px solid $uat_dark;
+
+        span {
+          padding-right: 12px;
+        }
+      }
+
+      .button_close_orange {
+        color: $uat_orange;
+      }
+
+      .button_close_green {
+        color: $uat_green;
+      }
+
+      .button_close_white {
+        color: $uat_light;
+      }
+
+      .button_close_yellow {
+        color: $uat_yellow;
+      }
+    }
+  }
+
+  .menu_main_container {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    width: 100%;
+    @media (max-width: 650px)  {
+      flex-direction: column;
+    }
+
+    .menu_container {
+      position: relative;
+      z-index: 11;
+      display: flex;
+      border-top: 2px solid $uat_dark;
+      border-bottom: 2px solid $uat_dark;
+      flex: 1;
+
+      @media (max-width: 650px)  {
+        border-bottom: 0;
+        &:last-child {
+          border-bottom: 2px solid $uat_dark;
+        }
+      }
+      .menu_button {
+        font-size: $l;
+        font-family: 'iAWriterQuattroS';
+        font-weight: 700;
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-right: 2px solid $uat_dark;
+        height: 72px;
+        text-transform: uppercase;
+        color: $uat_dark;
+
+        &:last-child {
+          border-right: 0;
+        }
+      }
+
+      .menu_button_orange {
+        color: $uat_orange;
+        background-color: $uat_dark;
+      }
+
+      .menu_button_green {
+        color: $uat_green;
+        background-color: $uat_dark;
+      }
+
+      .menu_button_white {
+        color: $uat_light;
+        background-color: $uat_dark;
+      }
+
+      .menu_button_yellow {
+        color: $uat_yellow;
+        background-color: $uat_dark;
+      }
+    }
+  }
+}

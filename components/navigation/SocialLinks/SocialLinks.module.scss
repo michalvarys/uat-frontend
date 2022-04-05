@@ -1,0 +1,26 @@
+@import '../../../styles/breakpoints.scss';
+
+.container {
+  display: flex;
+  flex-direction: row;
+}
+.single_link_container {
+  padding-right: 20px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  flex: 1 0 auto;
+  min-width: 20px;
+  min-height: 20px;
+}
+
+@media (max-width: $medium)  {
+  .container {
+    flex-direction: column;
+
+    .single_link_container {
+        padding: 0;
+        margin: 0.2rem 0;
+    }
+  }
+}

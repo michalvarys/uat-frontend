@@ -1,0 +1,38 @@
+@import '../../../../../styles/colors.scss';
+@import '../../../../../styles/breakpoints.scss';
+
+.container {
+  border-top: 2px solid $uat_dark;
+  border-left: 2px solid $uat_dark;
+  box-shadow: 22px 22px $uat_green;
+  margin-top: -117px;
+  margin-bottom: -128px;
+
+  @media (max-width: $large)  {
+    margin-bottom: 44px;
+  }
+
+  @media (max-width: $medium)  {
+    margin: 40px 0;
+  }
+
+  .grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    & > div {
+      flex: 1 1 50%;
+    }
+
+    @media (max-width: $large) {
+      & > div {
+        flex: 1 1 100%;
+      }
+    }
+  }
+
+  @media (max-width: $small) {
+    box-shadow: none;
+  }
+}

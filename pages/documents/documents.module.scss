@@ -1,0 +1,54 @@
+@import '../../styles/breakpoints.scss';
+
+.container {
+  padding-left: 80px;
+  padding-right: 80px;
+  padding-bottom: 185px;
+
+  @media (max-width: $large) {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  @media (max-width: $small) {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .header {
+    text-transform: uppercase;
+    white-space: pre;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    h1 {
+      margin-bottom: 44px;
+      white-space: normal;
+    }
+    
+    @media (max-width: $medium) {
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+
+      h1 {
+        margin-bottom: 24px;
+      }
+      padding-bottom: 40px;
+    }
+
+    .controls_container {
+      display: flex;
+      gap: 20px;
+
+      @media (max-width: $medium) {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        width: 100%;
+      }
+    }
+  }
+}

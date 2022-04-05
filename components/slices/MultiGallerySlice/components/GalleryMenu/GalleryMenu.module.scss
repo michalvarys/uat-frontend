@@ -1,0 +1,52 @@
+@import '../../../../../styles/fontSizes.scss';
+@import '../../../../../styles/colors.scss';
+
+.menu_container {
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 44px;
+}
+
+.item_container {
+  position: relative;
+  display: flex;
+  margin: 0 20px;
+
+  &:first-child {
+    margin: 0 20px 0 0;
+  }
+
+  &:last-child {
+    margin: 0 0 0 20px;
+  }
+
+  &:hover {
+    cursor: pointer;
+    .indicator {
+      opacity: 1 !important;
+    }
+  }
+
+  .title {
+    z-index: 1;
+    padding: 0 12px;
+    font-size: $xxl;
+    color: $uat_dark;
+    font-weight: 400;
+    font-family: 'iAWriterQuattroS';
+    letter-spacing: 0.06rem;
+    text-transform: uppercase;
+    padding-bottom: 4px;
+  }
+  .indicator {
+    position: absolute;
+    background-color: $uat_green;
+    height: 14px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 0;
+
+    transition: 200ms opacity;
+  }
+}  

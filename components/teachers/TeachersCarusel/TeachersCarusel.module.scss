@@ -1,0 +1,48 @@
+@import '../../../styles/colors.scss';
+@import '../../../styles/fontSizes.scss';
+@import '../../../styles/breakpoints.scss';
+
+.container {
+  color: $uat_dark;
+  display: flex;
+  flex-direction: row;
+  border-top: 2px solid $uat_dark;
+  border-left: 2px solid $uat_dark;
+  margin: 0 80px -95px 80px;
+  box-shadow: 22px 22px $uat_green;
+  overflow-y: auto;
+
+  @media (max-width: $large) {
+    margin: 0 40px -110px;
+  }
+
+  @media (max-width: $small) {
+    margin: 0 20px -132px;
+    margin-right: 42px;
+  }
+}
+
+.inner_container {
+  overflow: auto;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.title {
+  font-size: 60px;
+  line-height: 1.1;
+  font-weight: 800;
+  padding-left: 80px;
+  padding-bottom: 44px;
+  padding-top: 24px;
+
+  @media (max-width: $large) {
+    padding: 0 40px 40px;
+    font-size: 48px;
+  }
+
+  @media (max-width: $small) {
+    padding: 0 20px 40px;
+  }
+}

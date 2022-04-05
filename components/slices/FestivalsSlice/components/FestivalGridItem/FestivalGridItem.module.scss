@@ -1,0 +1,63 @@
+@import '../../../../../styles/colors.scss';
+@import '../../../../../styles/fontSizes.scss';
+@import '../../../../../styles/breakpoints.scss';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: $uat_light;
+  border-bottom: 2px solid $uat_dark;
+  border-right: 2px solid $uat_dark;
+  cursor: pointer;
+
+  &:hover .bottom_container {
+    filter: invert(57%) sepia(82%) saturate(2505%) hue-rotate(359deg) brightness(92%) contrast(105%);
+  }
+
+  .image {
+    flex: 1;
+    position: relative;
+    width: 100%;
+    min-height: 162px;
+  }
+
+  .bottom_container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 24px 16px;
+
+    color: $uat_dark;
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 16px;
+    }
+
+    .title {
+      text-transform: uppercase;
+      font-size: $l;
+      font-family: 'iAWriterQuattroS';
+      font-weight: 900;
+      padding-bottom: 4px;
+    }
+
+    .subtitle {
+      font-size: $l;
+      font-family: 'iAWriterQuattroS';
+    }
+  }
+
+  @media (max-width: $large) {
+    flex-direction: row;
+  }
+
+  @media (max-width: $small) {
+    .image {
+      flex: 0 1 36%;
+    }
+  }
+}

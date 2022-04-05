@@ -1,0 +1,54 @@
+@import '../../../../../styles/colors.scss';
+@import '../../../../../styles/fontSizes.scss';
+
+.container {
+  background-color: $uat_light;
+  border-bottom: 2px solid $uat_dark;
+  border-right: 2px solid $uat_dark;
+  min-width: 250px;
+  flex: 1;
+
+  &:hover .bottom_container {
+    cursor: pointer;
+    .name, .post, .arrow {
+      filter: invert(57%) sepia(82%) saturate(2505%) hue-rotate(359deg) brightness(92%) contrast(105%);
+    }
+  }
+
+  .image_container {
+    width: 100%;
+    height: 480px;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .bottom_container {
+    height: 130px;
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    
+    .name {
+      text-transform: uppercase;
+      font-size: $ml;
+      font-family: 'iAWriterQuattroS';
+      font-weight: 900;
+      padding-bottom: 4px;
+    }
+
+    .post {
+      font-size: $m;
+      font-family: 'iAWriterQuattroS';
+    }
+
+    .arrow {
+      position: absolute;
+      bottom: 16px;
+    }
+  }
+}
+
+.fixed_container {
+  width: 250px;
+}

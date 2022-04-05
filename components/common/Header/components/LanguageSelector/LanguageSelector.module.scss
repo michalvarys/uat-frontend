@@ -1,0 +1,39 @@
+@import '../../../../../styles/colors.scss';
+@import '../../../../../styles/fontSizes.scss';
+
+.container {
+  padding: 0 10px;
+  .items_container {
+    .item {
+      font-size: $s;
+      font-family: 'iAWriterQuattroS';
+      font-style: italic;
+      font-weight: 900;
+      padding: 0 4px;
+      color: $gray;
+      letter-spacing: 0.05rem;
+      cursor: pointer;
+      &:hover {
+        color: $uat_orange;
+      }
+      &::after {
+        content: "|";
+        padding-left: 10px;
+        font-style: normal;
+        color: $gray;
+      }
+      &:last-child {
+        &::after {
+          content: "";
+        }
+      }
+    }
+    .active_item {
+      color: $uat_light;
+    }
+
+    .active_item_dark {
+      color: $uat_dark;
+    }
+  }
+}

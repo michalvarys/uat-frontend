@@ -1,0 +1,100 @@
+@import '../../../../../styles/fontSizes.scss';
+@import '../../../../../styles/colors.scss';
+@import '../../../../../styles/breakpoints.scss';
+
+.container {
+  padding: 20px;
+  display: flex;
+  flex-direction: row;
+  z-index: 100000;
+  height: 100%;
+
+  @media (max-width: $large)  {
+    height: 100vh;
+    overflow: scroll;
+    flex-direction: column;
+  }
+
+  .left_container {
+    display: flex;
+    flex-direction: column;
+    width: 340px;
+    flex: none;
+
+    div {
+      height: 100%;
+    }
+
+    @media (max-width: $large)  {
+      max-height: 400px;
+    }
+
+    @media (min-width: $large)  {
+      width: 460px;
+    }
+
+    @media (min-width: $xxlarge)  {
+      width: 700px;
+    }
+
+    @media (max-width: $small)  {
+      padding-top: 60px;
+      width: 100%;
+      max-height: 500px;
+      min-height: 500px;
+    }
+  }
+
+  .right_container {
+    display: flex;
+    flex-direction: column;
+    padding: 40px 80px;
+
+    .name {
+      font-size: $xl_header;
+      font-weight: 900;
+      color: $uat_dark;
+      padding-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    .role {
+      font-size: $l;
+      font-style: italic;
+      font-weight: 900;
+      color: $uat_orange;
+      font-family: 'iAWriterQuattroS';
+      text-transform: uppercase;
+      letter-spacing: 0.05rem;
+    }
+
+    .bio {
+      font-size: $l;
+      line-height: 1.7;
+      color: $uat_dark;
+      overflow: auto;
+      margin-top: 10px;
+
+      @media (max-width: $medium)  {
+        overflow: hidden;
+        max-height: fit-content;
+      }
+    }
+
+    @media (max-width: $large)  {
+      padding: 40px 0;
+
+      .name {
+        font-size: 32px;
+      }
+
+      .role {
+        font-size: $xxl;
+      }
+
+      .bio {
+        font-size: $xxl;
+      }
+    }
+  }
+}

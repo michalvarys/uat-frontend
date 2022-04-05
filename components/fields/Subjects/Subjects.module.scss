@@ -1,0 +1,103 @@
+@import '../../../styles/fontSizes.scss';
+@import '../../../styles//colors.scss';
+@import '../../../styles/breakpoints.scss';
+
+.container {
+  padding: 160px 80px;
+
+  h2 {
+    padding-bottom: 44px
+  }
+
+  .subjects_container {
+    padding-bottom: 44px;
+    display: flex;
+    flex-direction: row;
+
+    @media (max-width: $large)  {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(50%, 1fr));
+      width: 100%;
+    }
+
+    @media (max-width: $medium)  {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+      width: 100%;
+    }
+
+    .subjects_section_contianer {
+      padding-right: 100px;
+
+      @media (max-width: $large)  {
+        padding-right: 0;
+        padding-bottom: 48px;
+      }
+
+      .subjects_header {
+        font-family: 'iAWriterQuattroS';
+        font-size: $l;
+        font-weight: 900;
+        text-transform: uppercase;
+        padding-bottom: 24px;
+        white-space: pre-wrap;
+      }
+
+      .subject {
+        font-family: 'iAWriterQuattroS';
+        font-size: $xl;
+        padding: 9px 0;
+
+        &::before {
+          content: '/';
+          padding-right: 14px;
+          color: $uat_orange;
+        }
+      }
+    }
+  }
+
+  .sponsor_container {
+    display: flex;
+
+    .sponsor_text {
+      padding-left: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center
+
+      p {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        margin: 2px 0;
+        font-family: 'iAWriterQuattroS';
+        font-size: $l;
+      }
+    }
+
+    @media (max-width: $small) {
+      flex-direction: column;
+      align-items: flex-start;
+      border: 2px solid $uat_dark;
+      padding: 16px;
+      margin-right: 22px;
+      box-shadow: 22px 22px $uat_orange;
+      
+      .sponsor_text {
+        padding: 0;
+      }
+    }
+  }
+
+  @media (max-width: $large)  {
+    padding: 0px 40px 120px 40px;
+
+    h2 {
+      font-size: 48px;
+    }
+  }
+
+  @media (max-width: $small)  {
+    padding: 210px 20px 120px 20px;
+  }
+}

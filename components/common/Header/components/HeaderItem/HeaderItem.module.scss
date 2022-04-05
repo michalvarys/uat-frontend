@@ -1,0 +1,46 @@
+@import '../../../../../styles/colors.scss';
+@import '../../../../../styles/fontSizes.scss';
+@import '../../../../../styles/breakpoints.scss';
+
+.container {
+  padding: 15px 15px;
+  margin: 0 0px;
+  cursor: pointer;
+  height: 100%;
+  display: flex;
+  align-items: center;
+
+  @media (max-width: 1000px)  {
+    padding: 8px;
+  }
+
+  .title {
+    color: $uat_light;
+    font-size:  $s;
+    font-family: 'iAWriterQuattroS';
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.08rem;
+    text-align: center;
+  }
+
+  .title_open {
+    color: $uat_dark;
+  }
+}
+
+.container_open_orange {
+  background-color: $uat_orange;
+}
+
+.container_open_green {
+  background-color: $uat_green;
+}
+
+.container_open_yellow {
+  background-color: $uat_yellow;
+}
+
+.container_open_white {
+  background-color: $uat_light;
+}

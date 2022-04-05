@@ -1,0 +1,53 @@
+@import '../../../../../styles/colors.scss';
+@import '../../../../../styles/fontSizes.scss';
+@import '../../../../../styles/breakpoints.scss';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 16px;
+  cursor: pointer;
+  transition: 200ms background-color;
+
+  &:hover {
+    cursor: pointer;
+    background-color: $transparent-black;
+  }
+
+  .title {
+    text-transform: uppercase;
+    color: $uat_dark;
+    font-size: $m;
+    font-weight: 900;
+    font-family: 'iAWriterQuattroS';
+    max-width: 118px;
+    padding-top: 16px;
+    letter-spacing: 0.01rem;
+  }
+
+  @media (max-width: $medium)  {
+    .title {
+      font-size: $l;
+    }
+  }
+
+  @media (max-width: 650px)  {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-top: 2px solid $uat_dark;
+    padding: 12px 20px;
+    
+    &:first-child {
+      padding-left: 20px;
+    }
+
+    .title {
+      max-width: none;
+      padding-left: 20px;
+      padding-top: 0;
+    }
+  }
+}

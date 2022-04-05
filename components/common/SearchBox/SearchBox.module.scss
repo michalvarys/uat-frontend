@@ -1,0 +1,45 @@
+@import '../../../styles/colors.scss';
+@import '../../../styles/fontSizes.scss';
+@import '../../../styles/breakpoints.scss';
+
+.container {
+  height: 44px;
+  border-bottom: 2px solid $uat_dark;
+  min-width: 100px;
+  width: 200px;
+  display: flex;
+  justify-content:  center;
+
+  @media (max-width: $small) {
+    width: 100%;
+
+  }
+
+  .input {
+    background: none;
+    border: none;
+    width: 100%;
+    font-size: $l;
+    font-family: 'iAWriterQuattroS';
+    letter-spacing: 0.04rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-style: italic;
+    outline: none;
+
+    &:focus {
+      border: none;
+      outline: none;
+    }
+    &:-ms-input-placeholder { /* Internet Explorer 10-11 */
+      color: $uat_dark;
+    }
+    &::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+      color: $uat_dark;
+      opacity: 1; /* Firefox */
+    }
+    &::-ms-input-placeholder { /* Microsoft Edge */
+      color: uat_dark;
+    }
+  }
+}

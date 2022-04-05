@@ -1,0 +1,41 @@
+@import '../../../../../styles/colors.scss';
+@import '../../../../../styles/fontSizes.scss';
+@import '../../../../../styles/breakpoints.scss';
+
+.container {
+  width: '100%';
+  height: fit-content;
+  border-bottom: 2px solid $uat_dark;
+
+  @media (max-width: 650px) {
+    border-bottom: none;
+  }
+}
+
+.container_menu_0 {
+  background-color: $uat_yellow;
+}
+.container_menu_1 {
+  background-color: $uat_green;
+}
+.container_menu_2 {
+  background-color: $uat_orange;
+}
+.container_menu_3 {
+  background-color: $uat_light;
+}
+
+.container_mobile {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  padding-top: 180px;
+
+  @media (max-width: 650px)  {
+    padding-top: 260px;
+  }
+}

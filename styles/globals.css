@@ -1,0 +1,80 @@
+@font-face {
+  font-family: 'iAWriterQuattroS';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: local('iAWriterQuattroS'), url(/fonts/iAWriterQuattroS-Bold.woff2) format('woff2');
+}
+
+@font-face {
+  font-family: 'iAWriterQuattroS';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('iAWriterQuattroS'), url(/fonts/iAWriterQuattroS-Regular.woff2) format('woff2');
+}
+
+@font-face {
+  font-family: 'iAWriterQuattroS';
+  font-style: italic;
+  font-weight: 900;
+  font-display: swap;
+  src: local('iAWriterQuattroS'), url(/fonts/iAWriterQuattroS-BoldItalic.woff2) format('woff2');
+}
+
+@font-face {
+  font-family: 'iAWriterQuattroS';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('iAWriterQuattroS'), url(/fonts/iAWriterQuattroS-Italic.woff2) format('woff2');
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #000000;
+}
+
+h1 {
+  font-size: 70px;
+  font-weight: 900;
+}
+
+h2 {
+  font-size: 60px;
+  font-weight: 800;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Works on Firefox */
+body {
+  scrollbar-width: auto;
+  scrollbar-color: #FF7A00 #000000;
+}
+
+/* Works on Chrome, Edge, and Safari */
+body::-webkit-scrollbar {
+  width: 32px;
+}
+
+body::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #FF7A00;
+  border-radius: 16px;
+  border: 4px solid #000000;
+}

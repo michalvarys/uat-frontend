@@ -1,0 +1,36 @@
+{
+  "name": "uat-sk",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "axios": "^0.21.4",
+    "classnames": "^2.3.1",
+    "html-react-parser": "^1.2.7",
+    "moment": "^2.29.1",
+    "next": "^11.1.2",
+    "react": "17.0.2",
+    "react-custom-scrollbars": "^4.2.1",
+    "react-dom": "17.0.2",
+    "react-modal": "^3.14.3",
+    "react-resize-detector": "^6.7.6",
+    "react-youtube": "^7.13.1",
+    "sass": "^1.35.2",
+    "sharp": "^0.29.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.14.6",
+    "@babel/plugin-proposal-export-default-from": "^7.14.5",
+    "@types/react": "17.0.13",
+    "@types/react-custom-scrollbars": "^4.0.8",
+    "@types/react-modal": "^3.12.1",
+    "eslint": "7.30.0",
+    "eslint-config-next": "11.0.1",
+    "typescript": "4.3.5"
+  }
+}

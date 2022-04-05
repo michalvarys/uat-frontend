@@ -1,0 +1,84 @@
+@import '../../../../../../styles/colors.scss';
+@import '../../../../../../styles/fontSizes.scss';
+@import '../../../../../../styles/breakpoints.scss';
+
+.container {
+  color: $uat_dark;
+
+  .top_container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    @media (max-width: $medium)  {
+      flex-direction: column;
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: row;
+      padding: 16px 80px;
+
+      @media (max-width: $medium)  {
+        width: 100%;
+        padding: 32px 40px;
+        border-top: 2px solid $uat_dark;
+
+        justify-content: space-between;
+      }
+
+      @media (max-width: 650px )  {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        border: none;
+      }
+    }
+  }
+  .bottom_container {
+    border-top: 2px solid $uat_dark;
+    display: flex;
+    align-items: center;
+
+    @media (max-width: $medium)  {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .button {
+      padding: 24px 40px;
+      flex: 1;
+      height: max-content;
+
+      
+
+      .text {
+        font-size: $m;
+        line-height: 1.4;
+        font-family: 'iAWriterQuattroS';
+      }
+
+      @media (max-width: $medium) {
+        padding: 32px 40px;
+        .text {
+          font-size: $xl;
+        }
+      }
+
+      @media (max-width: 650px) {
+        padding: 32px 20px;
+      }
+    }
+    .divider {
+      background-color: $uat_dark;
+      width: 2px;
+      align-self: stretch;
+      
+      @media (max-width: $medium)  {
+        width: 100%;
+        height: 2px;
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+@import '../../../styles/breakpoints.scss';
+
+.container {
+  position: relative;
+  padding: 10px 80px 0;
+
+  @media (max-width: $large) {
+    padding: 10px 40px 0;
+  }
+
+  @media (max-width: $small) {
+    padding: 10px 20px 0;
+  }
+}

@@ -1,0 +1,41 @@
+@import '../../../styles/colors.scss';
+@import '../../../styles/fontSizes.scss';
+
+.container {
+  width: 100%;
+  .title {
+    font-size: $xl;
+    color: $uat_dark;
+  }
+
+  .content {
+    font-size: $l;
+    color: $uat_dark;
+
+    a {
+      color: $uat_orange;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    h2 {
+      font-size: 48px;
+      line-height: 1.1;
+    }
+
+    h3 {
+      font-size: 28px;
+      line-height: 1.1;
+    }
+
+    figure {
+      margin: 30px 0;
+
+      table {
+        width: 100%;
+      }
+    }
+  }
+}

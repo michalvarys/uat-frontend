@@ -1,0 +1,39 @@
+@import '../../../../styles/colors.scss';
+@import '../../../../styles/fontSizes.scss';
+@import '../../../../styles/breakpoints.scss';
+
+.container {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 2px solid $uat_dark;
+  border-left: 2px solid $uat_dark;
+  width: fit-content;
+  height: fit-content;
+
+  .button {
+    color: $uat_dark;
+    font-family: 'iAWriterQuattroS';
+    font-weight: 600;
+    text-transform: uppercase;
+    font-style: italic;
+    font-size: $l;
+    border-top: 2px solid $uat_dark;
+    border-right: 2px solid $uat_dark;
+    padding: 12px 20px;
+    cursor: pointer;
+  }
+
+  .button_selected {
+    color: $uat_orange;
+    background-color: $uat_dark;
+  }
+
+  @media (max-width: $small) {
+    width: 100%;
+
+    .button {
+      flex: 1;
+      text-align: center;
+    }
+  }
+}
