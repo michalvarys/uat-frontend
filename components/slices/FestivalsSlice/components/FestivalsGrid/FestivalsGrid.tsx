@@ -18,13 +18,13 @@ const FestivalsGrid = ({ festivals, onSelect }: Props) => {
         festival={item}
         onSelect={onSelect}
       />
-    ) );
+    ));
   }
 
   return (
     <div className={styles.container}>
       <div>
-        {festivals.length > 0 ? (
+        {festivals.length > 0 && festivals[0] ? (
           <FestivalGridItem
             festival={festivals[0]}
             onSelect={onSelect}

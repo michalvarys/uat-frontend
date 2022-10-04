@@ -118,14 +118,14 @@ export default function Home({
           </div>
         ) : <></>}
         <div className={styles.fields}>
-          {fields_of_studies ? <FieldOfStudyCarusel fields={fields_of_studies} /> : <></>}
+          {fields_of_studies ? <FieldOfStudyCarusel fields={fields_of_studies.filter(Boolean)} /> : <></>}
         </div>
       </Container>
       <Container variant={ContainerVariant.White}>
         {renderTextWithImageSlices()}
       </Container>
       <Container variant={ContainerVariant.Black}>
-        <FestivalsSlice festivals={festivals} variant={ContainerVariant.Black} />
+        <FestivalsSlice festivals={festivals?.filter(Boolean)} variant={ContainerVariant.Black} />
       </Container>
       <Container variant={ContainerVariant.Black}>
         {galleries ? <TextWithImageSlice
@@ -157,6 +157,9 @@ export async function getStaticProps({ locale, defaultLocale }: GetStaticPropsCo
 
   try {
     const { data } = await axios(url);
+    if (!data) {
+      throw new Error('no data')
+    }
 
     return {
       props: data,

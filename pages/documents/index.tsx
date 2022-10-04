@@ -121,7 +121,7 @@ export async function getServerSideProps(_ctx: GetServerSidePropsContext): Promi
   ]
 
   const params = valuesToParams('ext', extensions)
-  const url = `/upload/files${params}`
+  const url = `/upload/files?${params}`
 
   try {
     const { data: documents } = await axios(url);
