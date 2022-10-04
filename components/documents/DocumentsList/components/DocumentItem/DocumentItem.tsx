@@ -6,7 +6,7 @@ import styles from './DocumentItem.module.scss';
 
 import ArrowRightIcon from '../../../../../public/icons/common/arrow_right.svg';
 import DocumentType from '../../../types/DocumentType';
-import { transformLink } from '../../../../../utils/transformLink';
+import { transformDocLink } from '../../../../../utils/transformLink';
 
 
 
@@ -18,8 +18,8 @@ type Props = {
 const DocumentItem = ({ document, onSelect }: Props) => {
   return (
     <Link
-      href={transformLink(document.url)}
-      as={transformLink(document.url)}
+      href={transformDocLink(document.url)}
+      as={transformDocLink(document.url)}
       passHref
     >
       <a

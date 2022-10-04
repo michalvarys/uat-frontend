@@ -14,6 +14,8 @@ import SegmentedControl from '../../components/common/buttons/SegmentedControl';
 import SearchBox from '../../components/common/SearchBox';
 import { useApp } from '../../components/context/AppContext';
 import { setLocalizationData } from '../../utils/localizationsUtils';
+import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
+import { valuesToParams } from '../../utils/params';
 
 const sortByName = (a: DocumentType, b: DocumentType) => {
   return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
@@ -42,7 +44,7 @@ export default function Documents({ documents }: DocumentsProps) {
 
   useEffect(() => {
     setLocalizationData(setLocalePaths, null);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
 
@@ -91,7 +93,7 @@ export default function Documents({ documents }: DocumentsProps) {
             <DocumentsList
               documents={
                 documents
-                .filter((item: DocumentType) => item.name.includes(currentSearch))
+                  .filter((item: DocumentType) => item.name.includes(currentSearch))
                   .sort(currentSort === 0 ? sortByName : sortByDate)
                   .slice(currentPage * 15, (currentPage + 1) * 15)
               }
@@ -104,14 +106,7 @@ export default function Documents({ documents }: DocumentsProps) {
   )
 };
 
-type StaticPropsType = {
-  locale: string,
-  query: any,
-};
-
-export async function getServerSideProps({ locale, query }: StaticPropsType) {
-  const baseURL = process.env.NEXT_PUBLIC_API_URL;
-  const port = process.env.NEXT_PUBLIC_API_PORT;
+export async function getServerSideProps(_ctx: GetServerSidePropsContext): Promise<GetServerSidePropsResult<DocumentsProps>> {
   const extensions = [
     '.doc',
     '.docx',
@@ -124,24 +119,24 @@ export async function getServerSideProps({ locale, query }: StaticPropsType) {
     '.ppt',
     '.pptx',
   ]
-  const params = extensions.reduce((acc, curr, idx) => {
-    return `${acc}${idx === 0 ? '?' : '&'}ext=${curr}`;
-  }, '');
-  const url = `${baseURL}:${port}/upload/files${params}`;
 
-  let res 
+  const params = valuesToParams('ext', extensions)
+  const url = `/upload/files${params}`
+
   try {
-    res = await axios(url);
+    const { data: documents } = await axios(url);
+
+    return {
+      props: {
+        documents
+      },
+    }
   } catch (e) {
     return {
-      props: {},
+      redirect: {
+        destination: '/500',
+        permanent: false,
+      },
     };
-  }
-  const { data } = res;
-
-  return {
-    props: {
-      documents: data
-    },
   }
 }

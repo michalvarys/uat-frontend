@@ -19,6 +19,8 @@ import TeachersCarusel from '../../components/teachers/TeachersCarusel';
 import { useApp } from '../../components/context/AppContext';
 import { useEffect } from 'react';
 import { setLocalizationData } from '../../utils/localizationsUtils';
+import { GetStaticPathsContext, GetStaticPathsResult, GetStaticPropsContext, GetStaticPropsResult } from 'next';
+import { localesToParams } from '../../utils/params';
 
 type PageProps = {
   slug?: string,
@@ -32,9 +34,9 @@ export default function Page({ page, ...rest }: PageProps) {
     if (page && page.localizations.length > 0) {
       setLocalizationData(setLocalePaths, page.localizations, '/pages');
     } else {
-      setLocalizationData(setLocalePaths, null); 
+      setLocalizationData(setLocalePaths, null);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
   const renderPageSection = (section: any) => {
@@ -42,13 +44,13 @@ export default function Page({ page, ...rest }: PageProps) {
       case 'shared.rich-text-with-title':
         return (
           <div key={`section-rich-text-${section.id}`} className={styles.rich_text}>
-            <RichTextSlice data={section}/>
+            <RichTextSlice data={section} />
           </div>
         );
       case 'shared.you-tube-player-slice':
         return (
           <div className={styles.player} key={`section-youtube-${section.id}`}>
-            <YoutubePlayerSlice data={section}/>
+            <YoutubePlayerSlice data={section} />
           </div>
         );
       case 'shared.gallery':
@@ -82,7 +84,7 @@ export default function Page({ page, ...rest }: PageProps) {
         )
     }
   }
-  
+
   if (!page) {
     return <></>
   }
@@ -135,58 +137,61 @@ export default function Page({ page, ...rest }: PageProps) {
   )
 };
 
-type StaticPathsPropsType = {
-  locales: Array<string>,
-};
+export async function getStaticPaths({ locales }: GetStaticPathsContext): Promise<GetStaticPathsResult<{}>> {
+  const params = localesToParams(locales!);
+  const url = `/cms/pages?${params}`;
 
-export async function getStaticPaths({ locales }: StaticPathsPropsType) {
-  const baseURL = process.env.NEXT_PUBLIC_API_URL;
-  const port = process.env.NEXT_PUBLIC_API_PORT;
-  const url = `${baseURL}:${port}/pages?${locales.map((locale: string, idx: number) => {
-    return `_locale=${locale}${idx < locales.length - 1 ? '&' : ''}`;
-  }).join('')}`;
-  
-  let res 
   try {
-    res = await axios(url);
+    const { data: pages } = await axios.get<PageType[]>(url);
+
+    return {
+      paths: pages.map((item) => (
+        {
+          params: {
+            slug: item.slug,
+            page: item
+          }
+        }
+      )),
+
+      fallback: 'blocking',
+    };
+
   } catch (e) {
     return {
       paths: [],
       fallback: 'blocking',
     };
   }
-  const pages = res.data;
-  return {
-    paths: pages.map((item: PageType) => (
-      { params: { slug: item.slug, page: item } }
-    )),
-    fallback: 'blocking',
-  };
+
 };
 
-type StaticPropsType = {
-  locale: string,
-  params: any,
-};
+export async function getStaticProps({ locale, params }: GetStaticPropsContext): Promise<GetStaticPropsResult<PageProps>> {
+  const url = `/pages?_locale=${locale}&slug=${params!.slug}`;
 
-export async function getStaticProps({ locale, params }: StaticPropsType) {
-  const baseURL = process.env.NEXT_PUBLIC_API_URL;
-  const port = process.env.NEXT_PUBLIC_API_PORT;
-  const url = `${baseURL}:${port}/pages?_locale=${locale}&slug=${params.slug}`;
-  let res 
   try {
-    res = await axios(url);
+    const { data: pages } = await axios(url);
+    const page = pages?.length > 0 ? pages.at(0) : null
+
+    if (!page) {
+      return {
+        notFound: true
+      }
+    }
+
+    return {
+      props: {
+        page,
+      },
+      revalidate: REVALIDATE_TIME,
+    }
   } catch (e) {
     return {
-      props: {},
+      redirect: {
+        destination: '/500',
+        permanent: false,
+      },
       revalidate: REVALIDATE_TIME,
     };
-  }
-  const pages = res.data;
-  return {
-    props: {
-      page: pages && pages.length > 0 ? pages[0] : null,
-    },
-    revalidate: REVALIDATE_TIME,
   }
 };

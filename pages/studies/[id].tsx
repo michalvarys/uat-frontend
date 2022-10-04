@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useRouter } from 'next/router';
 import axios from 'axios';
 import Head from 'next/head';
 import styles from './studies.module.scss';
@@ -16,8 +15,8 @@ import { REVALIDATE_TIME } from '../../consts/app.consts';
 import Subjects from '../../components/fields/Subjects';
 import { useApp } from '../../components/context/AppContext';
 import { setLocalizationData } from '../../utils/localizationsUtils';
-
-
+import { GetStaticPathsResult, GetStaticPropsContext, GetStaticPropsResult } from 'next';
+import { localesToParams } from '../../utils/params';
 
 type FieldOfStudyProps = {
   study: FieldOfStudyType,
@@ -30,9 +29,9 @@ export default function FieldOfStudy({ study }: FieldOfStudyProps) {
     if (study && study.localizations.length > 0) {
       setLocalizationData(setLocalePaths, study.localizations, '/studies');
     } else {
-      setLocalizationData(setLocalePaths, null); 
+      setLocalizationData(setLocalePaths, null);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [study]);
 
   if (!study) {
@@ -50,7 +49,7 @@ export default function FieldOfStudy({ study }: FieldOfStudyProps) {
           />
         );
       case 'shared.subjects':
-        return <Subjects key={`subjects-${slice.id}`} subjects={slice}/>;
+        return <Subjects key={`subjects-${slice.id}`} subjects={slice} />;
       default:
         return null;
     }
@@ -61,10 +60,10 @@ export default function FieldOfStudy({ study }: FieldOfStudyProps) {
         <title>{study.name}</title>
       </Head>
       <Container variant={ContainerVariant.Black} isHigh>
-        <FieldOfStudyHeader data={study}/>
-        
+        <FieldOfStudyHeader data={study} />
+
         {study.teachers && (
-          <TeachersCarusel isTitle teachers={study.teachers}/>
+          <TeachersCarusel isTitle teachers={study.teachers} />
         )}
       </Container>
       <Container variant={ContainerVariant.White}>
@@ -72,66 +71,67 @@ export default function FieldOfStudy({ study }: FieldOfStudyProps) {
           {study.content.map((item: TextWithImageType, index: number) => renderSlice(item, index))}
         </div>
         <div className={styles.galleries_container}>
-          <MultiGallerySlice galleries={study.galleries} isSmall/>
+          <MultiGallerySlice galleries={study.galleries} isSmall />
         </div>
       </Container>
     </>
   )
 };
 
-type StaticPathsPropsType = {
-  locales: Array<string>,
-};
+type Params = { id: string }
 
-export async function getStaticPaths({ locales }: StaticPathsPropsType) {
-  const baseURL = process.env.NEXT_PUBLIC_API_URL;
-  const port = process.env.NEXT_PUBLIC_API_PORT;
-  const url = `${baseURL}:${port}/field-of-studies?${locales.map((locale: string, idx: number) => {
-    return `_locale=${locale}${idx < locales.length - 1 ? '&' : ''}`;
-  }).join('')}`;
-  
-  let res 
+export async function getStaticPaths({ locales }: GetStaticPropsContext): Promise<GetStaticPathsResult<Params>> {
+  const params = localesToParams(locales)
+  const url = `/cms/field-of-studies?${params}`;
+
   try {
-    res = await axios(url);
+    const { data: studies } = await axios.get<FieldOfStudyType[]>(url);
+
+    return {
+      paths: studies.map((item) => (
+        {
+          params: {
+            id: item.id.toString()
+          }
+        }
+      )),
+
+      fallback: 'blocking',
+    };
+
   } catch (e) {
     return {
       paths: [],
       fallback: 'blocking',
     };
   }
-  const studies = res.data;
-  return {
-    paths: studies.map((item: FieldOfStudyType) => (
-      { params: { id: item.id.toString() } }
-    )),
-    fallback: 'blocking',
-  };
 };
 
-type StaticPropsType = {
-  locale: string,
-  params: any,
-};
+export async function getStaticProps({ locale, params }: GetStaticPropsContext<Params>): Promise<GetStaticPropsResult<FieldOfStudyProps>> {
+  const url = `/field-of-studies/${params!.id}?_locale=${locale}`
 
-export async function getStaticProps({ locale, params }: StaticPropsType) {
-  const baseURL = process.env.NEXT_PUBLIC_API_URL;
-  const port = process.env.NEXT_PUBLIC_API_PORT;
-  const url = `${baseURL}:${port}/field-of-studies/${params.id}?_locale=${locale}`;
-
-  let res 
   try {
-    res = await axios(url);
+    const { data: study } = await axios(url);
+    if (!study) {
+      return {
+        notFound: true
+      }
+    }
+
+    return {
+      props: {
+        study,
+      },
+      revalidate: REVALIDATE_TIME,
+    }
+
   } catch (e) {
     return {
-      props: {},
+      redirect: {
+        destination: '/500',
+        permanent: false,
+      },
       revalidate: REVALIDATE_TIME,
     };
-  }
-  const study = res.data;
-  return {
-    props: {
-      study,
-    },
-    revalidate: REVALIDATE_TIME,
   }
 };

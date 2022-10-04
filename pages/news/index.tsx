@@ -13,15 +13,14 @@ import { YearSwitcherVariant } from '../../components/common/YearSwitcher/YearSw
 import SegmentedControl from '../../components/common/buttons/SegmentedControl';
 import { useApp } from '../../components/context/AppContext';
 import { setLocalizationData } from '../../utils/localizationsUtils';
-
-
+import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 
 type NewsPageProps = {
   news: Array<NewsType>,
   years: Array<string>,
 };
 
-export default function News({ news , years }: NewsPageProps) {
+export default function News({ news, years }: NewsPageProps) {
   const router = useRouter();
   const { setLocalePaths } = useApp();
   const year = (router.query.year || years[0]).toString();
@@ -30,7 +29,7 @@ export default function News({ news , years }: NewsPageProps) {
 
   useEffect(() => {
     setLocalizationData(setLocalePaths, null);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const filteringMethod = (item: NewsType) => {
@@ -80,38 +79,33 @@ export default function News({ news , years }: NewsPageProps) {
           />
         </div>
         <div>
-          <NewsList news={news.filter(filteringMethod)} onSelect={onSelectNews}/>
+          <NewsList news={news.filter(filteringMethod)} onSelect={onSelectNews} />
         </div>
       </div>
     </Container>
   )
 };
 
-type StaticPropsType = {
-  locale: string,
-  query: any,
-};
+export async function getServerSideProps({ locale, query }: GetServerSidePropsContext): Promise<GetServerSidePropsResult<NewsPageProps>> {
+  const { year } = query;
+  const url = `/news?_locale=${locale}&year=${year}`
 
-export async function getServerSideProps({ locale, query }: StaticPropsType) {
-  const { year } = query; 
-  const baseURL = process.env.NEXT_PUBLIC_API_URL;
-  const port = process.env.NEXT_PUBLIC_API_PORT;
-  const url = `${baseURL}:${port}/news?_locale=${locale}&year=${year}`;
-
-  let res 
   try {
-    res = await axios(url);
+    const { data } = await axios(url);
+    const { news, years } = data;
+
+    return {
+      props: {
+        news,
+        years,
+      },
+    }
   } catch (e) {
     return {
-      props: {},
+      redirect: {
+        destination: '/500',
+        permanent: false,
+      },
     };
-  }
-  const { news, years } = res.data;
-
-  return {
-    props: {
-      news,
-      years,
-    },
   }
 }

@@ -1,20 +1,27 @@
 import '../styles/globals.css';
-import type { AppProps } from 'next/app';
+import { AppProps, AppContext, AppInitialProps } from 'next/app';
 import { useRouter } from 'next/router';
+import getConfig from 'next/config'
 
 import { AppProvider } from '../components/context/AppContext';
 
 import Layout from '../components/common/Layout';
 import axios from 'axios';
 
-const App = ({ Component, pageProps }: AppProps) => {
+const { publicRuntimeConfig } = getConfig()
+
+axios.defaults.baseURL = publicRuntimeConfig.baseURL
+
+function App({ Component, pageProps }: AppProps) {
   const { locales, locale, defaultLocale } = useRouter();
   return (
-    <AppProvider langs={locales || []} lang={locale || defaultLocale || '' }>
+    <AppProvider langs={locales || []} lang={locale || defaultLocale || ''}>
       <>
         <div id="modal-root"></div>
+
         {pageProps.menuData && (
           <Layout menu={pageProps.menuData.menu} footer={pageProps.menuData.footer}>
+            {/** @ts-ignore */}
             <Component {...pageProps} />
           </Layout>
         )}
@@ -23,18 +30,17 @@ const App = ({ Component, pageProps }: AppProps) => {
   );
 };
 
-type PropsType = {
-  router: any,
-};
+App.getInitialProps = async ({ router }: AppContext): Promise<AppInitialProps> => {
+  const url = `/global?_locale=${router.locale}`;
 
-App.getInitialProps = async ({ router }: PropsType) => {
-  const baseURL = process.env.NEXT_PUBLIC_IMAGE_URL;
-  const port = process.env.NEXT_PUBLIC_API_PORT;
-  const url = `${baseURL}:${port}/global?_locale=${router.locale}`;
-
-  let res 
   try {
-    res = await axios(url);
+    const { data } = await axios(url);
+
+    return {
+      pageProps: {
+        menuData: data,
+      },
+    };
   } catch (e) {
     return {
       pageProps: {
@@ -42,18 +48,6 @@ App.getInitialProps = async ({ router }: PropsType) => {
       },
     };
   }
-  const data = res.data;
-
-  if (!data) {
-    return {
-      notFound: true,
-    };
-  }
-
-  return {
-    pageProps: {
-      menuData: data,
-    },
-  };
 };
+
 export default App;

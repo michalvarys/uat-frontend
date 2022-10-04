@@ -25,6 +25,7 @@ import { GalleryEventType } from '../components/galleries/types/GalleryEventType
 import axios from 'axios';
 import { REVALIDATE_TIME } from '../consts/app.consts';
 import SocialLinkType from '../types/data/SocialLinkType';
+import { GetStaticPropsContext, GetStaticPropsResult } from 'next';
 
 type HomePageProps = {
   cover_image: ImageType,
@@ -47,19 +48,19 @@ type HomePageProps = {
 };
 
 export default function Home({
-    cover_image,
-    logo,
-    festivals,
-    fields_of_studies,
-    galleries,
-    galleryEvents,
-    news,
-    importantNews,
-    subtitle,
-    text_with_image,
-    title,
-    video_with_text,
-    social,
+  cover_image,
+  logo,
+  festivals,
+  fields_of_studies,
+  galleries,
+  galleryEvents,
+  news,
+  importantNews,
+  subtitle,
+  text_with_image,
+  title,
+  video_with_text,
+  social,
 }: HomePageProps) {
   const router = useRouter();
   const renderTextWithImageSlices = () => {
@@ -67,15 +68,15 @@ export default function Home({
       return (
         <ReactResizeDetector>
           {({ width }) => text_with_image
-          .slice(1, text_with_image.length)
-          .map((item: TextWithImageType, index: number) => (
-            <TextWithImageSlice
-              key={`text-with-image-${item.id}`}
-              data={item}
+            .slice(1, text_with_image.length)
+            .map((item: TextWithImageType, index: number) => (
+              <TextWithImageSlice
+                key={`text-with-image-${item.id}`}
+                data={item}
               // extraTextTopSpace={index === 0 && width && width > 1300 ? 0 : (index === 0 ? 140 : 0)}
               // extraTextBottomSpace={index === text_with_image.length - 2 && width && width >1100 ? 200: 0}
-            />
-        ))}
+              />
+            ))}
         </ReactResizeDetector>
       )
     }
@@ -101,7 +102,7 @@ export default function Home({
           />
         ) : <></>}
         <div className={styles.video}>
-          {video_with_text ? <YoutubePlayerWithTextSlice data={video_with_text}/> : <></>}
+          {video_with_text ? <YoutubePlayerWithTextSlice data={video_with_text} /> : <></>}
         </div>
         {(text_with_image && text_with_image.length > 0) ? (
           <div className={styles.first_text}>
@@ -115,7 +116,7 @@ export default function Home({
               )}
             </ReactResizeDetector>
           </div>
-          ) : <></>}
+        ) : <></>}
         <div className={styles.fields}>
           {fields_of_studies ? <FieldOfStudyCarusel fields={fields_of_studies} /> : <></>}
         </div>
@@ -124,7 +125,7 @@ export default function Home({
         {renderTextWithImageSlices()}
       </Container>
       <Container variant={ContainerVariant.Black}>
-        <FestivalsSlice festivals={festivals} variant={ContainerVariant.Black}/>
+        <FestivalsSlice festivals={festivals} variant={ContainerVariant.Black} />
       </Container>
       <Container variant={ContainerVariant.Black}>
         {galleries ? <TextWithImageSlice
@@ -145,37 +146,27 @@ export default function Home({
         /> : <></>}
       </Container>
       <Container variant={ContainerVariant.Orange}>
-        {news ? <NewsSlice news={news}/> : <></>}
+        {news ? <NewsSlice news={news} /> : <></>}
       </Container>
     </div>
   )
 }
 
-type StaticPropsType = {
-  locale: string,
-};
+export async function getStaticProps({ locale, defaultLocale }: GetStaticPropsContext): Promise<GetStaticPropsResult<unknown>> {
+  const url = `/home-page?_locale=${locale || defaultLocale}`;
 
-
-export async function getStaticProps({ locale }: StaticPropsType) {
-  const baseURL = process.env.NEXT_PUBLIC_API_URL;
-  const port = process.env.NEXT_PUBLIC_API_PORT;
-  const url = `${baseURL}:${port}/home-page?_locale=${locale}`;
-
-  let res 
   try {
-    res = await axios(url);
+    const { data } = await axios(url);
+
+    return {
+      props: data,
+      revalidate: REVALIDATE_TIME
+    };
   } catch (e) {
+    console.log(e);
     return {
       props: {},
-      revalidate: REVALIDATE_TIME,
+      revalidate: REVALIDATE_TIME
     };
-  }
-  const homeData = res.data;
-
-  return {
-    props: {
-      ...homeData,
-    },
-    revalidate: REVALIDATE_TIME,
   }
 }

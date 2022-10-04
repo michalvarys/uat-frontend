@@ -17,10 +17,12 @@ import ButtonLink, { ButtonLinkImageType, ButtonLinkVariant } from '../../compon
 import { useApp } from '../../components/context/AppContext';
 import { useEffect } from 'react';
 import { setLocalizationData } from '../../utils/localizationsUtils';
+import { GetStaticPathsContext, GetStaticPathsResult, GetStaticPropsContext, GetStaticPropsResult } from 'next';
+import { localesToParams } from '../../utils/params';
 
 
 type FestivalsProps = {
-  festival: FestivalType,
+  festival: FestivalType
 };
 
 export default function Festival({ festival }: FestivalsProps) {
@@ -31,15 +33,15 @@ export default function Festival({ festival }: FestivalsProps) {
     if (festival && festival.localizations.length > 0) {
       setLocalizationData(setLocalePaths, festival.localizations, '/festivals');
     } else {
-      setLocalizationData(setLocalePaths, null); 
+      setLocalizationData(setLocalePaths, null);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [festival]);
 
   if (!festival) {
     return <></>
   }
-  
+
   const renderStudyBadge = () => (
     <div className={styles.badge}>
       <div className={styles.symbol}>
@@ -87,36 +89,36 @@ export default function Festival({ festival }: FestivalsProps) {
             {(festival.buttons && festival.buttons.length > 0) && renderButtons(festival.buttons)}
           </div>
           <div className={styles.image}>
-          {cover_image ? (
-            <Image
-              alt={cover_image.alternativeText}
-              src={transformLink(cover_image.url)}
-              width={cover_image.width}
-              height={cover_image.height}
-              layout={'responsive'}
-              objectFit={'contain'}
-              objectPosition={'center center'}
-            />
-          ) : <></>}
+            {cover_image ? (
+              <Image
+                alt={cover_image.alternativeText}
+                src={transformLink(cover_image.url)}
+                width={cover_image.width}
+                height={cover_image.height}
+                layout={'responsive'}
+                objectFit={'contain'}
+                objectPosition={'center center'}
+              />
+            ) : <></>}
           </div>
         </div>
       </Container>
       <Container variant={ContainerVariant.Transparent} isHigh>
         {prizes && (
-          <FestivalPrizes prizes={prizes}/>
+          <FestivalPrizes prizes={prizes} />
         )}
       </Container>
       <Container variant={ContainerVariant.White}>
         <div>
           <div>
             {content ? content.map((item: TextWithImageType, index: number) => (
-              <TextWithImageSlice key={item.id} data={item} extraTextTopSpace={index === 0 ? 194 : 0}/>
+              <TextWithImageSlice key={item.id} data={item} extraTextTopSpace={index === 0 ? 194 : 0} />
             )) : <></>}
           </div>
         </div>
         <div className={styles.winners_container}>
           {winners && winners.length > 0 && (
-            <FestivalWinners winners={winners}/>
+            <FestivalWinners winners={winners} />
           )}
         </div>
       </Container>
@@ -124,60 +126,61 @@ export default function Festival({ festival }: FestivalsProps) {
   )
 };
 
-type StaticPathsPropsType = {
-  locales: Array<string>,
+type Params = {
+  id: string
 };
 
-export async function getStaticPaths({ locales }: StaticPathsPropsType) {
-  const baseURL = process.env.NEXT_PUBLIC_API_URL;
-  const port = process.env.NEXT_PUBLIC_API_PORT;
-  const url = `${baseURL}:${port}/festivals?${locales.map((locale: string, idx: number) => {
-    return `_locale=${locale}${idx < locales.length - 1 ? '&' : ''}`;
-  }).join('')}`;
-  
-  
-  let res 
+export async function getStaticPaths({ locales }: GetStaticPathsContext): Promise<GetStaticPathsResult<Params>> {
+  const params = localesToParams(locales)
+  const url = `/cms/festivals?${params}`;
+
   try {
-    res = await axios(url);
+    const { data: festivals } = await axios.get<FestivalType[]>(url);
+
+    return {
+      paths: festivals.map((item) => (
+        {
+          params: {
+            id: item.id.toString()
+          }
+        }
+      )),
+      fallback: 'blocking',
+    };
   } catch (e) {
     return {
       paths: [],
       fallback: 'blocking',
     };
   }
-  const festivals = res.data;
-  return {
-    paths: festivals.map((item: FestivalType) => (
-      { params: { id: item.id.toString() } }
-    )),
-    fallback: 'blocking',
-  };
 };
 
-type StaticPropsType = {
-  locale: string,
-  params: any,
-};
+export async function getStaticProps({ locale, params }: GetStaticPropsContext<Params>)
+  : Promise<GetStaticPropsResult<FestivalsProps>> {
+  const url = `/festivals/${params!.id}?_locale=${locale}`;
 
-export async function getStaticProps({ locale, params }: StaticPropsType) {
-  const baseURL = process.env.NEXT_PUBLIC_API_URL;
-  const port = process.env.NEXT_PUBLIC_API_PORT;
-  const url = `${baseURL}:${port}/festivals/${params.id}?_locale=${locale}`;
-
-  let res 
   try {
-    res = await axios(url);
+    const { data: festival } = await axios.get<FestivalType>(url);
+
+    if (!festival) {
+      return {
+        notFound: true
+      }
+    }
+
+    return {
+      props: {
+        festival,
+      },
+      revalidate: REVALIDATE_TIME,
+    }
   } catch (e) {
     return {
-      props: {},
+      redirect: {
+        destination: '/500',
+        permanent: false,
+      },
       revalidate: REVALIDATE_TIME,
     };
-  }
-  const festival = res.data;
-  return {
-    props: {
-      festival,
-    },
-    revalidate: REVALIDATE_TIME,
   }
 };
