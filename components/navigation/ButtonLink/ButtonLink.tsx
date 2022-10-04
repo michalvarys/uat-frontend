@@ -7,7 +7,7 @@ import DownloadDarkIcon from '../../../public/icons/common/download_dark.svg';
 import ArrowIcon from '../../../public/icons/common/arrow_right_light.svg';
 import ArrowDarkIcon from '../../../public/icons/common/arrow_right.svg';
 
-import { transformDocLink } from '../../../utils/transformLink';
+import { transformLink } from '../../../utils/transformLink';
 import { ButtonLinkVariant } from './ButtonLinkVariant';
 import { ButtonLinkImageType  } from './ButtonLinkImageType';
 import ImageButton, { ImageButtonVariant } from '../../common/buttons/ImageButton';
@@ -47,7 +47,7 @@ const getButtonIcon = (variant: ButtonLinkVariant, imageType: ButtonLinkImageTyp
 }
 
 const ButtonLink = ({ imageType, title, path, variant }: Props) => {
-  const url = (imageType === ButtonLinkImageType.Download) ? transformDocLink(path) : path;
+  const url = (imageType === ButtonLinkImageType.Download) ? transformLink(path) : path;
   return (
     <Link
       href={url}
