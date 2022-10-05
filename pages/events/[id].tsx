@@ -13,6 +13,8 @@ import GallerySlice from '../../components/slices/GallerySlice';
 import { useApp } from '../../components/context/AppContext';
 import { useEffect } from 'react';
 import { setLocalizationData } from '../../utils/localizationsUtils';
+import { GetStaticPropsContext, GetStaticPropsResult } from 'next';
+import { localesToParams } from '../../utils/params';
 
 type GalleryEventProps = {
   galleryEvent: GalleryEventType,
@@ -26,9 +28,9 @@ export default function GalleryEvent({ galleryEvent }: GalleryEventProps) {
     if (galleryEvent && galleryEvent.localizations.length > 0) {
       setLocalizationData(setLocalePaths, galleryEvent.localizations, '/events');
     } else {
-      setLocalizationData(setLocalePaths, null); 
+      setLocalizationData(setLocalePaths, null);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [galleryEvent]);
 
   if (!galleryEvent) {
@@ -41,16 +43,16 @@ export default function GalleryEvent({ galleryEvent }: GalleryEventProps) {
           <title>{galleryEvent.title}</title>
         </Head>
         {cover_image ? (
-            <div className={styles.cover_image}>
-              <Image
-                src={transformLink(cover_image.url)}
-                alt={cover_image.alternativeText}
-                layout={'fill'}
-                objectFit={'cover'}
-                objectPosition={'50% 30%'}
-              />
-            </div>
-          ) : <></>}
+          <div className={styles.cover_image}>
+            <Image
+              src={transformLink(cover_image.url)}
+              alt={cover_image.alternativeText}
+              layout={'fill'}
+              objectFit={'cover'}
+              objectPosition={'50% 30%'}
+            />
+          </div>
+        ) : <></>}
         <div className={styles.container}>
           <div className={styles.title}>
             <h1 className={styles.header}>{galleryEvent.title}</h1>
@@ -69,61 +71,62 @@ export default function GalleryEvent({ galleryEvent }: GalleryEventProps) {
   )
 };
 
-type StaticPathsPropsType = {
-  locales: Array<string>,
-};
 
-export async function getStaticPaths({ locales }: StaticPathsPropsType) {
-  const baseURL = process.env.NEXT_PUBLIC_API_URL;
-  const port = process.env.NEXT_PUBLIC_API_PORT;
-  const url = `${baseURL}:${port}/gallery-events?${locales.map((locale: string, idx: number) => {
-    return `_locale=${locale}${idx < locales.length - 1 ? '&' : ''}`;
-  }).join('')}`;
-  
-  let res 
+export async function getStaticPaths({ locales }: GetStaticPropsContext) {
+  const params = localesToParams(locales);
+  const url = `/cms/gallery-events?${params}`;
+
   try {
-    res = await axios(url);
+    const { data: galleryEvents } = await axios.get<FestivalType[]>(url);
+
+    return {
+      paths: galleryEvents.map((item) => (
+        {
+          params: {
+            id: item.id.toString()
+          }
+        }
+      )),
+      fallback: 'blocking',
+    };
   } catch (e) {
     return {
       paths: [],
       fallback: 'blocking',
     };
   }
-  
-  const galleryEvents = res.data;
-
-  return {
-    paths: galleryEvents.map((item: FestivalType) => (
-      { params: { id: item.id.toString() } }
-    )),
-    fallback: 'blocking',
-  };
 };
 
-type StaticPropsType = {
-  locale: string,
-  params: any,
+type Params = {
+  id: string
 };
 
-export async function getStaticProps({ locale, params }: StaticPropsType) {
-  const baseURL = process.env.NEXT_PUBLIC_API_URL;
-  const port = process.env.NEXT_PUBLIC_API_PORT;
-  const url = `${baseURL}:${port}/gallery-events/${params.id}?_locale=${locale}`;
+export async function getStaticProps({ locale, params }: GetStaticPropsContext<Params>): Promise<GetStaticPropsResult<GalleryEventProps>> {
+  const url = `/gallery-events/${params!.id}?_locale=${locale}`;
 
-  let res 
   try {
-    res = await axios(url);
+    const { data: galleryEvent } = await axios(url);
+
+    if (!galleryEvent) {
+      return {
+        notFound: true
+      }
+    }
+
+    return {
+      props: {
+        galleryEvent,
+      },
+
+      revalidate: REVALIDATE_TIME,
+    }
   } catch (e) {
     return {
-      props: {},
+      redirect: {
+        destination: '/500',
+        permanent: false,
+      },
       revalidate: REVALIDATE_TIME,
     };
-  }
-  const galleryEvent = res.data;
-  return {
-    props: {
-      galleryEvent,
-    },
-    revalidate: REVALIDATE_TIME,
   }
 };

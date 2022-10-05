@@ -11,11 +11,12 @@ import { getString, Strings } from '../../locales';
 import axios from 'axios';
 import { setLocalizationData } from '../../utils/localizationsUtils';
 import { useApp } from '../../components/context/AppContext';
-
+import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 
 type TeachersPageProps = {
   teachers: Array<TeacherType>,
 }
+
 export default function Teachers({ teachers }: TeachersPageProps) {
   const [selectedTeacher, setSelectedTeacher] = useState<TeacherType | undefined>(undefined);
 
@@ -24,9 +25,9 @@ export default function Teachers({ teachers }: TeachersPageProps) {
 
   useEffect(() => {
     setLocalizationData(setLocalePaths, null);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  
+
   useEffect(() => {
     const teacherId: number = parseInt((router.query.id || '').toString(), 10);
     if (Number.isNaN(teacherId)) {
@@ -37,8 +38,8 @@ export default function Teachers({ teachers }: TeachersPageProps) {
       setSelectedTeacher(newTeacher);
     }
   }, [router, router.query.id, selectedTeacher, teachers]);
-  
-  
+
+
   const onSelectItem = (item: TeacherType) => {
     setSelectedTeacher(item);
     router.replace(`/teachers?id=${item.id}`, undefined, { shallow: true });
@@ -64,7 +65,7 @@ export default function Teachers({ teachers }: TeachersPageProps) {
         />
         {selectedTeacher && (
           <TeacherDetailsModal
-            data={selectedTeacher}  
+            data={selectedTeacher}
             isOpen={!!selectedTeacher}
             onClose={onCloseTeacherDetails}
           />
@@ -74,29 +75,22 @@ export default function Teachers({ teachers }: TeachersPageProps) {
   )
 }
 
-type StaticPropsType = {
-  locale: string,
-};
+export async function getServerSideProps({ locale }: GetServerSidePropsContext): Promise<GetServerSidePropsResult<TeachersPageProps>> {
+  const url = `/teachers?_locale=${locale}`
 
-export async function getServerSideProps({ locale }: StaticPropsType) {
-  const baseURL = process.env.NEXT_PUBLIC_API_URL;
-  const port = process.env.NEXT_PUBLIC_API_PORT;
-  const url = `${baseURL}:${port}/teachers?_locale=${locale}`;
-
-  let res 
   try {
-    res = await axios(url);
+    const { data: teachers } = await axios(url);
+
+    return {
+      props: {
+        teachers,
+      },
+    }
   } catch (e) {
     return {
       props: {
         teachers: [],
       }
     };
-  }
-  const teachers = res.data;
-  return {
-    props: {
-      teachers,
-    },
   }
 }

@@ -80,6 +80,7 @@ const YoutubePlayerSlice = ({ data }: YoutubeVideoProps) => {
         )}
       </div>
       <div className={styles.player}>
+        {/** @ts-ignore */}
         <YoutubePlayer
           videoId={data.youtube_video_id}
           opts={{

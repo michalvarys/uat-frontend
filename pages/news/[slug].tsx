@@ -15,6 +15,7 @@ import ButtonLink, { ButtonLinkImageType } from '../../components/navigation/But
 import { useEffect } from 'react';
 import { setLocalizationData } from '../../utils/localizationsUtils';
 import { useApp } from '../../components/context/AppContext';
+import { GetStaticPropsContext, GetStaticPropsResult } from 'next';
 
 type NewsDetailsPageProps = {
   slug?: string,
@@ -28,9 +29,9 @@ export default function NewsDetails({ news, ...rest }: NewsDetailsPageProps) {
     if (news && news.localizations.length > 0) {
       setLocalizationData(setLocalePaths, news.localizations, '/news');
     } else {
-      setLocalizationData(setLocalePaths, null); 
+      setLocalizationData(setLocalePaths, null);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [news]);
 
   const renderNewsSection = (section: any) => {
@@ -38,13 +39,13 @@ export default function NewsDetails({ news, ...rest }: NewsDetailsPageProps) {
       case 'shared.rich-text-with-title':
         return (
           <div key={`section-rich-text-${section.id}`} className={styles.rich_text}>
-            <RichTextSlice data={section}/>
+            <RichTextSlice data={section} />
           </div>
         );
       case 'shared.you-tube-player-slice':
         return (
           <div className={styles.player} key={`section-youtube-${section.id}`}>
-            <YoutubePlayerSlice data={section}/>
+            <YoutubePlayerSlice data={section} />
           </div>
         );
       case 'shared.gallery':
@@ -69,7 +70,7 @@ export default function NewsDetails({ news, ...rest }: NewsDetailsPageProps) {
         )
     }
   }
-  
+
   if (!news) {
     return <></>
   }
@@ -115,53 +116,54 @@ type StaticPathsPropsType = {
 };
 
 export async function getStaticPaths({ locales }: StaticPathsPropsType) {
-  const baseURL = process.env.NEXT_PUBLIC_API_URL;
-  const port = process.env.NEXT_PUBLIC_API_PORT;
-  const url = `${baseURL}:${port}/news?${locales.map((locale: string, idx: number) => {
+  const url = `/cms/news?${locales.map((locale: string, idx: number) => {
     return `_locale=${locale}${idx < locales.length - 1 ? '&' : ''}`;
   }).join('')}`;
-  
-  let res 
+
   try {
-    res = await axios(url);
+    const { data } = await axios(url);
+    const { news } = data;
+
+    return {
+      paths: news.map((item: NewsType) => (
+        {
+          params: {
+            slug: item.slug,
+            news: item
+          }
+        }
+      )),
+      fallback: 'blocking',
+    };
   } catch (e) {
     return {
       paths: [],
       fallback: 'blocking',
     };
   }
-  const { news } = res.data;
-  return {
-    paths: news.map((item: NewsType) => (
-      { params: { slug: item.slug, news: item } }
-    )),
-    fallback: 'blocking',
-  };
 };
 
-type StaticPropsType = {
-  locale: string,
-  params: any,
-};
+type Params = { slug: string }
 
-export async function getStaticProps({ locale, params }: StaticPropsType) {
-  const baseURL = process.env.NEXT_PUBLIC_API_URL;
-  const port = process.env.NEXT_PUBLIC_API_PORT;
-  const url = `${baseURL}:${port}/news?_locale=${locale}&slug=${params.slug}`;
-  let res 
+export async function getStaticProps({ locale, params }: GetStaticPropsContext<Params>): Promise<GetStaticPropsResult<NewsDetailsPageProps>> {
+  const url = `/news?_locale=${locale}&slug=${params!.slug}`;
+
   try {
-    res = await axios(url);
+    const { data } = await axios(url);
+    const { news } = data;
+
+    return {
+      props: {
+        news: news?.length > 0 ? news.at(0) : null,
+      },
+      revalidate: REVALIDATE_TIME,
+    }
   } catch (e) {
     return {
-      props: {},
+      props: {
+        news: null
+      },
       revalidate: REVALIDATE_TIME,
     };
-  }
-  const { news } = res.data;
-  return {
-    props: {
-      news: news && news.length > 0 ? news[0] : null,
-    },
-    revalidate: REVALIDATE_TIME,
   }
 };

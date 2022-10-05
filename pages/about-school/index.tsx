@@ -14,6 +14,7 @@ import ButtonLink, { ButtonLinkImageType, ButtonLinkVariant } from '../../compon
 import { useEffect } from 'react';
 import { useApp } from '../../components/context/AppContext';
 import { setLocalizationData } from '../../utils/localizationsUtils';
+import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 
 type AboutSchoolPageProps = {
   data: AboutSchoolType,
@@ -25,7 +26,7 @@ export default function AboutSchoolPage({ data }: AboutSchoolPageProps) {
 
   useEffect(() => {
     setLocalizationData(setLocalePaths, null);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const renderButtons = (buttons: Array<any>) => {
@@ -55,7 +56,7 @@ export default function AboutSchoolPage({ data }: AboutSchoolPageProps) {
           <h1>{data.title}</h1>
           <div className={styles.top_container}>
             <div className={styles.video_container}>
-              <YoutubePlayerSlice data={data.video}/>
+              <YoutubePlayerSlice data={data.video} />
             </div>
             <div className={styles.description_container}>
               {data.description}
@@ -67,48 +68,37 @@ export default function AboutSchoolPage({ data }: AboutSchoolPageProps) {
       <Container variant={ContainerVariant.White}>
         <div className={`${styles.inner_container} ${styles.inner_white_container}`}>
           <div className={styles.statistics_container}>
-            <EmploymentStatistics data={data.EmploymentStatistics}/>
+            <EmploymentStatistics data={data.EmploymentStatistics} />
           </div>
         </div>
       </Container>
       <Container variant={ContainerVariant.Black} >
         <div className={`${styles.inner_application_container} ${styles.inner_container}`}>
-          <ApplicationsAtUniversity data={data.applications_at_university}/>
+          <ApplicationsAtUniversity data={data.applications_at_university} />
         </div>
       </Container>
       <Container variant={ContainerVariant.White} >
         <div className={`${styles.inner_application_container} ${styles.inner_container}`}>
-          <EUProjectsSlice projects={data.eu_projects}/>
+          <EUProjectsSlice projects={data.eu_projects} />
         </div>
       </Container>
     </div>
   )
 };
 
-type StaticPropsType = {
-  locale: string,
-  query: any,
-};
-
-export async function getServerSideProps({ locale, query }: StaticPropsType) {
-  const { year } = query; 
-  const baseURL = process.env.NEXT_PUBLIC_API_URL;
-  const port = process.env.NEXT_PUBLIC_API_PORT;
-  const url = `${baseURL}:${port}/about-school?_locale=${locale}`;
-
-  let res 
+export async function getServerSideProps({ locale }: GetServerSidePropsContext): Promise<GetServerSidePropsResult<unknown>> {
   try {
-    res = await axios(url);
+    const url = `/about-school?_locale=${locale}`;
+    const { data } = await axios(url);
+
+    return {
+      props: {
+        data
+      },
+    }
   } catch (e) {
     return {
       props: {},
     };
-  }
-  const { data } = res;
-
-  return {
-    props: {
-      data
-    },
   }
 }
