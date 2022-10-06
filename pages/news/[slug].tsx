@@ -154,7 +154,7 @@ export async function getStaticProps({ locale, params }: GetStaticPropsContext<P
 
     return {
       props: {
-        news: news?.length > 0 ? news.at(0) : null,
+        news: news?.length > 0 ? news[0] : null,
       },
       revalidate: REVALIDATE_TIME,
     }

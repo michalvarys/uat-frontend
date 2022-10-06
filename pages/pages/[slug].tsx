@@ -171,7 +171,7 @@ export async function getStaticProps({ locale, params }: GetStaticPropsContext):
 
   try {
     const { data: pages } = await axios(url);
-    const page = pages?.length > 0 ? pages.at(0) : null
+    const page = pages?.length > 0 ? pages[0] : null
 
     if (!page) {
       return {
