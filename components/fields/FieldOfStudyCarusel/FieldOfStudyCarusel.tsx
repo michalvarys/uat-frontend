@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import styles from './FieldOfStudyCarusel.module.scss'
 
 import FieldOfStudyType from '../types/FieldOfStudyType'
-import { transformLink } from '../../../utils/transformLink'
+import { transformLink } from '../../../utils/link'
 
 import ArrowIcon from '../../../public/icons/common/arrow_right.svg'
 

@@ -11,7 +11,7 @@ import {
 import styles from './YoutubePlayerSlice.module.scss'
 
 import YouTubeVideoType from '../types/YouTubeVideoType'
-import { transformLink } from '../../../utils/transformLink'
+import { transformLink } from '../../../utils/link'
 
 import PlayIcon from '../../../public/icons/common/play.svg'
 

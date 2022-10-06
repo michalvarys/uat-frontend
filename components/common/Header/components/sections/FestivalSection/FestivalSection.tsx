@@ -4,7 +4,7 @@ import styles from './FestivalSection.module.scss'
 import LinksSection from '../LinksSection'
 import { MenuSection } from '../../../Header'
 import ImageLink from '../../../../../navigation/ImageLink'
-import { transformLink } from '../../../../../../utils/transformLink'
+import { transformLink } from '../../../../../../utils/link'
 
 type Props = {
   data: MenuSection & {

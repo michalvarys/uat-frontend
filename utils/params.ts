@@ -5,6 +5,7 @@ export function valuesToParams(key: string, values?: string[]) {
 
   return params.toString()
 }
+
 export function localesToParams(locales?: string[]) {
   return valuesToParams('_locale', locales)
 }

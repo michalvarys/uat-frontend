@@ -3,7 +3,7 @@ import classNames from 'classnames'
 
 import styles from './TextWithImageSlice.module.scss'
 
-import { transformLink } from '../../../utils/transformLink'
+import { transformLink } from '../../../utils/link'
 import { useRouter } from 'next/router'
 import TextWithImageType from '../types/TextWithImageType'
 import { ContainerVariant } from '../../common/Container'

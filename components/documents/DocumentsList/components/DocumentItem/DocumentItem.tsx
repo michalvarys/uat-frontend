@@ -6,7 +6,7 @@ import styles from './DocumentItem.module.scss'
 
 import ArrowRightIcon from '../../../../../public/icons/common/arrow_right.svg'
 import DocumentType from '../../../types/DocumentType'
-import { transformLink } from '../../../../../utils/transformLink'
+import { transformLink } from '../../../../../utils/link'
 
 type Props = {
   document: DocumentType

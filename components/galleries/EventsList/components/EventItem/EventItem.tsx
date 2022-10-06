@@ -6,7 +6,7 @@ import styles from './EventItem.module.scss'
 
 import ArrowRightIcon from '../../../../../public/icons/common/arrow_right.svg'
 import { GalleryEventType } from '../../../types/GalleryEventType'
-import { transformLink } from '../../../../../utils/transformLink'
+import { transformLink } from '../../../../../utils/link'
 
 type Props = {
   event: GalleryEventType

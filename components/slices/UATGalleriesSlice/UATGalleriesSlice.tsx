@@ -4,7 +4,7 @@ import parse from 'html-react-parser'
 
 import styles from './UATGalleriesSlice.module.scss'
 import UATGalleryType from '../types/UATGalleryType'
-import { transformLink } from '../../../utils/transformLink'
+import { transformLink } from '../../../utils/link'
 import { GalleryEventType } from '../../galleries/types/GalleryEventType'
 
 import ArrowRightIcon from '../../../public/icons/common/arrow_right.svg'

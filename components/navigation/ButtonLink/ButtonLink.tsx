@@ -7,7 +7,7 @@ import DownloadDarkIcon from '../../../public/icons/common/download_dark.svg'
 import ArrowIcon from '../../../public/icons/common/arrow_right_light.svg'
 import ArrowDarkIcon from '../../../public/icons/common/arrow_right.svg'
 
-import { transformLink } from '../../../utils/transformLink'
+import { isExternalLink, transformLink } from '../../../utils/link'
 import { ButtonLinkVariant } from './ButtonLinkVariant'
 import { ButtonLinkImageType } from './ButtonLinkImageType'
 import ImageButton, {
@@ -55,10 +55,14 @@ const ButtonLink = ({ imageType, title, path, variant }: Props) => {
     imageType === ButtonLinkImageType.Download ? transformLink(path) : path
 
   return (
-    <Link href={url} passHref>
+    <Link href={url.trim()} passHref>
       <a
         className={styles.container}
-        target={imageType === ButtonLinkImageType.Download ? '_blank' : '_self'}
+        target={
+          imageType === ButtonLinkImageType.Download || isExternalLink(url)
+            ? '_blank'
+            : '_self'
+        }
       >
         <ImageButton
           title={title}

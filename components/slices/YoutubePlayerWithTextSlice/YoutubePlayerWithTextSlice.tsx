@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { transformLink } from '../../../utils/transformLink'
+import { transformLink } from '../../../utils/link'
 import { ContainerVariant } from '../../common/Container'
 import DescriptionSection from '../../common/DescriptionSection'
 

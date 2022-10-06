@@ -3,7 +3,7 @@ import parse from 'html-react-parser'
 
 import styles from './FieldOfStudyHeader.module.scss'
 
-import { transformLink } from '../../../utils/transformLink'
+import { transformLink } from '../../../utils/link'
 import { useRouter } from 'next/router'
 import ButtonLink, {
   ButtonLinkVariant,

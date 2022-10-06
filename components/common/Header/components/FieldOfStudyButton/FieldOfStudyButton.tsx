@@ -2,7 +2,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 
 import FieldOfStudyType from '../../../../fields/types/FieldOfStudyType'
-import { transformLink } from '../../../../../utils/transformLink'
+import { transformLink } from '../../../../../utils/link'
 
 import styles from './FieldOfStudyButton.module.scss'
 

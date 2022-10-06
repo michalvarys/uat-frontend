@@ -3,7 +3,7 @@ import Image from 'next/image'
 import styles from './TeacherItem.module.scss'
 
 import TeacherType from '../../../types/TeacherType'
-import { transformLink } from '../../../../../utils/transformLink'
+import { transformLink } from '../../../../../utils/link'
 
 import SlantArrowIcon from '../../../../../public/icons/common/arrow_slant.svg'
 

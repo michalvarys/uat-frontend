@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import styles from './HeaderSlice.module.scss'
 
-import { transformLink } from '../../../utils/transformLink'
+import { transformLink } from '../../../utils/link'
 import ImageType from '../../common/types/ImageType'
 import ImportantNewsRibbon from '../../news/ImportantNewsRibbon'
 import NewsType from '../../news/types/NewsType'

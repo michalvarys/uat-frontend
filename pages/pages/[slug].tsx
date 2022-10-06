@@ -16,7 +16,7 @@ import ButtonLink, {
   ButtonLinkImageType,
 } from '../../components/navigation/ButtonLink'
 import PageType from '../../components/pages/types/PageType'
-import { transformLink } from '../../utils/transformLink'
+import { transformLink } from '../../utils/link'
 import TeachersCarusel from '../../components/teachers/TeachersCarusel'
 import { useApp } from '../../components/context/AppContext'
 import { useEffect } from 'react'

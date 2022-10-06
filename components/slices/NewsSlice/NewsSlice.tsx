@@ -1,6 +1,6 @@
 import styles from './NewsSlice.module.scss'
 
-import { transformLink } from '../../../utils/transformLink'
+import { transformLink } from '../../../utils/link'
 import NewsType from '../../news/types/NewsType'
 import NewsList from '../../news/NewsList'
 import { getString, Strings } from '../../../locales'

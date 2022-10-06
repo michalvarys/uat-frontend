@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 import styles from './FestivalGridItem.module.scss'
 
-import { transformLink } from '../../../../../utils/transformLink'
+import { transformLink } from '../../../../../utils/link'
 import FestivalType from '../../../../festivals/types/FestivalType'
 
 import ArrowIcon from '../../../../../public/icons/common/arrow_right.svg'

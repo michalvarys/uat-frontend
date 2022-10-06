@@ -4,7 +4,7 @@ import styles from './FestivalWinners.module.scss'
 
 import ArrowIcon from '../../../public/icons/common/arrow_right.svg'
 import FestivalWinnerType from '../types/FestivalWinner'
-import { transformLink } from '../../../utils/transformLink'
+import { transformLink } from '../../../utils/link'
 import { useState } from 'react'
 import { getString, Strings } from '../../../locales'
 import { useRouter } from 'next/router'

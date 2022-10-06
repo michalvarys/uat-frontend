@@ -4,7 +4,7 @@ import styles from './TeacherDetailsModal.module.scss'
 
 import Modal from '../../../../common/Modal'
 import TeacherType from '../../../types/TeacherType'
-import { transformLink } from '../../../../../utils/transformLink'
+import { transformLink } from '../../../../../utils/link'
 
 type Props = {
   data: TeacherType

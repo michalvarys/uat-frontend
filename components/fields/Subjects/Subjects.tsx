@@ -3,7 +3,7 @@ import parse from 'html-react-parser'
 
 import styles from './Subjects.module.scss'
 
-import { transformLink } from '../../../utils/transformLink'
+import { transformLink } from '../../../utils/link'
 import SubjectsType, {
   ShortTextType,
   SubjectsSectionType,

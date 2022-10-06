@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { GalleryItemType, GalleryType } from '../types/GalleryType'
 import styles from './GallerySlice.module.scss'
 
-import { transformLink } from '../../../utils/transformLink'
+import { transformLink } from '../../../utils/link'
 import Modal from '../../common/Modal'
 
 import ArrowRightIcon from '../../../public/icons/common/arrow_right.svg'
