@@ -1,1 +1,1 @@
-export { default } from './EventsSlice';
+export { default } from './EventsSlice'

@@ -1,19 +1,19 @@
-import Image from 'next/image';
-import { useRouter } from 'next/router';
+import Image from 'next/image'
+import { useRouter } from 'next/router'
 
-import FieldOfStudyType from '../../../../fields/types/FieldOfStudyType';
-import { transformLink } from '../../../../../utils/transformLink';
+import FieldOfStudyType from '../../../../fields/types/FieldOfStudyType'
+import { transformLink } from '../../../../../utils/transformLink'
 
-import styles from './FieldOfStudyButton.module.scss';
+import styles from './FieldOfStudyButton.module.scss'
 
 type Props = {
-  study: FieldOfStudyType,
-};
+  study: FieldOfStudyType
+}
 
 const FieldOfStudyButton = ({ study }: Props) => {
-  const router = useRouter();
+  const router = useRouter()
   const onSelect = () => {
-    router.push(`/studies/${study.id}`);
+    router.push(`/studies/${study.id}`)
   }
 
   return (
@@ -28,7 +28,7 @@ const FieldOfStudyButton = ({ study }: Props) => {
       />
       <span className={styles.title}>{study.name}</span>
     </div>
-  );
-};
+  )
+}
 
-export default FieldOfStudyButton;
+export default FieldOfStudyButton

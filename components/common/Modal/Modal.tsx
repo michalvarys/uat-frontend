@@ -1,21 +1,21 @@
-import Image from 'next/image';
-import ReactModal from 'react-modal';
-import { MouseEvent, KeyboardEvent } from 'react';
-import styles from './Modal.module.scss';
+import Image from 'next/image'
+import ReactModal from 'react-modal'
+import { MouseEvent, KeyboardEvent } from 'react'
+import styles from './Modal.module.scss'
 
-import CloseIcon from '../../../public/icons/common/close.svg';
+import CloseIcon from '../../../public/icons/common/close.svg'
 
 if (ReactModal.defaultStyles && ReactModal.defaultStyles.overlay) {
-  ReactModal.defaultStyles.overlay.backgroundColor = '#00000020';
-  ReactModal.defaultStyles.overlay.zIndex = 10002;
-  ReactModal.setAppElement('#modal-root');
+  ReactModal.defaultStyles.overlay.backgroundColor = '#00000020'
+  ReactModal.defaultStyles.overlay.zIndex = 10002
+  ReactModal.setAppElement('#modal-root')
 }
 
 type Props = {
-  children: JSX.Element | JSX.Element[],
-  isImageStyle?: boolean,
-  isOpen: boolean,
-  onClose: (event: MouseEvent | KeyboardEvent) => void,
+  children: JSX.Element | JSX.Element[]
+  isImageStyle?: boolean
+  isOpen: boolean
+  onClose: (event: MouseEvent | KeyboardEvent) => void
 }
 
 const customStyles = {
@@ -30,9 +30,9 @@ const customStyles = {
     transform: 'translate(-50%, -50%)',
   },
   overlay: {
-    backgroundColor: 'rgba(0,0,0,0.75)'
-  }
-};
+    backgroundColor: 'rgba(0,0,0,0.75)',
+  },
+}
 
 const imageTypeStyles = {
   maxWidth: '90%',
@@ -46,8 +46,9 @@ const Modal = ({ children, isImageStyle = false, isOpen, onClose }: Props) => {
         ...customStyles,
         content: {
           ...customStyles.content,
-          ...(isImageStyle && imageTypeStyles)
-      }}}
+          ...(isImageStyle && imageTypeStyles),
+        },
+      }}
       isOpen={isOpen}
       onRequestClose={onClose}
     >
@@ -55,10 +56,10 @@ const Modal = ({ children, isImageStyle = false, isOpen, onClose }: Props) => {
         {children}
       </div>
       <div className={styles.close_button} onClick={onClose}>
-        <Image alt="close" src={CloseIcon} height={18} width={18}/>
+        <Image alt="close" src={CloseIcon} height={18} width={18} />
       </div>
     </ReactModal>
-  );
-};
+  )
+}
 
-export default Modal;
+export default Modal

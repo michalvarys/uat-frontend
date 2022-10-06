@@ -1,56 +1,58 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import Head from 'next/head';
-import styles from './news.module.scss';
+import Head from 'next/head'
+import styles from './news.module.scss'
 
-import Container, { ContainerVariant } from '../../components/common/Container';
-import { getString, Strings } from '../../locales';
-import NewsType from '../../components/news/types/NewsType';
-import NewsList from '../../components/news/NewsList';
-import YearSwitcher from '../../components/common/YearSwitcher';
-import axios from 'axios';
-import { YearSwitcherVariant } from '../../components/common/YearSwitcher/YearSwitcher';
-import SegmentedControl from '../../components/common/buttons/SegmentedControl';
-import { useApp } from '../../components/context/AppContext';
-import { setLocalizationData } from '../../utils/localizationsUtils';
-import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
+import Container, { ContainerVariant } from '../../components/common/Container'
+import { getString, Strings } from '../../locales'
+import NewsType from '../../components/news/types/NewsType'
+import NewsList from '../../components/news/NewsList'
+import YearSwitcher from '../../components/common/YearSwitcher'
+import axios from 'axios'
+import { YearSwitcherVariant } from '../../components/common/YearSwitcher/YearSwitcher'
+import SegmentedControl from '../../components/common/buttons/SegmentedControl'
+import { useApp } from '../../components/context/AppContext'
+import { setLocalizationData } from '../../utils/localizationsUtils'
+import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next'
 
 type NewsPageProps = {
-  news: Array<NewsType>,
-  years: Array<string>,
-};
+  news: NewsType[]
+  years: string[]
+}
 
 export default function News({ news, years }: NewsPageProps) {
-  const router = useRouter();
-  const { setLocalePaths } = useApp();
-  const year = (router.query.year || years[0]).toString();
-  const [currentFilter, setCurrentFilter] = useState(0);
-  const [currentYearIndex, setCurrentYearIndex] = useState(years.findIndex((item: string) => item === year));
+  const router = useRouter()
+  const { setLocalePaths } = useApp()
+  const year = (router.query.year || years[0]).toString()
+  const [currentFilter, setCurrentFilter] = useState(0)
+  const [currentYearIndex, setCurrentYearIndex] = useState(
+    years.findIndex((item: string) => item === year)
+  )
 
   useEffect(() => {
-    setLocalizationData(setLocalePaths, null);
+    setLocalizationData(setLocalePaths, null)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [])
 
   const filteringMethod = (item: NewsType) => {
     if (currentFilter === 0) {
-      return true;
+      return true
     }
     if (currentFilter === 1) {
-      return item.important_news;
+      return item.important_news
     }
     if (currentFilter === 2) {
-      return !item.important_news;
+      return !item.important_news
     }
-  };
+  }
 
   const onSelectNews = (news: NewsType) => {
-    router.push(`/news/${news.slug}`);
-  };
+    router.push(`/news/${news.slug}`)
+  }
 
   const onSelectYear = (index: number) => {
-    setCurrentYearIndex(index);
-    router.push(`/news?year=${years[index]}`);
+    setCurrentYearIndex(index)
+    router.push(`/news?year=${years[index]}`)
   }
   return (
     <Container variant={ContainerVariant.Orange}>
@@ -79,20 +81,28 @@ export default function News({ news, years }: NewsPageProps) {
           />
         </div>
         <div>
-          <NewsList news={news.filter(filteringMethod)} onSelect={onSelectNews} />
+          <NewsList
+            news={news.filter(filteringMethod)}
+            onSelect={onSelectNews}
+          />
         </div>
       </div>
     </Container>
   )
-};
+}
 
-export async function getServerSideProps({ locale, query }: GetServerSidePropsContext): Promise<GetServerSidePropsResult<NewsPageProps>> {
-  const { year } = query;
+export async function getServerSideProps({
+  locale,
+  query,
+}: GetServerSidePropsContext): Promise<
+  GetServerSidePropsResult<NewsPageProps>
+> {
+  const { year } = query
   const url = `/news?_locale=${locale}&year=${year}`
 
   try {
-    const { data } = await axios(url);
-    const { news, years } = data;
+    const { data } = await axios(url)
+    const { news, years } = data
 
     return {
       props: {
@@ -106,6 +116,6 @@ export async function getServerSideProps({ locale, query }: GetServerSidePropsCo
         destination: '/500',
         permanent: false,
       },
-    };
+    }
   }
 }

@@ -1,21 +1,21 @@
-import { getString, Strings } from '../../../locales';
-import TeacherItem from '../TeachersList/components/TeacherItem';
-import TeacherType from '../types/TeacherType';
-import { Scrollbars } from 'react-custom-scrollbars';
+import { getString, Strings } from '../../../locales'
+import TeacherItem from '../TeachersList/components/TeacherItem'
+import TeacherType from '../types/TeacherType'
+import { Scrollbars } from 'react-custom-scrollbars'
 
-import styles from './TeachersCarusel.module.scss';
-import { useRouter } from 'next/router';
+import styles from './TeachersCarusel.module.scss'
+import { useRouter } from 'next/router'
 
 type Props = {
-  isTitle: boolean,
-  teachers: Array<TeacherType>,
+  isTitle: boolean
+  teachers: TeacherType[]
 }
 
 const TeachersCarusel = ({ isTitle = false, teachers }: Props) => {
-  const router = useRouter();
+  const router = useRouter()
 
   if (!teachers || teachers.length === 0) {
-    return null;
+    return null
   }
 
   const onSelectTeacher = (id: number) => {
@@ -30,19 +30,19 @@ const TeachersCarusel = ({ isTitle = false, teachers }: Props) => {
         </div>
       ) : null}
       <div className={styles.container}>
-        <Scrollbars
-          autoHide
-          style={{ height: 612 }}
-        >
+        <Scrollbars autoHide style={{ height: 612 }}>
           <div className={styles.inner_container}>
-            {teachers.map((item: TeacherType) => item && (
-              <TeacherItem
-                // isFixed
-                key={item.id}
-                item={item}
-                onSelect={() => onSelectTeacher(item.id)}
-              />
-            ))}
+            {teachers.map(
+              (item: TeacherType) =>
+                item && (
+                  <TeacherItem
+                    // isFixed
+                    key={item.id}
+                    item={item}
+                    onSelect={() => onSelectTeacher(item.id)}
+                  />
+                )
+            )}
           </div>
         </Scrollbars>
       </div>
@@ -50,4 +50,4 @@ const TeachersCarusel = ({ isTitle = false, teachers }: Props) => {
   )
 }
 
-export default TeachersCarusel;
+export default TeachersCarusel

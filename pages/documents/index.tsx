@@ -1,62 +1,61 @@
-import Head from 'next/head';
-import { useEffect, useState } from 'react';
+import Head from 'next/head'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import styles from './documents.module.scss';
-import axios from 'axios';
+import styles from './documents.module.scss'
+import axios from 'axios'
 
-import Container, { ContainerVariant } from '../../components/common/Container';
-import { getString, Strings } from '../../locales';
-import PaginationSwitcher from '../../components/common/PaginationSwitcher';
-import { PaginationSwitcherVariant } from '../../components/common/PaginationSwitcher/PaginationSwitcher';
-import DocumentType from '../../components/documents/types/DocumentType';
-import DocumentsList from '../../components/documents/DocumentsList';
-import SegmentedControl from '../../components/common/buttons/SegmentedControl';
-import SearchBox from '../../components/common/SearchBox';
-import { useApp } from '../../components/context/AppContext';
-import { setLocalizationData } from '../../utils/localizationsUtils';
-import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
-import { valuesToParams } from '../../utils/params';
+import Container, { ContainerVariant } from '../../components/common/Container'
+import { getString, Strings } from '../../locales'
+import PaginationSwitcher from '../../components/common/PaginationSwitcher'
+import { PaginationSwitcherVariant } from '../../components/common/PaginationSwitcher/PaginationSwitcher'
+import DocumentType from '../../components/documents/types/DocumentType'
+import DocumentsList from '../../components/documents/DocumentsList'
+import SegmentedControl from '../../components/common/buttons/SegmentedControl'
+import SearchBox from '../../components/common/SearchBox'
+import { useApp } from '../../components/context/AppContext'
+import { setLocalizationData } from '../../utils/localizationsUtils'
+import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next'
+import { valuesToParams } from '../../utils/params'
 
 const sortByName = (a: DocumentType, b: DocumentType) => {
-  return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+  return a.name.toLowerCase().localeCompare(b.name.toLowerCase())
 }
 
 const sortByDate = (a: DocumentType, b: DocumentType) => {
-  const dateA = (new Date(a.updated_at)).getTime();
-  const dateB = (new Date(b.updated_at)).getTime();
+  const dateA = new Date(a.updated_at).getTime()
+  const dateB = new Date(b.updated_at).getTime()
   if (dateA === dateB) {
-    return 0;
+    return 0
   }
-  return dateA > dateB ? -1 : 1;
+  return dateA > dateB ? -1 : 1
 }
 
 type DocumentsProps = {
-  documents: Array<DocumentType>,
-};
+  documents: DocumentType[]
+}
 
 export default function Documents({ documents }: DocumentsProps) {
-  const router = useRouter();
-  const { setLocalePaths } = useApp();
-  const [currentPage, setCurrentPage] = useState(0);
-  const [currentSort, setCurrentSort] = useState(0);
-  const [currentSearch, setCurrentSearch] = useState('');
-  const pagesCount = Math.ceil(documents.length / 15);
+  const router = useRouter()
+  const { setLocalePaths } = useApp()
+  const [currentPage, setCurrentPage] = useState(0)
+  const [currentSort, setCurrentSort] = useState(0)
+  const [currentSearch, setCurrentSearch] = useState('')
+  const pagesCount = Math.ceil(documents.length / 15)
 
   useEffect(() => {
-    setLocalizationData(setLocalePaths, null);
+    setLocalizationData(setLocalePaths, null)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
+  }, [])
 
   const onSelect = (document: DocumentType) => {
     console.log('get doc: ' + document.name)
     // router.push(`/news/${news.slug}`);
-  };
+  }
 
   const onSearchChange = (value: string) => {
-    setCurrentPage(0);
-    setCurrentSearch(value);
-  };
+    setCurrentPage(0)
+    setCurrentSearch(value)
+  }
 
   return (
     <Container variant={ContainerVariant.Orange}>
@@ -85,18 +84,20 @@ export default function Documents({ documents }: DocumentsProps) {
           </div>
           <PaginationSwitcher
             onSelect={setCurrentPage}
-            pages={Array.from(Array(pagesCount).keys()).map((item) => (item + 1).toString())}
+            pages={Array.from(Array(pagesCount).keys()).map((item) =>
+              (item + 1).toString()
+            )}
             current={currentPage}
             variant={PaginationSwitcherVariant.OrangeBackground}
           />
           <div>
             <DocumentsList
-              documents={
-                documents
-                  .filter((item: DocumentType) => item.name.includes(currentSearch))
-                  .sort(currentSort === 0 ? sortByName : sortByDate)
-                  .slice(currentPage * 15, (currentPage + 1) * 15)
-              }
+              documents={documents
+                .filter((item: DocumentType) =>
+                  item.name.includes(currentSearch)
+                )
+                .sort(currentSort === 0 ? sortByName : sortByDate)
+                .slice(currentPage * 15, (currentPage + 1) * 15)}
               onSelect={onSelect}
             />
           </div>
@@ -104,9 +105,11 @@ export default function Documents({ documents }: DocumentsProps) {
       </div>
     </Container>
   )
-};
+}
 
-export async function getServerSideProps(_ctx: GetServerSidePropsContext): Promise<GetServerSidePropsResult<DocumentsProps>> {
+export async function getServerSideProps(
+  _ctx: GetServerSidePropsContext
+): Promise<GetServerSidePropsResult<DocumentsProps>> {
   const extensions = [
     '.doc',
     '.docx',
@@ -124,11 +127,11 @@ export async function getServerSideProps(_ctx: GetServerSidePropsContext): Promi
   const url = `/upload/files?${params}`
 
   try {
-    const { data: documents } = await axios(url);
+    const { data: documents } = await axios(url)
 
     return {
       props: {
-        documents
+        documents,
       },
     }
   } catch (e) {
@@ -137,6 +140,6 @@ export async function getServerSideProps(_ctx: GetServerSidePropsContext): Promi
         destination: '/500',
         permanent: false,
       },
-    };
+    }
   }
 }

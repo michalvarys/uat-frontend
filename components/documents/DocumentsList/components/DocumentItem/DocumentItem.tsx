@@ -1,19 +1,17 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import moment from 'moment';
+import Image from 'next/image'
+import Link from 'next/link'
+import moment from 'moment'
 
-import styles from './DocumentItem.module.scss';
+import styles from './DocumentItem.module.scss'
 
-import ArrowRightIcon from '../../../../../public/icons/common/arrow_right.svg';
-import DocumentType from '../../../types/DocumentType';
-import { transformLink } from '../../../../../utils/transformLink';
-
-
+import ArrowRightIcon from '../../../../../public/icons/common/arrow_right.svg'
+import DocumentType from '../../../types/DocumentType'
+import { transformLink } from '../../../../../utils/transformLink'
 
 type Props = {
-  document: DocumentType;
-  onSelect: (item: DocumentType) => void;
-};
+  document: DocumentType
+  onSelect: (item: DocumentType) => void
+}
 
 const DocumentItem = ({ document, onSelect }: Props) => {
   return (
@@ -22,20 +20,19 @@ const DocumentItem = ({ document, onSelect }: Props) => {
       as={transformLink(document.url)}
       passHref
     >
-      <a
-        className={styles.container}
-        target={'_blank'}
-      >
+      <a className={styles.container} target={'_blank'}>
         <div className={styles.content}>
           <span className={styles.title}>{`${document.name}`}</span>
-          <span className={styles.date}>{moment(document.updated_at).format('YYYY-MM-DD hh:mm')}</span>
+          <span className={styles.date}>
+            {moment(document.updated_at).format('YYYY-MM-DD hh:mm')}
+          </span>
           <div className={styles.arrow}>
-            <Image src={ArrowRightIcon} alt={'arrow'}/>
+            <Image src={ArrowRightIcon} alt={'arrow'} />
           </div>
         </div>
       </a>
     </Link>
-  );
-};
+  )
+}
 
-export default DocumentItem;
+export default DocumentItem

@@ -1,31 +1,35 @@
-import Image from 'next/image';
-import parse from 'html-react-parser';
+import Image from 'next/image'
+import parse from 'html-react-parser'
 
-import styles from './FieldOfStudyHeader.module.scss';
+import styles from './FieldOfStudyHeader.module.scss'
 
-import { transformLink } from '../../../utils/transformLink';
-import { useRouter } from 'next/router';
-import ButtonLink, { ButtonLinkVariant, ButtonLinkImageType } from '../../navigation/ButtonLink';
-import { ContainerVariant } from '../../common/Container';
-import FieldOfStudyType from '../types/FieldOfStudyType';
-
+import { transformLink } from '../../../utils/transformLink'
+import { useRouter } from 'next/router'
+import ButtonLink, {
+  ButtonLinkVariant,
+  ButtonLinkImageType,
+} from '../../navigation/ButtonLink'
+import { ContainerVariant } from '../../common/Container'
+import FieldOfStudyType from '../types/FieldOfStudyType'
 
 type Props = {
-  data: FieldOfStudyType,
+  data: FieldOfStudyType
 }
 
-const FieldOfStudyHeader = ({
-  data,
-}: Props) => {
-  const router = useRouter();
+const FieldOfStudyHeader = ({ data }: Props) => {
+  const router = useRouter()
 
-  const renderButtons = (buttons: Array<any>) => {
+  const renderButtons = (buttons: any[]) => {
     return (
       <div className={styles.buttons}>
         {buttons.map((item: any) => (
           <div key={`link-=${item.id}`}>
             <ButtonLink
-              imageType={item.__component.includes('download') ? ButtonLinkImageType.Download : ButtonLinkImageType.Arrow}
+              imageType={
+                item.__component.includes('download')
+                  ? ButtonLinkImageType.Download
+                  : ButtonLinkImageType.Arrow
+              }
               title={item.title}
               path={item.url || item.path}
               variant={ButtonLinkVariant.Black}
@@ -60,41 +64,40 @@ const FieldOfStudyHeader = ({
   const renderTextSection = () => (
     <div className={styles.text_section}>
       <h1 className={styles.header}>{data.name}</h1>
-      
+
       <div className={styles.code_section}>
         {renderStudyBadge()}
-        <span className={styles.short_description}>{`${data.short_description}`}</span>
+        <span
+          className={styles.short_description}
+        >{`${data.short_description}`}</span>
       </div>
       <span className={styles.description}>{data.description}</span>
       <div className={styles.buttons}>
         {data.buttons && data.buttons.length > 0 && renderButtons(data.buttons)}
       </div>
     </div>
-  );
+  )
 
-  const renderImage = () => data.image && (
-    <Image
-      alt={data.image.alternativeText}
-      src={transformLink(data.image.url)}
-      width={data.image.width}
-      height={data.image.height}
-      layout={'responsive'}
-      objectFit={'cover'}
-      objectPosition={'left top'}
-    />
-  );
+  const renderImage = () =>
+    data.image && (
+      <Image
+        alt={data.image.alternativeText}
+        src={transformLink(data.image.url)}
+        width={data.image.width}
+        height={data.image.height}
+        layout={'responsive'}
+        objectFit={'cover'}
+        objectPosition={'left top'}
+      />
+    )
 
   return (
     <div className={styles.container}>
-      <div className={styles.left}>
-        {renderTextSection()}
-      </div>
-      <div className={styles.right}>
-      {renderImage()}
-      </div>
+      <div className={styles.left}>{renderTextSection()}</div>
+      <div className={styles.right}>{renderImage()}</div>
     </div>
-  );
-};
+  )
+}
 
 FieldOfStudyHeader.defaultProps = {
   extraBottomSpace: 0,
@@ -103,4 +106,4 @@ FieldOfStudyHeader.defaultProps = {
   variant: ContainerVariant.White,
 }
 
-export default FieldOfStudyHeader;
+export default FieldOfStudyHeader

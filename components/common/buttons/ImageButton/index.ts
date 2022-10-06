@@ -1,2 +1,2 @@
-export { default } from './ImageButton';
-export { ImageButtonVariant } from './ImageButtonVariant';
+export { default } from './ImageButton'
+export { ImageButtonVariant } from './ImageButtonVariant'

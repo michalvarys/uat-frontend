@@ -1,11 +1,11 @@
-import classNames from 'classnames';
-import styles from './SearchBox.module.scss';
+import classNames from 'classnames'
+import styles from './SearchBox.module.scss'
 
 type Props = {
-  currentValue: string,
-  onChange: Function,
-  placeholder?: string,
-};
+  currentValue: string
+  onChange: Function
+  placeholder?: string
+}
 
 const SearchBox = ({ currentValue, onChange, placeholder }: Props) => (
   <div className={styles.container}>
@@ -17,6 +17,6 @@ const SearchBox = ({ currentValue, onChange, placeholder }: Props) => (
       onChange={(e) => onChange(e.currentTarget.value)}
     />
   </div>
-);
+)
 
-export default SearchBox;
+export default SearchBox

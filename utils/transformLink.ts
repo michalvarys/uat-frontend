@@ -3,8 +3,8 @@ const { publicRuntimeConfig } = getConfig()
 
 export const transformLink = (url: string): string => {
   if (url.search('://') >= 0) {
-    return url;
+    return url
   }
 
-  return `${publicRuntimeConfig.baseURL}${url}`;
+  return `${publicRuntimeConfig.baseURL}${url}`
 }

@@ -1,13 +1,13 @@
 type ImageType = {
-  height: number,
-  width: number,
-  name: string,
-  size: number,
-  url: string,
-  id: number,
-  ext: string,
-  alternativeText: string,
-  formats: any,
+  height: number
+  width: number
+  name: string
+  size: number
+  url: string
+  id: number
+  ext: string
+  alternativeText: string
+  formats: any
 }
 
-export default ImageType;
+export default ImageType

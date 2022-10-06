@@ -1,1 +1,1 @@
-export { default } from './FullscreenMenu';
+export { default } from './FullscreenMenu'

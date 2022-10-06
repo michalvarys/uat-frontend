@@ -1,1 +1,1 @@
-export { default } from './YoutubePlayerWithTextSlice';
+export { default } from './YoutubePlayerWithTextSlice'

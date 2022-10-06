@@ -1,34 +1,29 @@
-import ImageType from '../../common/types/ImageType';
+import ImageType from '../../common/types/ImageType'
 
 type SponsorType = {
-  id: number,
-  image: ImageType,
-  text: string,
+  id: number
+  image: ImageType
+  text: string
 }
 
 type ShortTextType = {
-  id: number,
-  text: string,
+  id: number
+  text: string
 }
 
 type SubjectsSectionType = {
-  id: number,
-  list: Array<ShortTextType>,
-  title: string,
+  id: number
+  list: ShortTextType[]
+  title: string
 }
 
 type SubjectsType = {
-  header: string,
-  id: number,
-  sections: Array<SubjectsSectionType>,
-  sponsor: SponsorType;
+  header: string
+  id: number
+  sections: SubjectsSectionType[]
+  sponsor: SponsorType
 }
 
-export default SubjectsType;
+export default SubjectsType
 
-export type {
-  SponsorType,
-  ShortTextType,
-  SubjectsSectionType,
-};
-
+export type { SponsorType, ShortTextType, SubjectsSectionType }

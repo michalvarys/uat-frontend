@@ -1,1 +1,1 @@
-export { default } from './FieldOfStudyCarusel';
+export { default } from './FieldOfStudyCarusel'

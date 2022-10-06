@@ -1,17 +1,19 @@
-import Image from 'next/image';
-import parse from 'html-react-parser';
+import Image from 'next/image'
+import parse from 'html-react-parser'
 
-import styles from './Subjects.module.scss';
+import styles from './Subjects.module.scss'
 
-import { transformLink } from '../../../utils/transformLink';
-import SubjectsType, { ShortTextType, SubjectsSectionType } from '../types/SubjectsType';
+import { transformLink } from '../../../utils/transformLink'
+import SubjectsType, {
+  ShortTextType,
+  SubjectsSectionType,
+} from '../types/SubjectsType'
 
 type Props = {
-  subjects: SubjectsType,
+  subjects: SubjectsType
 }
 
 const Subjects = ({ subjects }: Props) => {
-
   const renderSponsor = () => (
     <div className={styles.sponsor_container}>
       {subjects.sponsor && subjects.sponsor.image && (
@@ -22,9 +24,7 @@ const Subjects = ({ subjects }: Props) => {
           height={subjects.sponsor.image.height}
         />
       )}
-      <div className={styles.sponsor_text}>
-        {parse(subjects.sponsor.text)}
-      </div>
+      <div className={styles.sponsor_text}>{parse(subjects.sponsor.text)}</div>
     </div>
   )
 
@@ -34,14 +34,9 @@ const Subjects = ({ subjects }: Props) => {
         className={styles.subjects_section_contianer}
         key={`subject-section-${item.id}`}
       >
-        <div className={styles.subjects_header}>
-          {item.title}
-        </div>
+        <div className={styles.subjects_header}>{item.title}</div>
         {item.list.map((subject: ShortTextType) => (
-          <div
-            className={styles.subject}
-            key={`subject-text-${subject.id}`}
-          >
+          <div className={styles.subject} key={`subject-text-${subject.id}`}>
             {subject.text}
           </div>
         ))}
@@ -52,12 +47,10 @@ const Subjects = ({ subjects }: Props) => {
   return (
     <div className={styles.container}>
       <h2>{subjects.header}</h2>
-      <div className={styles.subjects_container}>
-        {renderSections()}
-      </div>
+      <div className={styles.subjects_container}>{renderSections()}</div>
       {renderSponsor()}
     </div>
   )
-};
+}
 
-export default Subjects;
+export default Subjects

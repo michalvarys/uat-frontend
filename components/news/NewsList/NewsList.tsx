@@ -1,13 +1,13 @@
-import { useState } from 'react';
+import { useState } from 'react'
 
-import styles from './NewsList.module.scss';
+import styles from './NewsList.module.scss'
 
-import NewsType from '../types/NewsType';
-import NewsItem from './components/NewsItem';
+import NewsType from '../types/NewsType'
+import NewsItem from './components/NewsItem'
 
 type Props = {
-  news: Array<NewsType>,
-  onSelect: (item: NewsType) => void,
+  news: NewsType[]
+  onSelect: (item: NewsType) => void
 }
 
 const NewsList = ({ news = [], onSelect }: Props) => {
@@ -17,7 +17,7 @@ const NewsList = ({ news = [], onSelect }: Props) => {
         <NewsItem news={item} key={item.id} onSelect={onSelect} />
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default NewsList;
+export default NewsList

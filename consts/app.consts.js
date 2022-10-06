@@ -1,1 +1,1 @@
-export const REVALIDATE_TIME = 10;
+export const REVALIDATE_TIME = 10

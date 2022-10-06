@@ -1,31 +1,31 @@
-import Image from 'next/image';
-import React, { useState } from 'react';
-import ReactResizeDetector from 'react-resize-detector';
+import Image from 'next/image'
+import React, { useState } from 'react'
+import ReactResizeDetector from 'react-resize-detector'
 
-import HeaderItem from './components/HeaderItem';
-import LanguageSelector from './components/LanguageSelector';
-import BorderedButton from '../buttons/BorderedButton';
+import HeaderItem from './components/HeaderItem'
+import LanguageSelector from './components/LanguageSelector'
+import BorderedButton from '../buttons/BorderedButton'
 
-import styles from './Header.module.scss';
-import HeaderSection from './components/HeaderSection/HeaderSection';
-import LinkType from '../../navigation/types/LinkType';
-import Container, { ContainerVariant } from '../Container';
-import InternalLink from '../../navigation/InternalLink';
-import FullscreenMenu from './components/FullscreenMenu';
+import styles from './Header.module.scss'
+import HeaderSection from './components/HeaderSection/HeaderSection'
+import LinkType from '../../navigation/types/LinkType'
+import Container, { ContainerVariant } from '../Container'
+import InternalLink from '../../navigation/InternalLink'
+import FullscreenMenu from './components/FullscreenMenu'
 
-import HamburgerIcon from '../../../public/icons/common/hmaburger.svg';
+import HamburgerIcon from '../../../public/icons/common/hmaburger.svg'
 
 export type MenuSection = {
-  links: Array<LinkType>,
-  title: string,
-};
+  links: LinkType[]
+  title: string
+}
 
 type Props = {
-  data: Array<MenuSection>;
-};
+  data: MenuSection[]
+}
 
 const Header = ({ data }: Props) => {
-  const [openedSection, setOpenedSection] = useState<number>(-1);
+  const [openedSection, setOpenedSection] = useState<number>(-1)
 
   const renderFull = () => (
     <div className={styles.container}>
@@ -35,10 +35,7 @@ const Header = ({ data }: Props) => {
             <span>SŠUPAT</span>
           </InternalLink>
         </div>
-        <div
-          className={styles.items}
-          onMouseLeave={() => setOpenedSection(-1)}
-        >
+        <div className={styles.items} onMouseLeave={() => setOpenedSection(-1)}>
           {data &&
             data.map((item, idx) => (
               <HeaderItem
@@ -61,11 +58,14 @@ const Header = ({ data }: Props) => {
         <div className={styles.right_container}>
           <LanguageSelector />
           <div className={styles.divider} />
-          <BorderedButton title={'EDUPAGE'} url={'https://ssuat.edupage.org/login/'} />
+          <BorderedButton
+            title={'EDUPAGE'}
+            url={'https://ssuat.edupage.org/login/'}
+          />
         </div>
       </div>
     </div>
-  );
+  )
 
   const renderWithHamburger = () => (
     <div className={styles.container}>
@@ -81,19 +81,17 @@ const Header = ({ data }: Props) => {
             onClick={() => setOpenedSection(0)}
           >
             <span>MENU</span>
-            <Image
-              alt="close"
-              src={HamburgerIcon} height={17} width={20}/>
+            <Image alt="close" src={HamburgerIcon} height={17} width={20} />
           </div>
         </div>
         {openedSection > -1 && (
-            <FullscreenMenu
-              sectionData={data[openedSection]}
-              sections={data}
-              currentSection={openedSection}
-              onChangeSection={setOpenedSection}
-            />
-          )}
+          <FullscreenMenu
+            sectionData={data[openedSection]}
+            sections={data}
+            currentSection={openedSection}
+            onChangeSection={setOpenedSection}
+          />
+        )}
       </div>
     </div>
   )
@@ -103,15 +101,14 @@ const Header = ({ data }: Props) => {
       <ReactResizeDetector>
         {({ width }: { width: number }) => {
           if (width > 860) {
-            return renderFull();
+            return renderFull()
           } else {
-            return renderWithHamburger();
+            return renderWithHamburger()
           }
         }}
       </ReactResizeDetector>
-      
     </Container>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

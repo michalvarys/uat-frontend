@@ -1,33 +1,30 @@
-import Image from 'next/image';
-import { useRouter } from 'next/router';
+import Image from 'next/image'
+import { useRouter } from 'next/router'
 
-import styles from './FieldOfStudyCarusel.module.scss';
+import styles from './FieldOfStudyCarusel.module.scss'
 
-import FieldOfStudyType from '../types/FieldOfStudyType';
-import { transformLink } from '../../../utils/transformLink';
+import FieldOfStudyType from '../types/FieldOfStudyType'
+import { transformLink } from '../../../utils/transformLink'
 
-import ArrowIcon from '../../../public/icons/common/arrow_right.svg';
+import ArrowIcon from '../../../public/icons/common/arrow_right.svg'
 
 type Props = {
-  fields: Array<FieldOfStudyType>,
+  fields: FieldOfStudyType[]
 }
 
 type FieldItemPros = {
-  field: FieldOfStudyType,
-};
+  field: FieldOfStudyType
+}
 
 const FieldItem = ({ field }: FieldItemPros) => {
-  const router = useRouter();
+  const router = useRouter()
 
   const onSelect = () => {
-    router.push(`/studies/${field.id}`);
-  };
-  
+    router.push(`/studies/${field.id}`)
+  }
+
   return (
-    <div
-      onClick={onSelect}
-      className={styles.item}
-    >
+    <div onClick={onSelect} className={styles.item}>
       <div className={styles.content}>
         <div className={styles.image}>
           {field.icon_svg && (
@@ -42,21 +39,18 @@ const FieldItem = ({ field }: FieldItemPros) => {
         <div className={styles.title}>{field.name}</div>
       </div>
       <div className={styles.arrow}>
-        <Image
-          src={ArrowIcon}
-          alt="arrow"
-        />
+        <Image src={ArrowIcon} alt="arrow" />
       </div>
     </div>
   )
-};
+}
 
 const FieldOfStudyCarusel = ({ fields }: Props) => {
   return (
     <div className={styles.container}>
       {fields.map((item) => item && <FieldItem key={item.id} field={item} />)}
     </div>
-  );
-};
+  )
+}
 
-export default FieldOfStudyCarusel;
+export default FieldOfStudyCarusel

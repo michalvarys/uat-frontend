@@ -1,37 +1,37 @@
-import Image from 'next/image';
-import Head from 'next/head';
-import parse from 'html-react-parser';
-import axios from 'axios';
-import styles from './events.module.scss';
+import Image from 'next/image'
+import Head from 'next/head'
+import parse from 'html-react-parser'
+import axios from 'axios'
+import styles from './events.module.scss'
 
-import Container, { ContainerVariant } from '../../components/common/Container';
-import FestivalType from '../../components/festivals/types/FestivalType';
-import { GalleryEventType } from '../../components/galleries/types/GalleryEventType';
-import { REVALIDATE_TIME } from '../../consts/app.consts';
-import { transformLink } from '../../utils/transformLink';
-import GallerySlice from '../../components/slices/GallerySlice';
-import { useApp } from '../../components/context/AppContext';
-import { useEffect } from 'react';
-import { setLocalizationData } from '../../utils/localizationsUtils';
-import { GetStaticPropsContext, GetStaticPropsResult } from 'next';
-import { localesToParams } from '../../utils/params';
+import Container, { ContainerVariant } from '../../components/common/Container'
+import FestivalType from '../../components/festivals/types/FestivalType'
+import { GalleryEventType } from '../../components/galleries/types/GalleryEventType'
+import { REVALIDATE_TIME } from '../../consts/app.consts'
+import { transformLink } from '../../utils/transformLink'
+import GallerySlice from '../../components/slices/GallerySlice'
+import { useApp } from '../../components/context/AppContext'
+import { useEffect } from 'react'
+import { setLocalizationData } from '../../utils/localizationsUtils'
+import { GetStaticPropsContext, GetStaticPropsResult } from 'next'
+import { localesToParams } from '../../utils/params'
 
 type GalleryEventProps = {
-  galleryEvent: GalleryEventType,
-};
+  galleryEvent: GalleryEventType
+}
 
 export default function GalleryEvent({ galleryEvent }: GalleryEventProps) {
-  const { cover_image, description, gallery } = galleryEvent;
-  const { setLocalePaths } = useApp();
+  const { cover_image, description, gallery } = galleryEvent
+  const { setLocalePaths } = useApp()
 
   useEffect(() => {
     if (galleryEvent && galleryEvent.localizations.length > 0) {
-      setLocalizationData(setLocalePaths, galleryEvent.localizations, '/events');
+      setLocalizationData(setLocalePaths, galleryEvent.localizations, '/events')
     } else {
-      setLocalizationData(setLocalePaths, null);
+      setLocalizationData(setLocalePaths, null)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [galleryEvent]);
+  }, [galleryEvent])
 
   if (!galleryEvent) {
     return <></>
@@ -52,64 +52,68 @@ export default function GalleryEvent({ galleryEvent }: GalleryEventProps) {
               objectPosition={'50% 30%'}
             />
           </div>
-        ) : <></>}
+        ) : (
+          <></>
+        )}
         <div className={styles.container}>
           <div className={styles.title}>
             <h1 className={styles.header}>{galleryEvent.title}</h1>
           </div>
           {description && (
-            <div className={styles.description_content}>{parse(description)}</div>
+            <div className={styles.description_content}>
+              {parse(description)}
+            </div>
           )}
         </div>
         <div className={styles.bottom_container}>
-          {gallery && (
-            <GallerySlice data={gallery} isSmall />
-          )}
+          {gallery && <GallerySlice data={gallery} isSmall />}
         </div>
       </Container>
     </>
   )
-};
-
+}
 
 export async function getStaticPaths({ locales }: GetStaticPropsContext) {
-  const params = localesToParams(locales);
-  const url = `/cms/gallery-events?${params}`;
+  const params = localesToParams(locales)
+  const url = `/cms/gallery-events?${params}`
 
   try {
-    const { data: galleryEvents } = await axios.get<FestivalType[]>(url);
+    const { data: galleryEvents } = await axios.get<FestivalType[]>(url)
 
     return {
-      paths: galleryEvents.map((item) => (
-        {
-          params: {
-            id: item.id.toString()
-          }
-        }
-      )),
+      paths: galleryEvents.map((item) => ({
+        params: {
+          id: item.id.toString(),
+        },
+      })),
       fallback: 'blocking',
-    };
+    }
   } catch (e) {
     return {
       paths: [],
       fallback: 'blocking',
-    };
+    }
   }
-};
+}
 
 type Params = {
   id: string
-};
+}
 
-export async function getStaticProps({ locale, params }: GetStaticPropsContext<Params>): Promise<GetStaticPropsResult<GalleryEventProps>> {
-  const url = `/gallery-events/${params!.id}?_locale=${locale}`;
+export async function getStaticProps({
+  locale,
+  params,
+}: GetStaticPropsContext<Params>): Promise<
+  GetStaticPropsResult<GalleryEventProps>
+> {
+  const url = `/gallery-events/${params!.id}?_locale=${locale}`
 
   try {
-    const { data: galleryEvent } = await axios(url);
+    const { data: galleryEvent } = await axios(url)
 
     if (!galleryEvent) {
       return {
-        notFound: true
+        notFound: true,
       }
     }
 
@@ -127,6 +131,6 @@ export async function getStaticProps({ locale, params }: GetStaticPropsContext<P
         permanent: false,
       },
       revalidate: REVALIDATE_TIME,
-    };
+    }
   }
-};
+}

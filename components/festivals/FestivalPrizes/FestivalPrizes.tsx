@@ -1,12 +1,11 @@
-import { useRouter } from 'next/router';
-import styles from './FestivalPrizes.module.scss';
+import { useRouter } from 'next/router'
+import styles from './FestivalPrizes.module.scss'
 
-import FestivalPrizesType from '../types/FestivalPrizesType';
-import { getString, Strings } from '../../../locales';
-
+import FestivalPrizesType from '../types/FestivalPrizesType'
+import { getString, Strings } from '../../../locales'
 
 type Props = {
-  prizes: FestivalPrizesType,
+  prizes: FestivalPrizesType
 }
 
 const FestivalPrizes = ({ prizes }: Props) => {
@@ -16,9 +15,9 @@ const FestivalPrizes = ({ prizes }: Props) => {
     third_prize,
     special_prize,
     honorable_mentions,
-  } = prizes;
+  } = prizes
 
-  const router = useRouter();
+  const router = useRouter()
   return (
     <div className={styles.card_container}>
       {first_prize && (
@@ -48,19 +47,23 @@ const FestivalPrizes = ({ prizes }: Props) => {
       {(special_prize || honorable_mentions) && (
         <div className={styles.item}>
           {special_prize && (
-          <div className={styles.special_container}>
-            <div className={styles.special_value}>{getString(router.locale, Strings.SPECIAL_PRIZE)}</div>
-          </div>
+            <div className={styles.special_container}>
+              <div className={styles.special_value}>
+                {getString(router.locale, Strings.SPECIAL_PRIZE)}
+              </div>
+            </div>
           )}
           {honorable_mentions && (
             <div className={styles.special_container}>
-              <div className={styles.special_value}>{getString(router.locale, Strings.HONORABLE_MENTIONS)}</div>
+              <div className={styles.special_value}>
+                {getString(router.locale, Strings.HONORABLE_MENTIONS)}
+              </div>
             </div>
           )}
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default FestivalPrizes;
+export default FestivalPrizes

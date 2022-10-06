@@ -1,1 +1,1 @@
-export { default } from './DocumentsList';
+export { default } from './DocumentsList'

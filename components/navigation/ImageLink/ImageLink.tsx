@@ -1,19 +1,25 @@
-import Link from 'next/link';
+import Link from 'next/link'
 import Image from 'next/image'
 
-import styles from './ImageLink.module.scss';
+import styles from './ImageLink.module.scss'
 
 type Props = {
-  url: string,
-  image: string,
-  imageWidth: number,
-  imageHeight: number,
-  title: string,
-  subtitle: string,
-  
-};
+  url: string
+  image: string
+  imageWidth: number
+  imageHeight: number
+  title: string
+  subtitle: string
+}
 
-const ImageLink = ({ url, image, title, subtitle, imageWidth, imageHeight }: Props) => (
+const ImageLink = ({
+  url,
+  image,
+  title,
+  subtitle,
+  imageWidth,
+  imageHeight,
+}: Props) => (
   // eslint-disable-next-line @next/next/link-passhref
   <Link href={url}>
     <a className={styles.container}>
@@ -33,6 +39,6 @@ const ImageLink = ({ url, image, title, subtitle, imageWidth, imageHeight }: Pro
       </div>
     </a>
   </Link>
-);
+)
 
-export default ImageLink;
+export default ImageLink

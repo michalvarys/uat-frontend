@@ -1,1 +1,1 @@
-export { default } from './HeaderSlice';
+export { default } from './HeaderSlice'

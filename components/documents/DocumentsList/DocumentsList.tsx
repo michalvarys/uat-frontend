@@ -1,11 +1,10 @@
-import DocumentType from '../types/DocumentType';
-import DocumentItem from './components/DocumentItem';
-import styles from './DocumentsList.module.scss';
-
+import DocumentType from '../types/DocumentType'
+import DocumentItem from './components/DocumentItem'
+import styles from './DocumentsList.module.scss'
 
 type Props = {
-  documents: Array<DocumentType>,
-  onSelect: (item: DocumentType) => void,
+  documents: DocumentType[]
+  onSelect: (item: DocumentType) => void
 }
 
 const DocumentsList = ({ documents = [], onSelect }: Props) => {
@@ -15,7 +14,7 @@ const DocumentsList = ({ documents = [], onSelect }: Props) => {
         <DocumentItem document={item} key={item.id} onSelect={onSelect} />
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default DocumentsList;
+export default DocumentsList

@@ -1,1 +1,1 @@
-export { default } from './ApplicantsSection';
+export { default } from './ApplicantsSection'

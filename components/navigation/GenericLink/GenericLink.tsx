@@ -1,11 +1,11 @@
-import ExternalLink from '../ExternalLink';
-import InternalLink from '../InternalLink';
-import LinkType from '../types/LinkType';
+import ExternalLink from '../ExternalLink'
+import InternalLink from '../InternalLink'
+import LinkType from '../types/LinkType'
 
 type Props = {
-  children: JSX.Element,
-  data: LinkType,
-};
+  children: JSX.Element
+  data: LinkType
+}
 
 const GenericLink = ({ children, data }: Props) => {
   switch (data.__component) {
@@ -22,8 +22,8 @@ const GenericLink = ({ children, data }: Props) => {
         </ExternalLink>
       )
     default:
-      return <div>UNKNOWN_COMPONENT</div>;
+      return <div>UNKNOWN_COMPONENT</div>
   }
-};
+}
 
-export default GenericLink;
+export default GenericLink

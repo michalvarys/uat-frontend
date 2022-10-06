@@ -1,1 +1,1 @@
-export { default } from './ApplicationsAtUniversity';
+export { default } from './ApplicationsAtUniversity'

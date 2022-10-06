@@ -1,1 +1,1 @@
-export { default } from './FestivalSection';
+export { default } from './FestivalSection'

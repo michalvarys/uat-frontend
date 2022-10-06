@@ -1,25 +1,25 @@
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/router'
 
-import styles from './FestivalsSlice.module.scss';
+import styles from './FestivalsSlice.module.scss'
 
-import FestivalType from '../../festivals/types/FestivalType';
-import { ContainerVariant } from '../../common/Container';
-import DescriptionSection from '../../common/DescriptionSection';
-import FestivalsGrid from './components/FestivalsGrid';
+import FestivalType from '../../festivals/types/FestivalType'
+import { ContainerVariant } from '../../common/Container'
+import DescriptionSection from '../../common/DescriptionSection'
+import FestivalsGrid from './components/FestivalsGrid'
 
 type Props = {
-  festivals?: Array<FestivalType>,
-  variant: ContainerVariant,
+  festivals?: FestivalType[]
+  variant: ContainerVariant
 }
 
 const FestivalsSlice = ({ festivals, variant }: Props) => {
-  const router = useRouter();
+  const router = useRouter()
 
   if (!festivals || festivals.length === 0) {
-    return <></>;
+    return <></>
   }
 
-  const [promotedFestival] = festivals;
+  const [promotedFestival] = festivals
 
   const onSelectFestival = (item: FestivalType) => {
     router.push(`/festivals/${item.id}`)
@@ -37,17 +37,15 @@ const FestivalsSlice = ({ festivals, variant }: Props) => {
             }}
             isGreen
             variant={variant}
-          />)}
+          />
+        )}
       </div>
 
       <div className={styles.right}>
-        <FestivalsGrid
-          festivals={festivals}
-          onSelect={onSelectFestival}
-        />
+        <FestivalsGrid festivals={festivals} onSelect={onSelectFestival} />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default FestivalsSlice;
+export default FestivalsSlice

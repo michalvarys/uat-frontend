@@ -1,14 +1,14 @@
-import ImageType from '../../common/types/ImageType';
+import ImageType from '../../common/types/ImageType'
 
 type TeacherType = {
-  bio: string,
-  extra_role?: string,
-  firstname: string,
-  id: number,
-  photo: ImageType,
-  post: string,
-  surname: string,
-  title: string,
+  bio: string
+  extra_role?: string
+  firstname: string
+  id: number
+  photo: ImageType
+  post: string
+  surname: string
+  title: string
 }
 
-export default TeacherType;
+export default TeacherType

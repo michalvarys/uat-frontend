@@ -1,4 +1,4 @@
-export { default } from './Container';
+export { default } from './Container'
 
-import { ContainerVariant } from './ContainerVariant';
-export { ContainerVariant };
+import { ContainerVariant } from './ContainerVariant'
+export { ContainerVariant }
