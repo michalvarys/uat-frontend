@@ -1,1 +1,1 @@
-export { default } from './Subjects';
+export { default } from './Subjects'

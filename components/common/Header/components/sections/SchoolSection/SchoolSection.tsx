@@ -1,29 +1,26 @@
 import parse from 'html-react-parser'
-import styles from './SchoolSection.module.scss';
+import styles from './SchoolSection.module.scss'
 
-import LinksSection from '../LinksSection';
-import { MenuSection } from '../../../Header';
-import CommonBigButton from '../../CommonBigButtons';
-import ConditionalLinkType from '../../../../../navigation/types/ConditionalLinkType';
-import RichTextType from '../../../../../../types/data/RichTextType';
+import LinksSection from '../LinksSection'
+import { MenuSection } from '../../../Header'
+import CommonBigButton from '../../CommonBigButtons'
+import ConditionalLinkType from '../../../../../navigation/types/ConditionalLinkType'
+import RichTextType from '../../../../../../types/data/RichTextType'
 
 type Props = {
   data: MenuSection & {
-    news: ConditionalLinkType,
-    documents: ConditionalLinkType,
-    contactSections: Array<RichTextType>,
-  },  
-};
+    news: ConditionalLinkType
+    documents: ConditionalLinkType
+    contactSections: RichTextType[]
+  }
+}
 
 const SchoolSection = ({ data }: Props) => {
   return (
     <div className={styles.container}>
       <div className={styles.top_container}>
-        <LinksSection links={data.links}/>
-        <CommonBigButton
-          news={data.news}
-          documents={data.documents}
-        />
+        <LinksSection links={data.links} />
+        <CommonBigButton news={data.news} documents={data.documents} />
       </div>
       <div className={styles.bottom_container}>
         {data.contactSections.map((item: RichTextType) => (
@@ -34,7 +31,7 @@ const SchoolSection = ({ data }: Props) => {
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SchoolSection;
+export default SchoolSection

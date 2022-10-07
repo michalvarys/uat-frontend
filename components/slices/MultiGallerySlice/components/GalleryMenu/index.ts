@@ -1,1 +1,1 @@
-export { default } from './GalleryMenu';
+export { default } from './GalleryMenu'

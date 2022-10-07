@@ -1,10 +1,10 @@
-import ImageType from '../../common/types/ImageType';
+import ImageType from '../../common/types/ImageType'
 
 type UATGalleryType = {
-  id: number,
-  name: string,
-  address: string,
-  image: ImageType,
-};
+  id: number
+  name: string
+  address: string
+  image: ImageType
+}
 
-export default UATGalleryType;
+export default UATGalleryType

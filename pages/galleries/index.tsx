@@ -1,35 +1,35 @@
-import 'moment/locale/sk';
-import axios from 'axios';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
-import styles from './galleries.module.scss';
+import 'moment/locale/sk'
+import axios from 'axios'
+import Head from 'next/head'
+import { useRouter } from 'next/router'
+import styles from './galleries.module.scss'
 
-import { getString, Strings } from '../../locales';
-import Container, { ContainerVariant } from '../../components/common/Container';
-import GalleriesOverviewType from '../../components/galleries/types/GalleriesOverviewType';
-import UATGalleriesSlice from '../../components/slices/UATGalleriesSlice';
-import TextWithImageSlice from '../../components/slices/TextWithImageSlice';
-import EventsSlice from '../../components/slices/EventsSlice';
-import { useApp } from '../../components/context/AppContext';
-import { useEffect } from 'react';
-import { setLocalizationData } from '../../utils/localizationsUtils';
-import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
-
+import { getString, Strings } from '../../locales'
+import Container, { ContainerVariant } from '../../components/common/Container'
+import GalleriesOverviewType from '../../components/galleries/types/GalleriesOverviewType'
+import UATGalleriesSlice from '../../components/slices/UATGalleriesSlice'
+import TextWithImageSlice from '../../components/slices/TextWithImageSlice'
+import EventsSlice from '../../components/slices/EventsSlice'
+import { useApp } from '../../components/context/AppContext'
+import { useEffect } from 'react'
+import { setLocalizationData } from '../../utils/localizationsUtils'
+import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next'
 
 type PageProps = {
-  data: GalleriesOverviewType,
-};
+  data: GalleriesOverviewType
+}
 
 export default function GalleriesOverview({ data }: PageProps) {
-  const router = useRouter();
-  const { setLocalePaths } = useApp();
+  const router = useRouter()
+  const { setLocalePaths } = useApp()
 
   useEffect(() => {
-    setLocalizationData(setLocalePaths, null);
+    setLocalizationData(setLocalePaths, null)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [])
 
-  const firstEvent = data.events && data.events.length > 0 ? data.events[0] : null;
+  const firstEvent =
+    data.events && data.events.length > 0 ? data.events[0] : null
   return (
     <div className={styles.container}>
       <Head>
@@ -44,15 +44,17 @@ export default function GalleriesOverview({ data }: PageProps) {
       <Container variant={ContainerVariant.White} isHigh>
         <div className={styles.bottom_container}>
           {data.galleries_uats ? (
-            <UATGalleriesSlice
-              galleries={data.galleries_uats}
-            />
-          ) : <></>}
+            <UATGalleriesSlice galleries={data.galleries_uats} />
+          ) : (
+            <></>
+          )}
         </div>
       </Container>
       <Container variant={ContainerVariant.White}>
         {firstEvent ? (
-          <TextWithImageSlice extraTopSpace={-357} extraTextTopSpace={-300}
+          <TextWithImageSlice
+            extraTopSpace={-357}
+            extraTextTopSpace={-300}
             data={{
               title: firstEvent.title,
               subtitle: firstEvent.subtitle,
@@ -62,32 +64,37 @@ export default function GalleriesOverview({ data }: PageProps) {
               link: {
                 __component: '',
                 id: 0,
-                title: getString(router.locale, Strings.EXHIBITION_DETAIL) || '',
-                path: `/events/${firstEvent.id}`
-              }
+                title:
+                  getString(router.locale, Strings.EXHIBITION_DETAIL) || '',
+                path: `/events/${firstEvent.id}`,
+              },
             }}
           />
-        ) : <></>}
+        ) : (
+          <></>
+        )}
         <EventsSlice events={data.events} />
       </Container>
     </div>
   )
-};
+}
 
-export async function getServerSideProps({ locale }: GetServerSidePropsContext): Promise<GetServerSidePropsResult<unknown>> {
-  const url = `/galleries?_locale=${locale}`;
+export async function getServerSideProps({
+  locale,
+}: GetServerSidePropsContext): Promise<GetServerSidePropsResult<unknown>> {
+  const url = `/galleries?_locale=${locale}`
 
   try {
-    const { data } = await axios(url);
+    const { data } = await axios(url)
 
     return {
       props: {
-        data
+        data,
       },
     }
   } catch (e) {
     return {
       props: {},
-    };
+    }
   }
 }

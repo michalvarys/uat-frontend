@@ -1,7 +1,7 @@
 type EUProjectType = {
-  title: string,
-  link: string,
-  description: string,
-};
+  title: string
+  link: string
+  description: string
+}
 
-export default EUProjectType;
+export default EUProjectType

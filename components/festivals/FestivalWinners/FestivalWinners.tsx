@@ -1,35 +1,31 @@
-import Image from 'next/image';
+import Image from 'next/image'
 
-import styles from './FestivalWinners.module.scss';
+import styles from './FestivalWinners.module.scss'
 
-import ArrowIcon from '../../../public/icons/common/arrow_right.svg';
-import FestivalWinnerType from '../types/FestivalWinner';
-import { transformLink } from '../../../utils/transformLink';
-import { useState } from 'react';
-import { getString, Strings } from '../../../locales';
-import {useRouter} from 'next/router';
-import YearSwitcher from '../../common/YearSwitcher';
-import { YearSwitcherVariant } from '../../common/YearSwitcher/YearSwitcher';
+import ArrowIcon from '../../../public/icons/common/arrow_right.svg'
+import FestivalWinnerType from '../types/FestivalWinner'
+import { transformLink } from '../../../utils/link'
+import { useState } from 'react'
+import { getString, Strings } from '../../../locales'
+import { useRouter } from 'next/router'
+import YearSwitcher from '../../common/YearSwitcher'
+import { YearSwitcherVariant } from '../../common/YearSwitcher/YearSwitcher'
 
 type Props = {
-  winners: Array<{
-    id: number,
-    single_winner: Array<FestivalWinnerType>,
-    year: string,
-  }>,
+  winners: {
+    id: number
+    single_winner: FestivalWinnerType[]
+    year: string
+  }[]
 }
 
 type WinnerItemPros = {
-  winner: FestivalWinnerType,
-};
+  winner: FestivalWinnerType
+}
 
 const WinnerItem = ({ winner }: WinnerItemPros) => {
-
   return (
-    <a
-      className={styles.item}
-      href={winner.link}
-    >
+    <a className={styles.item} href={winner.link}>
       <div className={styles.image}>
         {winner.image && (
           <Image
@@ -51,21 +47,18 @@ const WinnerItem = ({ winner }: WinnerItemPros) => {
           <div className={styles.subtitle}>{winner.subtitle}</div>
         </div>
         <div className={styles.arrow}>
-          <Image
-            src={ArrowIcon}
-            alt="arrow"
-          />
+          <Image src={ArrowIcon} alt="arrow" />
         </div>
       </div>
     </a>
   )
-};
+}
 
 const FieldOfStudyCarusel = ({ winners }: Props) => {
-  const [years] = useState(winners.map((item) => item.year));
-  const [currentWinners, setCurrentWinners] = useState(0);
+  const [years] = useState(winners.map((item) => item.year))
+  const [currentWinners, setCurrentWinners] = useState(0)
 
-  const router = useRouter();
+  const router = useRouter()
   return (
     <div className={styles.container}>
       <div className={styles.top_container}>
@@ -80,11 +73,13 @@ const FieldOfStudyCarusel = ({ winners }: Props) => {
         </div>
       </div>
       <div className={styles.card_container}>
-        {winners[currentWinners].single_winner
-          .map((item) => item && <WinnerItem key={`winner-${item.id}`} winner={item} />)}
+        {winners[currentWinners].single_winner.map(
+          (item) =>
+            item && <WinnerItem key={`winner-${item.id}`} winner={item} />
+        )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default FieldOfStudyCarusel;
+export default FieldOfStudyCarusel

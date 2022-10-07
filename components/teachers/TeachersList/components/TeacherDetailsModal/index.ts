@@ -1,1 +1,1 @@
-export { default } from './TeacherDetailsModal';
+export { default } from './TeacherDetailsModal'

@@ -1,16 +1,16 @@
-import Image from 'next/image';
-import { useRouter } from 'next/router';
+import Image from 'next/image'
+import { useRouter } from 'next/router'
 import parse from 'html-react-parser'
 
-import styles from './UATGalleriesSlice.module.scss';
-import UATGalleryType from '../types/UATGalleryType';
-import { transformLink } from '../../../utils/transformLink';
-import { GalleryEventType } from '../../galleries/types/GalleryEventType';
+import styles from './UATGalleriesSlice.module.scss'
+import UATGalleryType from '../types/UATGalleryType'
+import { transformLink } from '../../../utils/link'
+import { GalleryEventType } from '../../galleries/types/GalleryEventType'
 
-import ArrowRightIcon from '../../../public/icons/common/arrow_right.svg';
+import ArrowRightIcon from '../../../public/icons/common/arrow_right.svg'
 
 type ItemProps = {
-  item: UATGalleryType,
+  item: UATGalleryType
 }
 const UATGalleryItem = ({ item }: ItemProps) => {
   return (
@@ -36,51 +36,56 @@ const UATGalleryItem = ({ item }: ItemProps) => {
       </div>
     </div>
   )
-};
+}
 
 type GalleryEventProps = {
-  event: GalleryEventType,
-  onSelect: Function,
-};
+  event: GalleryEventType
+  onSelect: Function
+}
 
 const GalleryEventItem = ({ event, onSelect }: GalleryEventProps) => {
   return (
-    <div
-      className={styles.item_container}
-      onClick={() => onSelect(event)}
-      >
+    <div className={styles.item_container} onClick={() => onSelect(event)}>
       <div className={styles.content}>
         <span className={styles.title}>{event.title}</span>
         <span className={styles.sneak_peak}>{parse(event.description)}</span>
       </div>
       <div className={styles.arrow}>
-        <Image src={ArrowRightIcon} alt={'arrow'}/>
+        <Image src={ArrowRightIcon} alt={'arrow'} />
       </div>
     </div>
   )
-};
+}
 
 type Props = {
-  galleries: Array<UATGalleryType>,
-  events?: Array<GalleryEventType>,
+  galleries: UATGalleryType[]
+  events?: GalleryEventType[]
 }
 
 const UATGalleriesSlice = ({ galleries, events }: Props) => {
-  const router = useRouter();
+  const router = useRouter()
 
   const onEventSelect = (event: GalleryEventType) => {
-    router.push(`/events/${event.id}`);
+    router.push(`/events/${event.id}`)
   }
   return (
     <div className={styles.container}>
       <div className={styles.galleries}>
-        {galleries && galleries.map((item) => <UATGalleryItem key={item.id} item={item}/>)}
+        {galleries &&
+          galleries.map((item) => <UATGalleryItem key={item.id} item={item} />)}
       </div>
       <div className={styles.events}>
-        {events && events.map((item) => <GalleryEventItem key={item.id} event={item} onSelect={onEventSelect}/>)}
+        {events &&
+          events.map((item) => (
+            <GalleryEventItem
+              key={item.id}
+              event={item}
+              onSelect={onEventSelect}
+            />
+          ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default UATGalleriesSlice;
+export default UATGalleriesSlice

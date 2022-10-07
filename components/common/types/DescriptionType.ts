@@ -1,11 +1,11 @@
-import LinkType from '../../navigation/types/LinkType';
+import LinkType from '../../navigation/types/LinkType'
 
 type DescriptionType = {
-  title?: string,
-  subtitle?: string,
-  content: string,
-  download_link?: LinkType,
-  link?: LinkType,
+  title?: string
+  subtitle?: string
+  content: string
+  download_link?: LinkType
+  link?: LinkType
 }
 
-export default DescriptionType;
+export default DescriptionType

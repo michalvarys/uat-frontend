@@ -1,1 +1,1 @@
-export { default } from './UATGalleriesSlice';
+export { default } from './UATGalleriesSlice'

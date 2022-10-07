@@ -1,1 +1,1 @@
-export { default } from './GenericLink';
+export { default } from './GenericLink'

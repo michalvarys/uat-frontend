@@ -1,15 +1,15 @@
-import Image from 'next/image';
-import { transformLink } from '../../../utils/transformLink';
-import { ContainerVariant } from '../../common/Container';
-import DescriptionSection from '../../common/DescriptionSection';
+import Image from 'next/image'
+import { transformLink } from '../../../utils/link'
+import { ContainerVariant } from '../../common/Container'
+import DescriptionSection from '../../common/DescriptionSection'
 
-import { YouTubeVideoWithTextType } from '../types/YouTubeVideoType';
-import YoutubePlayerSlice from '../YoutubePlayerSlice';
+import { YouTubeVideoWithTextType } from '../types/YouTubeVideoType'
+import YoutubePlayerSlice from '../YoutubePlayerSlice'
 
-import styles from './YoutubePlayerWithTextSlice.module.scss';
+import styles from './YoutubePlayerWithTextSlice.module.scss'
 
 type YoutubeVideoWithTextProps = {
-  data: YouTubeVideoWithTextType,
+  data: YouTubeVideoWithTextType
 }
 
 const YoutubePlayerWithTextSlice = ({ data }: YoutubeVideoWithTextProps) => {
@@ -28,30 +28,25 @@ const YoutubePlayerWithTextSlice = ({ data }: YoutubeVideoWithTextProps) => {
         variant={ContainerVariant.Black}
       />
     </div>
-  );
+  )
 
   const renderVideo = () => (
-    <div style={{
-
-      position: 'relative',
-      width: '100%',
-    }}>
-      {data.cover_image ? (
-        <YoutubePlayerSlice data={data} isSmall/>
-      ) : <></>}
+    <div
+      style={{
+        position: 'relative',
+        width: '100%',
+      }}
+    >
+      {data.cover_image ? <YoutubePlayerSlice data={data} isSmall /> : <></>}
     </div>
-  );
+  )
 
   return (
     <div className={styles.container}>
-      <div className={styles.video_side}>
-        {renderVideo()}
-      </div>
-      <div className={styles.text_side}>
-        {renderTextSection()}
-      </div>
+      <div className={styles.video_side}>{renderVideo()}</div>
+      <div className={styles.text_side}>{renderTextSection()}</div>
     </div>
   )
 }
 
-export default YoutubePlayerWithTextSlice;
+export default YoutubePlayerWithTextSlice

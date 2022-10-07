@@ -1,24 +1,24 @@
-import styles from './Container.module.scss';
-import { ContainerVariant } from './ContainerVariant';
+import styles from './Container.module.scss'
+import { ContainerVariant } from './ContainerVariant'
 
 type Props = {
-  children: JSX.Element | JSX.Element[] | null,
-  variant?: ContainerVariant,
-  isHigh?: boolean,
-  isHighest?: boolean,
-};
+  children: JSX.Element | JSX.Element[] | null
+  variant?: ContainerVariant
+  isHigh?: boolean
+  isHighest?: boolean
+}
 
 const getVariantStyle = (variant: ContainerVariant): string => {
   switch (variant) {
     case ContainerVariant.Black:
-      return styles.container_black;
+      return styles.container_black
     case ContainerVariant.Orange:
-      return styles.container_orange;
+      return styles.container_orange
     case ContainerVariant.White:
-      return styles.container_white;
+      return styles.container_white
     case ContainerVariant.Transparent:
     default:
-      return styles.container_transparent;
+      return styles.container_transparent
   }
 }
 const Container = ({
@@ -28,10 +28,14 @@ const Container = ({
   isHighest = false,
 }: Props) => (
   <div className={`${styles.container} ${getVariantStyle(variant)}`}>
-    <div className={`${styles.inner_container} ${isHigh ? styles.inner_container_high : ''} ${isHighest ? styles.inner_container_highest : ''}`}>
+    <div
+      className={`${styles.inner_container} ${
+        isHigh ? styles.inner_container_high : ''
+      } ${isHighest ? styles.inner_container_highest : ''}`}
+    >
       {children}
     </div>
   </div>
-);
+)
 
-export default Container;
+export default Container

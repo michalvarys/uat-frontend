@@ -1,21 +1,21 @@
-import Image from 'next/image';
-import styles from './HeaderSlice.module.scss';
+import Image from 'next/image'
+import styles from './HeaderSlice.module.scss'
 
-import { transformLink } from '../../../utils/transformLink';
-import ImageType from '../../common/types/ImageType';
-import ImportantNewsRibbon from '../../news/ImportantNewsRibbon';
-import NewsType from '../../news/types/NewsType';
-import SocialLinkType from '../../../types/data/SocialLinkType';
+import { transformLink } from '../../../utils/link'
+import ImageType from '../../common/types/ImageType'
+import ImportantNewsRibbon from '../../news/ImportantNewsRibbon'
+import NewsType from '../../news/types/NewsType'
+import SocialLinkType from '../../../types/data/SocialLinkType'
 
 type Props = {
-  title?: string,
-  subtitle?: string,
-  image: ImageType,
-  logo: ImageType,
-  news: Array<NewsType>,
-  facebook: SocialLinkType,
-  instagram: SocialLinkType,
-  youtube: SocialLinkType,
+  title?: string
+  subtitle?: string
+  image: ImageType
+  logo: ImageType
+  news: NewsType[]
+  facebook: SocialLinkType
+  instagram: SocialLinkType
+  youtube: SocialLinkType
 }
 
 const HeaderSlice = ({
@@ -40,18 +40,22 @@ const HeaderSlice = ({
             objectFit={'cover'}
             objectPosition={'-40px center'}
           />
-        ) : <></>}
+        ) : (
+          <></>
+        )}
       </div>
       <div className={styles.title_container}>
         <div className={styles.logo}>
-        {logo ? (
-          <Image
-            src={transformLink(logo.url)}
-            alt={logo.alternativeText}
-            width={logo.width}
-            height={logo.height}
-          />
-        ) : <></>}
+          {logo ? (
+            <Image
+              src={transformLink(logo.url)}
+              alt={logo.alternativeText}
+              width={logo.width}
+              height={logo.height}
+            />
+          ) : (
+            <></>
+          )}
         </div>
         <span className={styles.title}>{title}</span>
         <span className={styles.subtitle}>{subtitle}</span>
@@ -65,7 +69,7 @@ const HeaderSlice = ({
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default HeaderSlice;
+export default HeaderSlice

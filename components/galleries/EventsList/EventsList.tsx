@@ -1,13 +1,11 @@
-import { GalleryEventType } from '../types/GalleryEventType';
-import EventItem from './components/EventItem';
+import { GalleryEventType } from '../types/GalleryEventType'
+import EventItem from './components/EventItem'
 
-
-import styles from './EventsList.module.scss';
-
+import styles from './EventsList.module.scss'
 
 type Props = {
-  events: Array<GalleryEventType>,
-  onSelect: (item: GalleryEventType) => void,
+  events: GalleryEventType[]
+  onSelect: (item: GalleryEventType) => void
 }
 
 const EventsList = ({ events = [], onSelect }: Props) => {
@@ -17,7 +15,7 @@ const EventsList = ({ events = [], onSelect }: Props) => {
         <EventItem event={item} key={item.id} onSelect={onSelect} />
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default EventsList;
+export default EventsList

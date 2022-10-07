@@ -3,4 +3,4 @@ export enum ContainerVariant {
   Orange,
   Transparent,
   White,
-};
+}

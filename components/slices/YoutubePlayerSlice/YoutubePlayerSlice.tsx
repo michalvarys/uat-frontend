@@ -1,54 +1,62 @@
-import YoutubePlayer from 'react-youtube';
-import Image from 'next/image';
-import { useCallback, useEffect, useRef, useState, useLayoutEffect } from 'react';
+import YoutubePlayer from 'react-youtube'
+import Image from 'next/image'
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useLayoutEffect,
+} from 'react'
 
-import styles from './YoutubePlayerSlice.module.scss';
+import styles from './YoutubePlayerSlice.module.scss'
 
-import YouTubeVideoType from '../types/YouTubeVideoType';
-import { transformLink } from '../../../utils/transformLink';
+import YouTubeVideoType from '../types/YouTubeVideoType'
+import { transformLink } from '../../../utils/link'
 
-import PlayIcon from '../../../public/icons/common/play.svg';
+import PlayIcon from '../../../public/icons/common/play.svg'
 
 type YoutubeVideoProps = {
-  data: YouTubeVideoType,
-  isSmall?: boolean,
+  data: YouTubeVideoType
+  isSmall?: boolean
 }
 
 const YoutubePlayerSlice = ({ data }: YoutubeVideoProps) => {
-  const [videoState, setVideoState] = useState<number>(-1);
-  const [videoHeight, setVideoHeight] = useState<number>(10);
-  const containerRef = useRef(null);
-  let player: any = null;
-
+  const [videoState, setVideoState] = useState<number>(-1)
+  const [videoHeight, setVideoHeight] = useState<number>(10)
+  const containerRef = useRef(null)
+  let player: any = null
 
   const onResize = useCallback(() => {
-    const container: any = containerRef && containerRef.current;
+    const container: any = containerRef && containerRef.current
     if (container && data.cover_image) {
-      setVideoHeight(container.offsetWidth * data.cover_image.height / data.cover_image.width)
+      setVideoHeight(
+        (container.offsetWidth * data.cover_image.height) /
+          data.cover_image.width
+      )
     }
-  }, [setVideoHeight, data]);
+  }, [setVideoHeight, data])
 
   useLayoutEffect(() => {
-    window.addEventListener('resize', onResize);
-    onResize();
-    return () => window.removeEventListener('resize', onResize);
-  }, [onResize]);
+    window.addEventListener('resize', onResize)
+    onResize()
+    return () => window.removeEventListener('resize', onResize)
+  }, [onResize])
 
   const onPlayVideo = () => {
     if (player) {
       if (videoState === -1) {
-        player.playVideo();
+        player.playVideo()
       }
     }
-  };
+  }
 
   const onPlayerReady = (event: any) => {
-    player = event.target;
+    player = event.target
   }
 
   const onStateChange = (event: any) => {
     if (event.data === 0) {
-      event.target.stopVideo();
+      event.target.stopVideo()
     }
     setVideoState(event.data)
   }
@@ -63,10 +71,7 @@ const YoutubePlayerSlice = ({ data }: YoutubeVideoProps) => {
         onClick={onPlayVideo}
       >
         <div className={styles.play_button}>
-          <Image
-            alt={'Play'}
-            src={PlayIcon}
-          />
+          <Image alt={'Play'} src={PlayIcon} />
         </div>
         {data.cover_image && (
           <Image
@@ -92,11 +97,11 @@ const YoutubePlayerSlice = ({ data }: YoutubeVideoProps) => {
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
 YoutubePlayerSlice.defaultProps = {
   isSmall: false,
 }
 
-export default YoutubePlayerSlice;
+export default YoutubePlayerSlice

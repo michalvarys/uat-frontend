@@ -1,12 +1,11 @@
 export function valuesToParams(key: string, values?: string[]) {
-    const params = new URLSearchParams()
+  const params = new URLSearchParams()
 
-    values?.forEach(value => params.append(
-        key, value
-    ))
+  values?.forEach((value) => params.append(key, value))
 
-    return params.toString()
+  return params.toString()
 }
+
 export function localesToParams(locales?: string[]) {
-    return valuesToParams("_locale", locales)
+  return valuesToParams('_locale', locales)
 }

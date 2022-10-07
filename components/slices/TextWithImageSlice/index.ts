@@ -1,2 +1,1 @@
-export { default } from './TextWithImageSlice';
-
+export { default } from './TextWithImageSlice'

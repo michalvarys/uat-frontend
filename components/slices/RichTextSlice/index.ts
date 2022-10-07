@@ -1,1 +1,1 @@
-export { default } from './RichTextSlice';
+export { default } from './RichTextSlice'

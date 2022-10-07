@@ -1,11 +1,11 @@
-import classNames from 'classnames';
-import styles from './SegmentedControl.module.scss';
+import classNames from 'classnames'
+import styles from './SegmentedControl.module.scss'
 
 type Props = {
-  current: number,
-  onSelect: Function,
-  items: Array<string>,
-};
+  current: number
+  onSelect: Function
+  items: string[]
+}
 
 const SegmentedControl = ({ current, onSelect, items }: Props) => (
   <div className={styles.container}>
@@ -22,6 +22,6 @@ const SegmentedControl = ({ current, onSelect, items }: Props) => (
       </div>
     ))}
   </div>
-);
+)
 
-export default SegmentedControl;
+export default SegmentedControl

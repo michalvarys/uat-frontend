@@ -1,29 +1,29 @@
-import Image from 'next/image';
+import Image from 'next/image'
 
-import styles from './TeacherItem.module.scss';
+import styles from './TeacherItem.module.scss'
 
-import TeacherType from '../../../types/TeacherType';
-import { transformLink } from '../../../../../utils/transformLink';
+import TeacherType from '../../../types/TeacherType'
+import { transformLink } from '../../../../../utils/link'
 
 import SlantArrowIcon from '../../../../../public/icons/common/arrow_slant.svg'
 
 type Props = {
-  isFixed?: boolean,
-  item: TeacherType,
-  onSelect: (item: TeacherType) => void,
+  isFixed?: boolean
+  item: TeacherType
+  onSelect: (item: TeacherType) => void
 }
 
 const TeacherItem = ({ isFixed = false, item, onSelect }: Props) => {
-  let thumbnailPath = item.photo && item.photo.url;
+  let thumbnailPath = item.photo && item.photo.url
   if (item.photo.formats && item.photo.formats.small) {
-    thumbnailPath = item.photo.formats.small.url;
+    thumbnailPath = item.photo.formats.small.url
   } else if (item.photo.formats && item.photo.formats.thumbnail) {
-    thumbnailPath = item.photo.formats.thumbnail.url;
+    thumbnailPath = item.photo.formats.thumbnail.url
   }
 
   return (
     <div
-      className={`${styles.container} ${isFixed ? styles.fixed_container: ''}`}
+      className={`${styles.container} ${isFixed ? styles.fixed_container : ''}`}
       onClick={() => onSelect(item)}
     >
       <div className={styles.image_container}>
@@ -37,17 +37,17 @@ const TeacherItem = ({ isFixed = false, item, onSelect }: Props) => {
       </div>
       <div className={styles.bottom_container}>
         <span className={styles.name}>
-          {`${item.title ? `${item.title} ` : ''}${item.firstname} ${item.surname}`}
+          {`${item.title ? `${item.title} ` : ''}${item.firstname} ${
+            item.surname
+          }`}
         </span>
-        <span className={styles.post}>
-          {item.post}
-        </span>
+        <span className={styles.post}>{item.post}</span>
         <div className={styles.arrow}>
-          <Image src={SlantArrowIcon} alt=""/>
+          <Image src={SlantArrowIcon} alt="" />
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default TeacherItem;
+export default TeacherItem

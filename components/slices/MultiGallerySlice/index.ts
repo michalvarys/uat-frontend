@@ -1,1 +1,1 @@
-export { default } from './MultiGallerySlice';
+export { default } from './MultiGallerySlice'

@@ -1,1 +1,1 @@
-export { default } from './CommonBigButtons';
+export { default } from './CommonBigButtons'

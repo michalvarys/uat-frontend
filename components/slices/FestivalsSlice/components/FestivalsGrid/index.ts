@@ -1,1 +1,1 @@
-export { default } from './FestivalsGrid';
+export { default } from './FestivalsGrid'

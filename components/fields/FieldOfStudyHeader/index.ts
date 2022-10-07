@@ -1,1 +1,1 @@
-export { default } from './FieldOfStudyHeader';
+export { default } from './FieldOfStudyHeader'

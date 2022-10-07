@@ -1,1 +1,1 @@
-export { default } from './EUProjectsSlice';
+export { default } from './EUProjectsSlice'

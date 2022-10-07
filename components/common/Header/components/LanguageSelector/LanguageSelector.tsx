@@ -1,14 +1,14 @@
-import classNames from 'classnames';
-import styles from './LanguageSelector.module.scss';
+import classNames from 'classnames'
+import styles from './LanguageSelector.module.scss'
 
-import { useApp } from '../../../../context/AppContext';
+import { useApp } from '../../../../context/AppContext'
 
 type Props = {
-  isDark?: boolean,
-};
+  isDark?: boolean
+}
 
 const LanguageSelector = ({ isDark = false }: Props) => {
-  const { currentLanguage, languages, setCurrentLanguage } = useApp();
+  const { currentLanguage, languages, setCurrentLanguage } = useApp()
 
   return (
     <div className={styles.container}>
@@ -22,13 +22,13 @@ const LanguageSelector = ({ isDark = false }: Props) => {
               [styles.active_item_dark]: isDark && currentLanguage === item,
             })}
             onClick={() => setCurrentLanguage(item)}
-            >
+          >
             {item.toUpperCase()}
           </span>
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default LanguageSelector;
+export default LanguageSelector

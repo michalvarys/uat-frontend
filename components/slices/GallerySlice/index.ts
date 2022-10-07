@@ -1,1 +1,1 @@
-export { default } from './GallerySlice';
+export { default } from './GallerySlice'

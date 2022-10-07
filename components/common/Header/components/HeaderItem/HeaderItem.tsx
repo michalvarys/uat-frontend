@@ -1,20 +1,15 @@
-import classNames from 'classnames';
-import { MouseEventHandler } from 'react';
-import styles from './HeaderItem.module.scss';
+import classNames from 'classnames'
+import { MouseEventHandler } from 'react'
+import styles from './HeaderItem.module.scss'
 
 type Props = {
-  onOpen: MouseEventHandler,
-  title: string,
-  currentSection: number,
-  idx: number,
-};
+  onOpen: MouseEventHandler
+  title: string
+  currentSection: number
+  idx: number
+}
 
-const HeaderItem = ({
-  onOpen,
-  title = '',
-  currentSection,
-  idx
-}: Props) => {
+const HeaderItem = ({ onOpen, title = '', currentSection, idx }: Props) => {
   return (
     <div
       className={classNames({
@@ -26,14 +21,16 @@ const HeaderItem = ({
       })}
       onMouseEnter={onOpen}
     >
-      <div className={classNames({
-        [styles.title]: true,
-        [styles.title_open]: currentSection === idx,
-      })}>
-       {title.toUpperCase()}
+      <div
+        className={classNames({
+          [styles.title]: true,
+          [styles.title_open]: currentSection === idx,
+        })}
+      >
+        {title.toUpperCase()}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default HeaderItem;
+export default HeaderItem

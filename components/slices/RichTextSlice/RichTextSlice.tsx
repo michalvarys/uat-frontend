@@ -1,9 +1,9 @@
-import parse from 'html-react-parser';
-import RichTextType from '../../../types/data/RichTextType';
-import styles from './RichTextSlice.module.scss';
+import parse from 'html-react-parser'
+import RichTextType from '../../../types/data/RichTextType'
+import styles from './RichTextSlice.module.scss'
 
 type Props = {
-  data: RichTextType,
+  data: RichTextType
 }
 
 const RichTextSlice = ({ data }: Props) => {
@@ -12,7 +12,7 @@ const RichTextSlice = ({ data }: Props) => {
       {data.title && <div className={styles.title}>{data.title}</div>}
       <div className={styles.content}>{parse(data.content)}</div>
     </div>
-  );
-};
+  )
+}
 
-export default RichTextSlice;
+export default RichTextSlice

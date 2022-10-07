@@ -1,1 +1,1 @@
-export { default } from './EmploymentStatistics';
+export { default } from './EmploymentStatistics'
