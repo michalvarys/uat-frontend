@@ -45,8 +45,13 @@ const icons = {
 
 const getButtonIcon = (
   variant: ButtonLinkVariant,
-  imageType: ButtonLinkImageType
+  imageType: ButtonLinkImageType,
+  isExternal?: boolean
 ): any => {
+  if (isExternal) {
+    return icons[ButtonLinkImageType.Arrow][variant]
+  }
+
   return icons[imageType] && icons[imageType][variant]
 }
 
@@ -54,19 +59,22 @@ const ButtonLink = ({ imageType, title, path, variant }: Props) => {
   const url =
     imageType === ButtonLinkImageType.Download ? transformLink(path) : path
 
+  const isExternal = isExternalLink(url)
+  const icon = getButtonIcon(variant, imageType, isExternal)
+
   return (
     <Link href={url.trim()} passHref>
       <a
         className={styles.container}
         target={
-          imageType === ButtonLinkImageType.Download || isExternalLink(url)
+          imageType === ButtonLinkImageType.Download || isExternal
             ? '_blank'
             : '_self'
         }
       >
         <ImageButton
           title={title}
-          image={getButtonIcon(variant, imageType)}
+          image={icon}
           variant={getButtonVariant(variant)}
         />
       </a>

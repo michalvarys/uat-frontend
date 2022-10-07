@@ -2,7 +2,8 @@ import getConfig from 'next/config'
 const { publicRuntimeConfig } = getConfig()
 
 export const transformLink = (url: string): string => {
-  if (url.trim().startsWith('http')) {
+  url = url.trim()
+  if (url.startsWith('http')) {
     return url
   }
 
@@ -10,6 +11,7 @@ export const transformLink = (url: string): string => {
 }
 
 export function isExternalLink(url: string) {
+  url = url.trim()
   const { hostname } = new URL(publicRuntimeConfig.baseURL)
   return url.startsWith('http') && !url.includes(hostname)
 }
