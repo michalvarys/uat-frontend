@@ -1,40 +1,39 @@
+import { useEffect } from 'react'
 import Image from 'next/image'
 import Head from 'next/head'
 
-import moment from 'moment'
 import 'moment/locale/sk'
 import axios from 'axios'
 import styles from './pages.module.scss'
 
-import Container, { ContainerVariant } from '../../components/common/Container'
-import RichTextSlice from '../../components/slices/RichTextSlice'
-import GallerySlice from '../../components/slices/GallerySlice'
+import Container, { ContainerVariant } from 'src/components/common/Container'
+import RichTextSlice from 'src/components/slices/RichTextSlice'
+import GallerySlice from 'src/components/slices/GallerySlice'
 
-import { REVALIDATE_TIME } from '../../consts/app.consts'
-import YoutubePlayerSlice from '../../components/slices/YoutubePlayerSlice'
+import { REVALIDATE_TIME } from 'src/constants'
+import YoutubePlayerSlice from 'src/components/slices/YoutubePlayerSlice'
 import ButtonLink, {
   ButtonLinkImageType,
-} from '../../components/navigation/ButtonLink'
-import PageType from '../../components/pages/types/PageType'
-import { transformLink } from '../../utils/link'
-import TeachersCarusel from '../../components/teachers/TeachersCarusel'
-import { useApp } from '../../components/context/AppContext'
-import { useEffect } from 'react'
-import { setLocalizationData } from '../../utils/localizationsUtils'
+} from 'src/components/navigation/ButtonLink'
+import PageType from 'src/components/pages/types/PageType'
+import { transformLink } from 'src/utils/link'
+import TeachersCarusel from 'src/components/teachers/TeachersCarusel'
+import { useApp } from 'src/components/context/AppContext'
+import { setLocalizationData } from 'src/utils/localizationsUtils'
 import {
   GetStaticPathsContext,
   GetStaticPathsResult,
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next'
-import { localesToParams } from '../../utils/params'
+import { localesToParams } from 'src/utils/params'
 
 type PageProps = {
   slug?: string
   page: PageType | null
 }
 
-export default function Page({ page, ...rest }: PageProps) {
+export default function Page({ page }: PageProps) {
   const { setLocalePaths } = useApp()
 
   useEffect(() => {

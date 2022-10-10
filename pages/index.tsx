@@ -3,29 +3,30 @@ import { useRouter } from 'next/router'
 import ReactResizeDetector from 'react-resize-detector'
 import styles from './Home.module.scss'
 
-import { Strings, getString } from '../locales'
+import { Strings, getString } from 'src/locales'
 
-import Container, { ContainerVariant } from '../components/common/Container'
-import ImageType from '../components/common/types/ImageType'
-import { YouTubeVideoWithTextType } from '../components/slices/types/YouTubeVideoType'
-import NewsType from '../components/news/types/NewsType'
-import TextWithImageType from '../components/slices/types/TextWithImageType'
-import FieldOfStudyType from '../components/fields/types/FieldOfStudyType'
+import Container, { ContainerVariant } from 'src/components/common/Container'
+import ImageType from 'src/components/common/types/ImageType'
+import { YouTubeVideoWithTextType } from 'src/components/slices/types/YouTubeVideoType'
+import NewsType from 'src/components/news/types/NewsType'
+import TextWithImageType from 'src/components/slices/types/TextWithImageType'
+import FieldOfStudyType from 'src/components/fields/types/FieldOfStudyType'
 
-import HeaderSlice from '../components/slices/HeaderSlice'
-import YoutubePlayerWithTextSlice from '../components/slices/YoutubePlayerWithTextSlice'
-import TextWithImageSlice from '../components/slices/TextWithImageSlice'
-import NewsSlice from '../components/slices/NewsSlice'
-import FieldOfStudyCarusel from '../components/fields/FieldOfStudyCarusel'
-import FestivalType from '../components/festivals/types/FestivalType'
-import FestivalsSlice from '../components/slices/FestivalsSlice'
-import GalleriesInfoType from '../components/slices/types/GalleriesInfoType'
-import UATGalleriesSlice from '../components/slices/UATGalleriesSlice'
-import { GalleryEventType } from '../components/galleries/types/GalleryEventType'
+import HeaderSlice from 'src/components/slices/HeaderSlice'
+import YoutubePlayerWithTextSlice from 'src/components/slices/YoutubePlayerWithTextSlice'
+import TextWithImageSlice from 'src/components/slices/TextWithImageSlice'
+import NewsSlice from 'src/components/slices/NewsSlice'
+import FieldOfStudyCarusel from 'src/components/fields/FieldOfStudyCarusel'
+import FestivalType from 'src/components/festivals/types/FestivalType'
+import FestivalsSlice from 'src/components/slices/FestivalsSlice'
+import GalleriesInfoType from 'src/components/slices/types/GalleriesInfoType'
+import UATGalleriesSlice from 'src/components/slices/UATGalleriesSlice'
+import { GalleryEventType } from 'src/components/galleries/types/GalleryEventType'
 import axios from 'axios'
-import { REVALIDATE_TIME } from '../consts/app.consts'
-import SocialLinkType from '../types/data/SocialLinkType'
+import SocialLinkType from 'src/types/data/SocialLinkType'
 import { GetStaticPropsContext, GetStaticPropsResult } from 'next'
+import { REVALIDATE_TIME } from 'src/constants'
+import { chakra } from '@chakra-ui/react'
 
 type HomePageProps = {
   cover_image: ImageType
@@ -64,7 +65,7 @@ export default function Home({
 }: HomePageProps) {
   const router = useRouter()
   const renderTextWithImageSlices = () => {
-    if (text_with_image && text_with_image.length > 1) {
+    if (text_with_image?.length > 1) {
       return (
         <ReactResizeDetector>
           {({ width }) =>
@@ -86,10 +87,11 @@ export default function Home({
   }
 
   return (
-    <div className={styles.container}>
+    <chakra.div w="full" className={styles.container}>
       <Head>
         <title>{getString(router.locale, Strings.HOME_PAGE_TITLE)}</title>
       </Head>
+
       <Container variant={ContainerVariant.Black} isHigh>
         {title && subtitle ? (
           <HeaderSlice
@@ -173,7 +175,7 @@ export default function Home({
       <Container variant={ContainerVariant.Orange}>
         {news ? <NewsSlice news={news} /> : <></>}
       </Container>
-    </div>
+    </chakra.div>
   )
 }
 
@@ -194,7 +196,6 @@ export async function getStaticProps({
       revalidate: REVALIDATE_TIME,
     }
   } catch (e) {
-    console.log(e)
     return {
       props: {},
       revalidate: REVALIDATE_TIME,

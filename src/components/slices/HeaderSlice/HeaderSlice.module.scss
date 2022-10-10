@@ -1,0 +1,105 @@
+@import '../../../styles/colors.scss';
+@import '../../../styles/fontSizes.scss';
+@import '../../../styles/breakpoints.scss';
+
+.container {
+  position: relative;
+  height: calc(100vh - 98px);
+  max-height: 1920px;
+  
+  .image_container {
+    height: 100%;
+
+    div {
+        height: 140%;
+        top: -20%;
+    }
+  }
+
+  .title_container {
+    position: absolute;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    bottom: 126px;
+    left: 80px;
+    max-width: 50%;
+    font-size: 62px;
+    font-weight: 900;
+    line-height: 100%;
+    text-transform: uppercase;
+
+    @media (min-width: $xxlarge) {
+      font-size: 64px;
+    }
+
+    @media (max-width: $xlarge) {
+      font-size: 56px;
+      max-width: 65%;
+    }
+
+    @media (max-width: $large)  {
+      font-size: 56px;
+      bottom: 80px;
+      left: 40px;
+      max-width: 65%;
+    }
+
+    @media (min-width: $large) and (max-height: 800px)  {
+      font-size: 56px;
+      bottom: 100px;
+      left: 40px;
+      max-width: 50%;
+    }
+
+    @media (max-width: $medium)  {
+      font-size: 56px;
+      max-width: 100%;
+      bottom: 180px;
+    }
+    @media (max-width: $small)  {
+      font-size: 32px;
+      left: 0;
+      padding: 0 20px;
+      max-width: 100%;
+    }
+    .title {
+      color:  $uat_light;
+    }
+    .subtitle {
+      color: $uat_orange;
+    }
+    .logo {
+      margin-bottom: 40px;
+      max-width: 200px;
+
+      @media (min-width: $xxlarge) {
+        max-width: 200px;
+      }
+      @media (max-width: $xlarge)  {
+        max-width: 160px;
+        margin-bottom: 24px;
+      }
+      @media (min-width: $large) and (max-height: 800px)  {
+        max-width: 140px;
+      }
+      @media (max-width: $large)  {
+        margin-bottom: 24px;
+      }
+      @media (max-width: $medium)  {
+        margin-bottom: 24px;
+      }
+      @media (max-width: $small)  {
+        margin-bottom: 32px;
+        width: 160px;
+      }
+    }
+  }
+
+  .important_news {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+}

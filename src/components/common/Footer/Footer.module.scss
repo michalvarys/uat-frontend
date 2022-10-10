@@ -1,0 +1,222 @@
+@import '../../../styles/fontSizes.scss';
+@import '../../../styles/breakpoints.scss';
+@import '../../../styles/colors.scss';
+
+.container_yellow {
+  color: $uat_dark;
+  background-color: $uat_orange
+}
+
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 80px;
+  padding-top: 10px;
+
+  @media (max-width: $medium)  {
+    padding: 80px 40px;
+    padding-top: 10px;
+  }
+
+  @media (max-width: $small)  {
+    padding: 40px 20px;
+    padding-top: 10px;
+  }
+
+  .wave {
+    position: absolute;
+    top: -70px;
+    left: 0;
+    right: 0;
+    background-image: url("../../../../public/icons/common/Wave-black.svg");
+    height: 70px;
+  }
+
+  .wave_yellow {
+    background-image: url("../../../../public/icons/common/Wave.svg");
+  }
+
+  .top_container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    @media (max-width: $large) {
+      flex-direction: column;
+    }
+
+    .sections {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      width: 100%;
+
+      @media (max-width: $small) {
+        flex-direction: column;
+      }
+
+      .item {
+        flex: 1 1 120px;
+        min-width: 160px;
+        margin-right: 60px;
+
+        @media (max-width: $large) {
+          padding-bottom: 80px;
+        }
+
+        &:last-of-type {
+          margin-right: 0;
+        }
+
+        .title {
+          font-size: $m;
+          font-weight: 900;
+          font-family: 'iAWriterQuattroS';
+          padding-bottom: 40px;
+          text-transform: uppercase;
+        }
+        .link {
+          font-size: $m;
+          font-family: 'iAWriterQuattroS';
+          margin-bottom: 16px;
+        }
+
+        @media (max-width: $small) {
+          .title {
+            font-size: $xxl;
+          }
+          .link {
+            font-size: $xxl;
+            margin-bottom: 20px;
+          }
+        }
+      }
+    }
+
+    .contact {
+      padding: 32px;
+      background-color: $uat-light;
+      box-shadow: 22px 22px $uat_orange;
+      color: $uat_dark;
+
+      & > div:first-child .title {
+        padding-top: 0;
+      }
+
+      .title {
+        font-size: $m;
+        font-family: 'iAWriterQuattroS';
+        font-weight: 900;
+        padding-top: 20px;
+        text-transform: uppercase;
+      }
+      .content {
+        font-size: $m;
+        font-family: 'iAWriterQuattroS';
+        white-space: nowrap;
+
+        p {
+          margin: 0.25rem 0;
+        }
+      }
+
+      @media (max-width: $large) {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 80px;
+        padding: 32px 16px;
+        
+        & > div {
+          padding: 0 16px;
+        }
+
+        & > div .title {
+          padding: 0;
+        }
+      }
+
+      @media (max-width: $medium) {
+        display: flex;
+        flex-wrap: wrap;
+        padding-bottom: 0;
+
+        & > div {
+          padding-bottom: 32px;
+        }
+      }
+
+      @media (max-width: $small) {
+        width: calc(100% - 22px);
+
+        .title {
+          font-size: $xl;
+        }
+
+        .content {
+          font-size: $xl;
+        }
+      }
+    }
+
+    .contact_yellow {
+      box-shadow: 22px 22px $uat_dark;
+    }
+  }
+  
+  .bottom_container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    @media (max-width: $small) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  .social {
+    @media (max-width: $small)  {
+      display: block;
+    }
+  }
+
+  .school {
+    display: flex;
+    flex-direction: column;
+
+    .logo {
+      padding-bottom: 24px;
+    }
+    .name {
+      font-size: $xl;
+      font-weight: 700;
+      padding-bottom: 8px;
+    }
+    .address {
+      font-size: $m;
+      font-weight: 400;
+    }
+
+    @media (max-width: $small)  {
+      align-items: center;
+      text-align: center;
+
+      .logo {
+        max-width: 140px;
+      }
+
+      .name {
+        text-transform: uppercase;
+        font-size: $xxl;
+      }
+
+      .address {
+        font-size: $l;
+      }
+    }
+  }
+}

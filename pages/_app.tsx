@@ -1,35 +1,39 @@
-import '../styles/globals.css'
 import { AppProps, AppContext, AppInitialProps } from 'next/app'
 import { useRouter } from 'next/router'
-import getConfig from 'next/config'
-
-import { AppProvider } from '../components/context/AppContext'
-
-import Layout from '../components/common/Layout'
 import axios from 'axios'
 
-const { publicRuntimeConfig } = getConfig()
+import Layout from 'src/components/common/Layout'
+import { AppProvider } from 'src/components/context/AppContext'
+import { ThemeProvider } from 'src/theme/ThemeProvider'
+import { BASE_URL } from 'src/constants'
 
-axios.defaults.baseURL = publicRuntimeConfig.baseURL
+import 'src/styles/globals.css'
+import { chakra } from '@chakra-ui/react'
+
+axios.defaults.baseURL = BASE_URL
 
 function App({ Component, pageProps }: AppProps) {
   const { locales, locale, defaultLocale } = useRouter()
   return (
-    <AppProvider langs={locales || []} lang={locale || defaultLocale || ''}>
-      <>
-        <div id="modal-root" />
+    <ThemeProvider>
+      <AppProvider langs={locales || []} lang={locale || defaultLocale || ''}>
+        <>
+          <div id="modal-root" />
 
-        {pageProps.menuData && (
-          <Layout
-            menu={pageProps.menuData.menu}
-            footer={pageProps.menuData.footer}
-          >
-            {/** @ts-ignore */}
-            <Component {...pageProps} />
-          </Layout>
-        )}
-      </>
-    </AppProvider>
+          {pageProps.menuData && (
+            <Layout
+              menu={pageProps.menuData.menu}
+              footer={pageProps.menuData.footer}
+            >
+              {/**
+               * eslint-disable-next-line @typescript-eslint/ban-ts-comment
+               * @ts-ignore */}
+              <Component {...pageProps} />
+            </Layout>
+          )}
+        </>
+      </AppProvider>
+    </ThemeProvider>
   )
 }
 

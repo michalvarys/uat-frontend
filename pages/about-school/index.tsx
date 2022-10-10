@@ -3,21 +3,22 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import styles from './about-school.module.scss'
 
-import Container, { ContainerVariant } from '../../components/common/Container'
+import Container, { ContainerVariant } from 'src/components/common/Container'
 
-import YoutubePlayerSlice from '../../components/slices/YoutubePlayerSlice'
-import AboutSchoolType from '../../components/aboutSchool/types/AboutSchoolType'
-import EmploymentStatistics from '../../components/aboutSchool/EmploymentStatistics'
-import ApplicationsAtUniversity from '../../components/aboutSchool/ApplicationsAtUniversity'
-import EUProjectsSlice from '../../components/slices/EUProjectsSlice'
+import YoutubePlayerSlice from 'src/components/slices/YoutubePlayerSlice'
+import AboutSchoolType from 'src/components/aboutSchool/types/AboutSchoolType'
+import EmploymentStatistics from 'src/components/aboutSchool/EmploymentStatistics'
+import ApplicationsAtUniversity from 'src/components/aboutSchool/ApplicationsAtUniversity'
+import EUProjectsSlice from 'src/components/slices/EUProjectsSlice'
 import ButtonLink, {
   ButtonLinkImageType,
   ButtonLinkVariant,
-} from '../../components/navigation/ButtonLink'
+} from 'src/components/navigation/ButtonLink'
 import { useEffect } from 'react'
-import { useApp } from '../../components/context/AppContext'
-import { setLocalizationData } from '../../utils/localizationsUtils'
+import { useApp } from 'src/components/context/AppContext'
+import { setLocalizationData } from 'src/utils/localizationsUtils'
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next'
+import { chakra } from '@chakra-ui/react'
 
 type AboutSchoolPageProps = {
   data: AboutSchoolType
@@ -54,10 +55,11 @@ export default function AboutSchoolPage({ data }: AboutSchoolPageProps) {
   }
 
   return (
-    <div className={styles.container}>
+    <chakra.div w="full" className={styles.container}>
       <Head>
         <title>{data.title}</title>
       </Head>
+
       <Container variant={ContainerVariant.Black}>
         <div
           className={`${styles.inner_black_container} ${styles.inner_container}`}
@@ -76,6 +78,7 @@ export default function AboutSchoolPage({ data }: AboutSchoolPageProps) {
             renderButtons(data.buttons)}
         </div>
       </Container>
+
       <Container variant={ContainerVariant.White}>
         <div
           className={`${styles.inner_container} ${styles.inner_white_container}`}
@@ -85,6 +88,7 @@ export default function AboutSchoolPage({ data }: AboutSchoolPageProps) {
           </div>
         </div>
       </Container>
+
       <Container variant={ContainerVariant.Black}>
         <div
           className={`${styles.inner_application_container} ${styles.inner_container}`}
@@ -92,6 +96,7 @@ export default function AboutSchoolPage({ data }: AboutSchoolPageProps) {
           <ApplicationsAtUniversity data={data.applications_at_university} />
         </div>
       </Container>
+
       <Container variant={ContainerVariant.White}>
         <div
           className={`${styles.inner_application_container} ${styles.inner_container}`}
@@ -99,7 +104,7 @@ export default function AboutSchoolPage({ data }: AboutSchoolPageProps) {
           <EUProjectsSlice projects={data.eu_projects} />
         </div>
       </Container>
-    </div>
+    </chakra.div>
   )
 }
 

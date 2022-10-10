@@ -4,29 +4,29 @@ import moment from 'moment'
 
 import styles from './festivals.module.scss'
 
-import Container, { ContainerVariant } from '../../components/common/Container'
-import FestivalType from '../../components/festivals/types/FestivalType'
+import Container, { ContainerVariant } from 'src/components/common/Container'
+import FestivalType from 'src/components/festivals/types/FestivalType'
 import axios from 'axios'
-import { REVALIDATE_TIME } from '../../consts/app.consts'
-import { transformLink } from '../../utils/link'
-import TextWithImageSlice from '../../components/slices/TextWithImageSlice'
-import TextWithImageType from '../../components/slices/types/TextWithImageType'
-import FestivalWinners from '../../components/festivals/FestivalWinners'
-import FestivalPrizes from '../../components/festivals/FestivalPrizes/FestivalPrizes'
+import { REVALIDATE_TIME } from 'src/constants'
+import { transformLink } from 'src/utils/link'
+import TextWithImageSlice from 'src/components/slices/TextWithImageSlice'
+import TextWithImageType from 'src/components/slices/types/TextWithImageType'
+import FestivalWinners from 'src/components/festivals/FestivalWinners'
+import FestivalPrizes from 'src/components/festivals/FestivalPrizes/FestivalPrizes'
 import ButtonLink, {
   ButtonLinkImageType,
   ButtonLinkVariant,
-} from '../../components/navigation/ButtonLink'
-import { useApp } from '../../components/context/AppContext'
+} from 'src/components/navigation/ButtonLink'
+import { useApp } from 'src/components/context/AppContext'
 import { useEffect } from 'react'
-import { setLocalizationData } from '../../utils/localizationsUtils'
+import { setLocalizationData } from 'src/utils/localizationsUtils'
 import {
   GetStaticPathsContext,
   GetStaticPathsResult,
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next'
-import { localesToParams } from '../../utils/params'
+import { localesToParams } from 'src/utils/params'
 
 type FestivalsProps = {
   festival: FestivalType

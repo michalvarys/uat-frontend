@@ -4,19 +4,19 @@ import axios from 'axios'
 import Head from 'next/head'
 import styles from './news.module.scss'
 
-import Container, { ContainerVariant } from '../../components/common/Container'
-import NewsType from '../../components/news/types/NewsType'
-import RichTextSlice from '../../components/slices/RichTextSlice'
-import GallerySlice from '../../components/slices/GallerySlice'
+import Container, { ContainerVariant } from 'src/components/common/Container'
+import NewsType from 'src/components/news/types/NewsType'
+import RichTextSlice from 'src/components/slices/RichTextSlice'
+import GallerySlice from 'src/components/slices/GallerySlice'
 
-import { REVALIDATE_TIME } from '../../consts/app.consts'
-import YoutubePlayerSlice from '../../components/slices/YoutubePlayerSlice'
+import { REVALIDATE_TIME } from 'src/constants'
+import YoutubePlayerSlice from 'src/components/slices/YoutubePlayerSlice'
 import ButtonLink, {
   ButtonLinkImageType,
-} from '../../components/navigation/ButtonLink'
+} from 'src/components/navigation/ButtonLink'
 import { useEffect } from 'react'
-import { setLocalizationData } from '../../utils/localizationsUtils'
-import { useApp } from '../../components/context/AppContext'
+import { setLocalizationData } from 'src/utils/localizationsUtils'
+import { useApp } from 'src/components/context/AppContext'
 import { GetStaticPropsContext, GetStaticPropsResult } from 'next'
 
 type NewsDetailsPageProps = {
