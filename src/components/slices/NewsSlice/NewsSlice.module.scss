@@ -1,0 +1,29 @@
+@import '../../../styles/breakpoints.scss';
+
+.container {
+  position: relative;
+  padding: 10px 80px 200px;
+
+  @media (max-width: $large) {
+    padding: 10px 40px 200px;
+  }
+
+  @media (max-width: $small) {
+    padding: 10px 20px 200px;
+  }
+
+  .wave {
+    position: absolute;
+    top: -70px;
+    left: 0;
+    right: 0;
+    background-image: url("../../../../public/icons/common/Wave.svg");
+    height: 70px;
+  }
+
+  @media (max-width: $small)  {
+    h1 {
+      font-size: 40px;
+    }
+  }
+}

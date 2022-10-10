@@ -4,16 +4,17 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import styles from './galleries.module.scss'
 
-import { getString, Strings } from '../../locales'
-import Container, { ContainerVariant } from '../../components/common/Container'
-import GalleriesOverviewType from '../../components/galleries/types/GalleriesOverviewType'
-import UATGalleriesSlice from '../../components/slices/UATGalleriesSlice'
-import TextWithImageSlice from '../../components/slices/TextWithImageSlice'
-import EventsSlice from '../../components/slices/EventsSlice'
-import { useApp } from '../../components/context/AppContext'
+import { getString, Strings } from 'src/locales'
+import Container, { ContainerVariant } from 'src/components/common/Container'
+import GalleriesOverviewType from 'src/components/galleries/types/GalleriesOverviewType'
+import UATGalleriesSlice from 'src/components/slices/UATGalleriesSlice'
+import TextWithImageSlice from 'src/components/slices/TextWithImageSlice'
+import EventsSlice from 'src/components/slices/EventsSlice'
+import { useApp } from 'src/components/context/AppContext'
 import { useEffect } from 'react'
-import { setLocalizationData } from '../../utils/localizationsUtils'
+import { setLocalizationData } from 'src/utils/localizationsUtils'
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next'
+import { chakra } from '@chakra-ui/react'
 
 type PageProps = {
   data: GalleriesOverviewType
@@ -30,17 +31,20 @@ export default function GalleriesOverview({ data }: PageProps) {
 
   const firstEvent =
     data.events && data.events.length > 0 ? data.events[0] : null
+
   return (
-    <div className={styles.container}>
+    <chakra.div w="full" className={styles.container}>
       <Head>
         <title>{data.title}</title>
       </Head>
+
       <Container variant={ContainerVariant.Black}>
         <div className={styles.top_container}>
           <div className={styles.title}>{data.title}</div>
           <div className={styles.description}>{data.description}</div>
         </div>
       </Container>
+
       <Container variant={ContainerVariant.White} isHigh>
         <div className={styles.bottom_container}>
           {data.galleries_uats ? (
@@ -50,6 +54,7 @@ export default function GalleriesOverview({ data }: PageProps) {
           )}
         </div>
       </Container>
+
       <Container variant={ContainerVariant.White}>
         {firstEvent ? (
           <TextWithImageSlice
@@ -75,7 +80,7 @@ export default function GalleriesOverview({ data }: PageProps) {
         )}
         <EventsSlice events={data.events} />
       </Container>
-    </div>
+    </chakra.div>
   )
 }
 

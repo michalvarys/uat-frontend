@@ -3,24 +3,24 @@ import axios from 'axios'
 import Head from 'next/head'
 import styles from './studies.module.scss'
 
-import Container, { ContainerVariant } from '../../components/common/Container'
-import FieldOfStudyType from '../../components/fields/types/FieldOfStudyType'
-import FieldOfStudyHeader from '../../components/fields/FieldOfStudyHeader'
-import MultiGallerySlice from '../../components/slices/MultiGallerySlice'
-import TextWithImageType from '../../components/slices/types/TextWithImageType'
-import TextWithImageSlice from '../../components/slices/TextWithImageSlice'
-import TeachersCarusel from '../../components/teachers/TeachersCarusel'
+import Container, { ContainerVariant } from 'src/components/common/Container'
+import FieldOfStudyType from 'src/components/fields/types/FieldOfStudyType'
+import FieldOfStudyHeader from 'src/components/fields/FieldOfStudyHeader'
+import MultiGallerySlice from 'src/components/slices/MultiGallerySlice'
+import TextWithImageType from 'src/components/slices/types/TextWithImageType'
+import TextWithImageSlice from 'src/components/slices/TextWithImageSlice'
+import TeachersCarusel from 'src/components/teachers/TeachersCarusel'
 
-import { REVALIDATE_TIME } from '../../consts/app.consts'
-import Subjects from '../../components/fields/Subjects'
-import { useApp } from '../../components/context/AppContext'
-import { setLocalizationData } from '../../utils/localizationsUtils'
+import { REVALIDATE_TIME } from 'src/constants'
+import Subjects from 'src/components/fields/Subjects'
+import { useApp } from 'src/components/context/AppContext'
+import { setLocalizationData } from 'src/utils/localizationsUtils'
 import {
   GetStaticPathsResult,
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next'
-import { localesToParams } from '../../utils/params'
+import { localesToParams } from 'src/utils/params'
 
 type FieldOfStudyProps = {
   study: FieldOfStudyType
@@ -122,9 +122,11 @@ export async function getStaticProps({
 
   try {
     const { data: study } = await axios(url)
+
     if (!study) {
       return {
         notFound: true,
+        revalidate: REVALIDATE_TIME,
       }
     }
 

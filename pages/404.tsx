@@ -1,13 +1,13 @@
 import Image from 'next/image'
 import styles from './404.module.scss'
-import { getString, Strings } from '../locales'
+import { getString, Strings } from 'src/locales'
 import { useRouter } from 'next/router'
-import LogoIcon from '../public/icons/common/logo-black.svg'
+import LogoIcon from 'public/icons/common/logo-black.svg'
 import ButtonLink, {
   ButtonLinkImageType,
-} from '../components/navigation/ButtonLink'
+} from 'src/components/navigation/ButtonLink'
 
-import Container, { ContainerVariant } from '../components/common/Container'
+import Container, { ContainerVariant } from 'src/components/common/Container'
 
 export default function NotFountPage() {
   const router = useRouter()
