@@ -14,23 +14,7 @@
   
 
   .left{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex: 0 1 40%;
-    padding: 80px;
-    padding-top: 0;
-    z-index: 2;
-
     .text_section {
-      .header {
-        margin-top: 0;
-        margin-bottom: 0px;
-        text-transform: uppercase;
-        line-height: 1.0;
-        font-size: 72px;
-        white-space: pre-wrap;
-      }
       .code_section {
         display: flex;
         flex-direction: row;
@@ -117,17 +101,6 @@
     height: auto;
     margin-bottom: 0;
 
-    .left {
-      padding: 80px 40px;
-      max-width: 660px;
-
-      .text_section {
-        .header {
-          font-size: 64px;
-        }
-      }
-    }
-
     .right {
       max-height: 75vh;
       width: 100%;
@@ -138,11 +111,7 @@
 
   @media (max-width: $small) {
     .left {
-      padding: 60px 20px;
       .text_section {
-        .header {
-          font-size: 40px;
-        }
         .code_section {
           flex-direction: column;
           .badge {

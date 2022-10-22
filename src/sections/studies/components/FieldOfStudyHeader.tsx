@@ -9,6 +9,13 @@ import ButtonLink, {
   ButtonLinkVariant,
 } from 'src/components/navigation/ButtonLink'
 import { FieldOfStudyType } from 'src/types/fieldsOfStudy'
+import {
+  chakra,
+  Flex,
+  useBreakpoint,
+  useBreakpointValue,
+} from '@chakra-ui/react'
+import { useMemo } from 'react'
 
 type Props = {
   data: FieldOfStudyType
@@ -57,9 +64,33 @@ export const FieldOfStudyHeader = ({ data }: Props) => {
     </div>
   )
 
+  const splitLongTitle = useBreakpointValue({ base: false, lg: true })
+
+  const title = useMemo(
+    () =>
+      splitLongTitle
+        ? data.name
+            .split(' ')
+            .map((word) =>
+              word.length > 10
+                ? `${word.slice(0, 8)}- ${word.substring(8)}`
+                : word
+            )
+            .join(' ')
+        : data.name,
+    [data.name, splitLongTitle]
+  )
+
   const renderTextSection = () => (
     <div className={styles.text_section}>
-      <h1 className={styles.header}>{data.name}</h1>
+      <chakra.h1
+        fontSize={['4xl', '5xl', '7xl', '8xl']}
+        lineHeight="100%"
+        textTransform="uppercase"
+        my={0}
+      >
+        {title}
+      </chakra.h1>
 
       <div className={styles.code_section}>
         {renderStudyBadge()}
@@ -89,7 +120,17 @@ export const FieldOfStudyHeader = ({ data }: Props) => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.left}>{renderTextSection()}</div>
+      <Flex
+        className={styles.left}
+        justifyContent="center"
+        alignItems="center"
+        zIndex={2}
+        flex="0 1 40%"
+        width={{ xs: '100%', lg: '660px' }}
+        padding={['60px 20px', '80px 40px', '0 80px 80px']}
+      >
+        {renderTextSection()}
+      </Flex>
       <div className={styles.right}>{renderImage()}</div>
     </div>
   )

@@ -78,3 +78,8 @@ body::-webkit-scrollbar-thumb {
   border-radius: 16px;
   border: 4px solid #000000;
 }
+
+#__next {
+  width: 100vw;
+    overflow: hidden;
+}
