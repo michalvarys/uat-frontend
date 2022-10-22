@@ -17,6 +17,7 @@
     "@chakra-ui/react": "^2.3.5",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
+    "@fontsource/inter": "^4.5.14",
     "axios": "^0.21.4",
     "classnames": "^2.3.1",
     "framer-motion": "6",

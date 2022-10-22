@@ -7,8 +7,8 @@ import { AppProvider } from 'src/components/context/AppContext'
 import { ThemeProvider } from 'src/theme/ThemeProvider'
 import { BASE_URL } from 'src/constants'
 
-import 'src/styles/globals.css'
-import { chakra } from '@chakra-ui/react'
+import '@fontsource/inter'
+import { Fonts } from 'src/theme/fonts'
 
 axios.defaults.baseURL = BASE_URL
 
@@ -16,6 +16,7 @@ function App({ Component, pageProps }: AppProps) {
   const { locales, locale, defaultLocale } = useRouter()
   return (
     <ThemeProvider>
+      <Fonts />
       <AppProvider langs={locales || []} lang={locale || defaultLocale || ''}>
         <>
           <div id="modal-root" />

@@ -1,123 +1,116 @@
 import Image from 'next/image'
-
-import styles from './FieldOfStudyHeader.module.scss'
-
 import { transformLink } from 'src/utils/link'
 import { ContainerVariant } from 'src/components/common/Container'
-import ButtonLink, {
-  ButtonLinkImageType,
-  ButtonLinkVariant,
-} from 'src/components/navigation/ButtonLink'
 import { FieldOfStudyType } from 'src/types/fieldsOfStudy'
-import {
-  chakra,
-  Flex,
-  useBreakpoint,
-  useBreakpointValue,
-} from '@chakra-ui/react'
-import { useMemo } from 'react'
+import { chakra, Flex } from '@chakra-ui/react'
+import { HeaderBadge } from './HeaderBadge'
+import { HeaderButton } from './HeaderButtons'
 
 type Props = {
   data: FieldOfStudyType
 }
 
 export const FieldOfStudyHeader = ({ data }: Props) => {
-  const renderButtons = (buttons: any[]) => {
-    return (
-      <div className={styles.buttons}>
-        {buttons.map((item: any) => (
-          <div key={`link-=${item.id}`}>
-            <ButtonLink
-              imageType={
-                item.__component.includes('download')
-                  ? ButtonLinkImageType.Download
-                  : ButtonLinkImageType.Arrow
-              }
-              title={item.title}
-              path={item.url || item.path}
-              variant={ButtonLinkVariant.Black}
-            />
-          </div>
-        ))}
-      </div>
-    )
-  }
-
-  const renderStudyBadge = () => (
-    <div className={styles.badge}>
-      <div className={styles.icon}>
-        {data.icon_svg && (
-          <Image
-            alt={data.icon_svg.alternativeText}
-            src={transformLink(data.icon_svg.url)}
-            width={44}
-            height={44}
-            layout={'fixed'}
-            objectFit={'contain'}
-            objectPosition={'center center'}
-          />
-        )}
-      </div>
-      <div className={styles.code}>
-        <span>{data.code}</span>
-      </div>
-    </div>
-  )
-
-  const renderTextSection = () => (
-    <div className={styles.text_section}>
-      <chakra.h1
-        fontSize={['4xl', '5xl', '6xl', '7xl']}
-        lineHeight="100%"
-        textTransform="uppercase"
-        wordBreak="break-word"
-        minWidth="200px"
-        my={0}
-      >
-        {data.name}
-      </chakra.h1>
-
-      <div className={styles.code_section}>
-        {renderStudyBadge()}
-        <span
-          className={styles.short_description}
-        >{`${data.short_description}`}</span>
-      </div>
-      <span className={styles.description}>{data.description}</span>
-      <div className={styles.buttons}>
-        {data.buttons && data.buttons.length > 0 && renderButtons(data.buttons)}
-      </div>
-    </div>
-  )
-
-  const renderImage = () =>
-    data.image && (
-      <Image
-        alt={data.image.alternativeText}
-        src={transformLink(data.image.url)}
-        width={data.image.width}
-        height={data.image.height}
-        layout={'responsive'}
-        objectFit={'cover'}
-        objectPosition={'left top'}
-      />
-    )
-
   return (
-    <div className={styles.container}>
+    <Flex
+      position="relative"
+      flexDir={{ base: 'column-reverse', lg: 'row' }}
+      h={{ base: 'auto', lg: 'inherit' }}
+      alignItems={{ base: 'flex-start', lg: 'stretch' }}
+      minHeight="calc(100vh - 98px)"
+      mb={{ base: 0, lg: 40 }}
+      overflow="hidden"
+      sx={{
+        // Don't sretch the header across large pages
+        '@media (min-height: 1280px)': {
+          minHeight: '1240px',
+        },
+      }}
+    >
       <Flex
-        className={styles.left}
-        justifyContent="center"
-        alignItems="center"
+        placeItems="center"
         zIndex={2}
-        flex={{ base: '0 1 62%', lg: '0 1 52%' }}
+        flex={{ base: '0 1 62%', lg: '0 1 48%' }}
         width={{ xs: '100%', lg: '660px' }}
         padding={['60px 20px', '80px 40px', '0 0 80px 80px']}
       >
-        {renderTextSection()}
+        <Flex flexDir="column" justifyContent="flex-end" h="full">
+          <chakra.h1
+            fontSize={['4xl', '5xl', '6xl', '7xl']}
+            lineHeight="100%"
+            textTransform="uppercase"
+            wordBreak="break-word"
+            minWidth="200px"
+            my={0}
+          >
+            {data.name}
+          </chakra.h1>
+
+          <Flex
+            flexDir={{ base: 'column', sm: 'row' }}
+            alignItems="stretch"
+            pt={4}
+          >
+            <HeaderBadge code={data?.code} icon={data?.icon_svg} />
+            <chakra.span
+              display="flex"
+              flex="1 1"
+              alignSelf="center"
+              color="brand.500"
+              fontFamily="writer"
+              fontWeight="black"
+              textTransform="uppercase"
+              whiteSpace="pre-wrap"
+              py={{ base: 4, sm: 0 }}
+              pl={{ base: 0, sm: 4 }}
+            >
+              {data?.short_description || ''}
+            </chakra.span>
+          </Flex>
+
+          <chakra.span
+            display="flex"
+            flex="0 1 50%"
+            pt={{ base: 6, sm: 4 }}
+            whiteSpace="pre-wrap"
+            fontSize="md"
+          >
+            {data.description}
+          </chakra.span>
+
+          <Flex flexWrap="wrap" w="full" gap="20px" pt={8}>
+            {data.buttons?.filter(Boolean).map((button) => (
+              <div key={`link-=${button.id}`}>
+                <HeaderButton {...button} />
+              </div>
+            ))}
+          </Flex>
+        </Flex>
       </Flex>
-      <div className={styles.right}>{renderImage()}</div>
-    </div>
+
+      <Flex
+        position={{ base: 'relative', lg: 'absolute' }}
+        overflow={{ base: 'hidden', lg: 'inherit' }}
+        w={{ base: 'full', lg: '60%' }}
+        top={0}
+        right={0}
+        h="full"
+        maxH={{ base: '42vh', md: '75vh', lg: '100%' }}
+        sx={{ '> div': { width: '100%', height: '100%' } }}
+      >
+        {data.image && (
+          <Image
+            alt={data.image.alternativeText}
+            src={transformLink(data.image.url)}
+            width={data.image.width}
+            height={data.image.height}
+            layout="responsive"
+            objectFit="cover"
+            objectPosition="left top"
+          />
+        )}
+      </Flex>
+    </Flex>
   )
 }
 
