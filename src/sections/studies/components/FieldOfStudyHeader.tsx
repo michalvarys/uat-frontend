@@ -67,7 +67,7 @@ export const FieldOfStudyHeader = ({ data }: Props) => {
   const renderTextSection = () => (
     <div className={styles.text_section}>
       <chakra.h1
-        fontSize={['4xl', '5xl', '7xl', '8xl']}
+        fontSize={['4xl', '5xl', '6xl', '7xl']}
         lineHeight="100%"
         textTransform="uppercase"
         wordBreak="break-word"
