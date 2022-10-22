@@ -12,6 +12,9 @@
   margin-bottom: 160px;
   overflow: hidden;
   
+  @media (min-height: 1280px) {
+    min-height: 1240px;
+  }
 
   .left{
     .text_section {
