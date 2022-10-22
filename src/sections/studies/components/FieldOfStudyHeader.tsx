@@ -30,9 +30,9 @@ export const FieldOfStudyHeader = ({ data }: Props) => {
       <Flex
         placeItems="center"
         zIndex={2}
-        flex={{ base: '0 1 62%', lg: '0 1 48%' }}
+        flex={{ base: '0 1 62%', lg: '0 1 48%', '2xl': '0 1 40%' }}
         width={{ xs: '100%', lg: '660px' }}
-        padding={['60px 20px', '80px 40px', '0 0 80px 80px']}
+        padding={['60px 20px', '80px 40px', '60px 40px', '0 0 80px 80px']}
       >
         <Flex flexDir="column" justifyContent="flex-end" h="full">
           <chakra.h1
