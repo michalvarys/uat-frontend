@@ -1,12 +1,10 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-
-import styles from './FieldOfStudyCarusel.module.scss'
-
-import FieldOfStudyType from '../types/FieldOfStudyType'
 import { transformLink } from 'src/utils/link'
+import { FieldOfStudyType } from 'src/types/fieldsOfStudy'
 
 import ArrowIcon from 'public/icons/common/arrow_right.svg'
+import { Flex } from '@chakra-ui/react'
 
 type Props = {
   fields: FieldOfStudyType[]
@@ -24,7 +22,17 @@ const FieldItem = ({ field }: FieldItemPros) => {
   }
 
   return (
-    <div onClick={onSelect} className={styles.item}>
+    <Flex
+      flexDirection="column"
+      justifyContent="space-between"
+      h="210px"
+      flex={1}
+      border="2px solid black"
+      borderRight={0}
+      bgColor="whw"
+      onClick={onSelect}
+      className={styles.item}
+    >
       <div className={styles.content}>
         <div className={styles.image}>
           {field.icon_svg && (
@@ -41,16 +49,14 @@ const FieldItem = ({ field }: FieldItemPros) => {
       <div className={styles.arrow}>
         <Image src={ArrowIcon} alt="arrow" />
       </div>
-    </div>
+    </Flex>
   )
 }
 
-const FieldOfStudyCarusel = ({ fields }: Props) => {
+export const FieldOfStudyCarusel = ({ fields }: Props) => {
   return (
     <div className={styles.container}>
       {fields.map((item) => item && <FieldItem key={item.id} field={item} />)}
     </div>
   )
 }
-
-export default FieldOfStudyCarusel

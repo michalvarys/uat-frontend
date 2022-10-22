@@ -3,18 +3,18 @@ import Image from 'next/image'
 import styles from './FieldOfStudyHeader.module.scss'
 
 import { transformLink } from 'src/utils/link'
+import { ContainerVariant } from 'src/components/common/Container'
 import ButtonLink, {
-  ButtonLinkVariant,
   ButtonLinkImageType,
-} from '../../navigation/ButtonLink'
-import { ContainerVariant } from '../../common/Container'
-import FieldOfStudyType from '../types/FieldOfStudyType'
+  ButtonLinkVariant,
+} from 'src/components/navigation/ButtonLink'
+import { FieldOfStudyType } from 'src/types/fieldsOfStudy'
 
 type Props = {
   data: FieldOfStudyType
 }
 
-const FieldOfStudyHeader = ({ data }: Props) => {
+export const FieldOfStudyHeader = ({ data }: Props) => {
   const renderButtons = (buttons: any[]) => {
     return (
       <div className={styles.buttons}>
@@ -101,5 +101,3 @@ FieldOfStudyHeader.defaultProps = {
   extraTextTopSpace: 0,
   variant: ContainerVariant.White,
 }
-
-export default FieldOfStudyHeader
