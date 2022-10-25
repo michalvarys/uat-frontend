@@ -1,4 +1,4 @@
-import type { ShortTextType } from '../../fields/types/SubjectsType'
+import { ShortTextType } from 'src/types/fieldsOfStudy'
 
 type ApplicationsSectionType = {
   id: number

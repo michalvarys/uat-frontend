@@ -1,4 +1,3 @@
-import { ShortTextType } from '../../fields/types/SubjectsType'
 import ApplicationsAtUniversityType, {
   ApplicationsSectionType,
 } from '../types/ApplicationsAtUniversityType'
@@ -21,7 +20,7 @@ const ApplicationsAtUniversity = ({ data }: Props) => {
           <div className={styles.sectionContainer} key={section.id}>
             <div className={styles.sectionTitle}>{section.title}</div>
             <div>
-              {section.list.map((item: ShortTextType) => (
+              {section.list.map((item) => (
                 <div key={item.id} className={styles.item}>
                   {item.text}
                 </div>

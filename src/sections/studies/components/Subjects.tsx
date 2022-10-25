@@ -4,16 +4,13 @@ import parse from 'html-react-parser'
 import styles from './Subjects.module.scss'
 
 import { transformLink } from 'src/utils/link'
-import SubjectsType, {
-  ShortTextType,
-  SubjectsSectionType,
-} from '../types/SubjectsType'
+import { SubjectsType } from 'src/types/fieldsOfStudy'
 
 type Props = {
   subjects: SubjectsType
 }
 
-const Subjects = ({ subjects }: Props) => {
+export const Subjects = ({ subjects }: Props) => {
   const renderSponsor = () => (
     <div className={styles.sponsor_container}>
       {subjects.sponsor && subjects.sponsor.image && (
@@ -29,13 +26,13 @@ const Subjects = ({ subjects }: Props) => {
   )
 
   const renderSections = () => {
-    return subjects.sections.map((item: SubjectsSectionType) => (
+    return subjects.sections.map((item) => (
       <div
         className={styles.subjects_section_contianer}
         key={`subject-section-${item.id}`}
       >
         <div className={styles.subjects_header}>{item.title}</div>
-        {item.list.map((subject: ShortTextType) => (
+        {item.list.map((subject) => (
           <div className={styles.subject} key={`subject-text-${subject.id}`}>
             {subject.text}
           </div>
@@ -52,5 +49,3 @@ const Subjects = ({ subjects }: Props) => {
     </div>
   )
 }
-
-export default Subjects

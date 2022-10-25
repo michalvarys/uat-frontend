@@ -1,26 +1,18 @@
 import { useEffect } from 'react'
 import axios from 'axios'
 import Head from 'next/head'
-import styles from './studies.module.scss'
-
-import Container, { ContainerVariant } from 'src/components/common/Container'
-import FieldOfStudyType from 'src/components/fields/types/FieldOfStudyType'
-import FieldOfStudyHeader from 'src/components/fields/FieldOfStudyHeader'
-import MultiGallerySlice from 'src/components/slices/MultiGallerySlice'
-import TextWithImageType from 'src/components/slices/types/TextWithImageType'
-import TextWithImageSlice from 'src/components/slices/TextWithImageSlice'
-import TeachersCarusel from 'src/components/teachers/TeachersCarusel'
-
-import { REVALIDATE_TIME } from 'src/constants'
-import Subjects from 'src/components/fields/Subjects'
-import { useApp } from 'src/components/context/AppContext'
-import { setLocalizationData } from 'src/utils/localizationsUtils'
 import {
   GetStaticPathsResult,
   GetStaticPropsContext,
   GetStaticPropsResult,
 } from 'next'
+
+import { REVALIDATE_TIME } from 'src/constants'
+import { useApp } from 'src/components/context/AppContext'
+import { setLocalizationData } from 'src/utils/localizationsUtils'
 import { localesToParams } from 'src/utils/params'
+import { StudiesSection } from 'src/sections/studies/StudiesSection'
+import { FieldOfStudyType } from 'src/types/fieldsOfStudy'
 
 type FieldOfStudyProps = {
   study: FieldOfStudyType
@@ -39,47 +31,15 @@ export default function FieldOfStudy({ study }: FieldOfStudyProps) {
   }, [study])
 
   if (!study) {
-    return <></>
+    return null
   }
 
-  const renderSlice = (slice: any, index: number) => {
-    switch (slice.__component) {
-      case 'shared.text-with-image':
-        return (
-          <TextWithImageSlice
-            key={`text-with-image-${slice.id}`}
-            data={slice}
-            extraTextTopSpace={120}
-          />
-        )
-      case 'shared.subjects':
-        return <Subjects key={`subjects-${slice.id}`} subjects={slice} />
-      default:
-        return null
-    }
-  }
   return (
     <>
       <Head>
         <title>{study.name}</title>
       </Head>
-      <Container variant={ContainerVariant.Black} isHigh>
-        <FieldOfStudyHeader data={study} />
-
-        {study.teachers && (
-          <TeachersCarusel isTitle teachers={study.teachers} />
-        )}
-      </Container>
-      <Container variant={ContainerVariant.White}>
-        <div>
-          {study.content.map((item: TextWithImageType, index: number) =>
-            renderSlice(item, index)
-          )}
-        </div>
-        <div className={styles.galleries_container}>
-          <MultiGallerySlice galleries={study.galleries} isSmall />
-        </div>
-      </Container>
+      <StudiesSection {...study} />
     </>
   )
 }

@@ -1,4 +1,3 @@
-import classNames from 'classnames'
 import styles from './ApplicantsSection.module.scss'
 
 import { MenuSection } from '../../../Header'
@@ -6,8 +5,8 @@ import ConditionalLinkType from '../../../../../navigation/types/ConditionalLink
 
 import LinksSection from '../LinksSection'
 import InternalLink from '../../../../../navigation/InternalLink'
-import FieldOfStudyType from '../../../../../fields/types/FieldOfStudyType'
 import FieldOfStudyButton from '../../FieldOfStudyButton'
+import { FieldOfStudyType } from 'src/types/fieldsOfStudy'
 
 type Props = {
   data: MenuSection & {
@@ -24,7 +23,7 @@ const ApplicantsSection = ({ data }: Props) => {
         <div className={styles.top_container}>
           <LinksSection links={data.links} />
           <div className={styles.buttons}>
-            {data.studies.map((item: FieldOfStudyType) => (
+            {data.studies.map((item) => (
               <FieldOfStudyButton key={item.id} study={item} />
             ))}
           </div>

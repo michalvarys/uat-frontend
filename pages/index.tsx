@@ -10,13 +10,12 @@ import ImageType from 'src/components/common/types/ImageType'
 import { YouTubeVideoWithTextType } from 'src/components/slices/types/YouTubeVideoType'
 import NewsType from 'src/components/news/types/NewsType'
 import TextWithImageType from 'src/components/slices/types/TextWithImageType'
-import FieldOfStudyType from 'src/components/fields/types/FieldOfStudyType'
 
 import HeaderSlice from 'src/components/slices/HeaderSlice'
 import YoutubePlayerWithTextSlice from 'src/components/slices/YoutubePlayerWithTextSlice'
 import TextWithImageSlice from 'src/components/slices/TextWithImageSlice'
 import NewsSlice from 'src/components/slices/NewsSlice'
-import FieldOfStudyCarusel from 'src/components/fields/FieldOfStudyCarusel'
+import FieldOfStudyCarusel from 'src/sections/studies/components/FieldOfStudyCarusel'
 import FestivalType from 'src/components/festivals/types/FestivalType'
 import FestivalsSlice from 'src/components/slices/FestivalsSlice'
 import GalleriesInfoType from 'src/components/slices/types/GalleriesInfoType'
@@ -27,6 +26,7 @@ import SocialLinkType from 'src/types/data/SocialLinkType'
 import { GetStaticPropsContext, GetStaticPropsResult } from 'next'
 import { REVALIDATE_TIME } from 'src/constants'
 import { chakra } from '@chakra-ui/react'
+import { FieldOfStudyType } from 'src/types/fieldsOfStudy'
 
 type HomePageProps = {
   cover_image: ImageType

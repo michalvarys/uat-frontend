@@ -3,10 +3,10 @@ import { useRouter } from 'next/router'
 
 import styles from './FieldOfStudyCarusel.module.scss'
 
-import FieldOfStudyType from '../types/FieldOfStudyType'
 import { transformLink } from 'src/utils/link'
 
 import ArrowIcon from 'public/icons/common/arrow_right.svg'
+import { FieldOfStudyType } from 'src/types/fieldsOfStudy'
 
 type Props = {
   fields: FieldOfStudyType[]

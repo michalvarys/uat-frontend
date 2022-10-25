@@ -1,14 +1,19 @@
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import { PropsWithChildren } from 'react'
 import { colors, brand } from './colors'
+import { fonts } from './fonts'
 
 export const theme = extendTheme({
   colors: {
     ...colors,
     brand,
   },
+  fonts,
   styles: {
     global: {
+      '#__next': {
+        overflow: 'hidden',
+      },
       'html, body': {
         padding: 0,
         margin: 0,
@@ -20,7 +25,7 @@ export const theme = extendTheme({
       },
       body: {
         scrollbarWdth: 'auto',
-        scrollbarColor: '#FF7A00 #000000',
+        scrollbarColor: `${brand['400']} ${colors.black}00`,
       },
       h1: {
         fontSize: '70px',
