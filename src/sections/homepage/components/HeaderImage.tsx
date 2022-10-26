@@ -1,7 +1,8 @@
 import Image, { ImageProps } from 'next/image'
 import { chakra, useBreakpointValue } from '@chakra-ui/react'
-import { transformLink } from 'src/utils/link'
+
 import ImageType from 'src/components/common/types/ImageType'
+import { transformLink } from 'src/utils/link'
 import { useLandscape } from 'src/hooks/responsivity'
 
 type Props = {
@@ -43,9 +44,12 @@ export function HeaderImage({ image }: Props) {
           transform: imgTransform,
           top: isLandscape ? '-50% !important' : 0,
         },
+        '> div': {
+          minH: 'full',
+        },
       }}
     >
-      {image ? (
+      {image && (
         <Image
           src={transformLink(image.url)}
           alt={image.alternativeText}
@@ -54,8 +58,6 @@ export function HeaderImage({ image }: Props) {
           objectFit={imgFit}
           objectPosition={imgPos}
         />
-      ) : (
-        <></>
       )}
     </chakra.div>
   )
