@@ -4,6 +4,7 @@ import ButtonLink, {
 } from 'src/components/navigation/ButtonLink'
 import GallerySlice from 'src/components/slices/GallerySlice'
 import RichTextSlice from 'src/components/slices/RichTextSlice'
+import { TabsSclice } from 'src/components/slices/TabsSlice'
 import YoutubePlayerSlice from 'src/components/slices/YoutubePlayerSlice'
 import TeachersCarusel from 'src/components/teachers/TeachersCarusel'
 
@@ -67,6 +68,13 @@ export function Section({ section }) {
           <TeachersCarusel teachers={section.teachers} isTitle={false} />
         </chakra.div>
       )
+    case 'shared.tabs': {
+      return (
+        <>
+          <TabsSclice {...section} />
+        </>
+      )
+    }
   }
 
   return null

@@ -19,6 +19,7 @@ const sk = {
   WHO_IS_TEACHING: 'Kto ťa bude učiť',
   PAGE_NOT_FOUND: 'Stránka neexistuje',
   PAGE_NOT_FOUND_BUTTON: 'Prejsť na hlavnú stránku',
+  READ_MORE: 'Čítaj viac',
 }
 
 export default sk

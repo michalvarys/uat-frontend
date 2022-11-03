@@ -1,9 +1,38 @@
-import { ChakraProvider, extendTheme } from '@chakra-ui/react'
+import {
+  ChakraProvider,
+  extendTheme,
+  createMultiStyleConfigHelpers,
+} from '@chakra-ui/react'
 import { PropsWithChildren } from 'react'
 import { colors, brand } from './colors'
 import { fonts } from './fonts'
+import { tabsAnatomy } from '@chakra-ui/anatomy'
+
+const { definePartsStyle, defineMultiStyleConfig } =
+  createMultiStyleConfigHelpers(tabsAnatomy.keys)
+
+const tabsThemeBaseStyle = definePartsStyle({
+  tab: {
+    fontWeight: 'semibold',
+  },
+  tablist: {
+    button: {
+      _selected: {
+        color: 'white',
+        backgroundColor: 'orange.500',
+      },
+    },
+  },
+})
+
+const tabsTheme = defineMultiStyleConfig({
+  baseStyle: tabsThemeBaseStyle,
+})
 
 export const theme = extendTheme({
+  components: {
+    Tabs: tabsTheme,
+  },
   colors: {
     ...colors,
     brand,

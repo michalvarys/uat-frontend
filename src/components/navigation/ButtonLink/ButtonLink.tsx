@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link, { LinkProps } from 'next/link'
 
 import styles from './ButtonLink.module.scss'
 
@@ -16,9 +16,10 @@ import ImageButton, {
 
 type Props = {
   title: string
-  path: string
-  variant: ButtonLinkVariant
-  imageType: ButtonLinkImageType
+  path?: string
+  variant?: ButtonLinkVariant
+  imageType?: ButtonLinkImageType
+  link?: LinkProps
 }
 
 const getButtonVariant = (variant: ButtonLinkVariant): ImageButtonVariant => {
@@ -55,7 +56,13 @@ const getButtonIcon = (
   return icons[imageType] && icons[imageType][variant]
 }
 
-const ButtonLink = ({ imageType, title, path, variant }: Props) => {
+const ButtonLink = ({
+  imageType = ButtonLinkImageType.Arrow,
+  variant = ButtonLinkVariant.White,
+  path = '',
+  title,
+  link,
+}: Props) => {
   const url =
     imageType === ButtonLinkImageType.Download ? transformLink(path) : path
 
@@ -63,11 +70,11 @@ const ButtonLink = ({ imageType, title, path, variant }: Props) => {
   const icon = getButtonIcon(variant, imageType, isExternal)
 
   return (
-    <Link href={url.trim()} passHref>
+    <Link href={link?.href ?? url.trim()} locale={link?.locale} passHref>
       <a
         className={styles.container}
         target={
-          imageType === ButtonLinkImageType.Download || isExternal
+          !link && (imageType === ButtonLinkImageType.Download || isExternal)
             ? '_blank'
             : '_self'
         }

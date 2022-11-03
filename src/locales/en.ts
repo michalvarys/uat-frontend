@@ -19,6 +19,7 @@ const en = {
   WHO_IS_TEACHING: 'Who is going to teach you',
   PAGE_NOT_FOUND: 'Page not found',
   PAGE_NOT_FOUND_BUTTON: 'Go to home page',
+  READ_MORE: 'Read more',
 }
 
 export default en

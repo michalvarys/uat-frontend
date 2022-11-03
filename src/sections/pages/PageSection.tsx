@@ -5,8 +5,13 @@ import PageType from 'src/components/pages/types/PageType'
 import { parseSections } from './utils'
 import { Section } from './components/Section'
 import { chakra, Flex } from '@chakra-ui/react'
+import { useMemo } from 'react'
 
 export function PageSection(page: PageType) {
+  const sections = useMemo(() => {
+    return parseSections(page.sections).filter(Boolean)
+  }, [page.sections])
+
   return (
     <Container variant={ContainerVariant.White}>
       {page?.cover_image && (
@@ -32,11 +37,9 @@ export function PageSection(page: PageType) {
           </chakra.h1>
         )}
 
-        {parseSections(page.sections)
-          .filter(Boolean)
-          .map((section, index) => (
-            <Section section={section} key={section?.id || index} />
-          ))}
+        {sections.map((section, index) => (
+          <Section section={section} key={section?.id || index} />
+        ))}
       </Flex>
     </Container>
   )
