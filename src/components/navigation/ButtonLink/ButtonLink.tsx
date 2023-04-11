@@ -70,7 +70,7 @@ const ButtonLink = ({
   const icon = getButtonIcon(variant, imageType, isExternal)
 
   return (
-    <Link href={link?.href ?? url.trim()} locale={link?.locale} passHref>
+    <Link href={link?.href ? url?.trim() : '#'} locale={link?.locale} passHref>
       <a
         className={styles.container}
         target={
