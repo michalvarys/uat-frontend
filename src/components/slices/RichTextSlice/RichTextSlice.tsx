@@ -9,7 +9,7 @@ type Props = {
 
 function replace(node: DOMNode) {
   if (node.type === 'tag' && 'name' in node && /^h[1-3]$/.test(node.name)) {
-    const number = node.name.at(-1)
+    const number = node.name.charAt(-1)
     const size = 4 - Number(number)
 
     return (
