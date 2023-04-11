@@ -89,9 +89,11 @@ export default function NewsDetails({ news, ...rest }: NewsDetailsPageProps) {
         <title>{news.title}</title>
       </Head>
       <div className={styles.details_container}>
+        {/* Disable date above the title
         <span className={styles.date}>
           {moment(news.date).format('DD MMMM YYYY')}
-        </span>
+        </span> 
+        */}
         <div className={styles.title}>
           <h1 className={styles.header}>{news.title}</h1>
         </div>

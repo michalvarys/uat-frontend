@@ -19,7 +19,6 @@
     flex: 1;
     position: relative;
     width: 100%;
-    min-height: 162px;
   }
 
   .bottom_container {
@@ -55,7 +54,8 @@
     flex-direction: row;
   }
 
-  @media (max-width: $small) {
+  @media (max-width: $medium) {
+    flex-direction: column;
     .image {
       flex: 0 1 36%;
     }

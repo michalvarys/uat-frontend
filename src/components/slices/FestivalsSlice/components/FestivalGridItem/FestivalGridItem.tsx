@@ -6,6 +6,7 @@ import { transformLink } from 'src/utils/link'
 import FestivalType from '../../../../festivals/types/FestivalType'
 
 import ArrowIcon from 'public/icons/common/arrow_right.svg'
+import { useEffect, useRef, useState } from 'react'
 
 type Props = {
   festival: FestivalType
@@ -14,15 +15,20 @@ type Props = {
 
 const FestivalsGridItem = ({ festival, onSelect }: Props) => {
   const { thumbnail } = festival
+  const ref = useRef(null)
+  const image = thumbnail.formats.small
+
   return (
     <div className={styles.container} onClick={() => onSelect(festival)}>
-      <div className={styles.image}>
+      <div className={styles.image} ref={ref}>
         {thumbnail && (
           <Image
-            src={transformLink(thumbnail.url)}
-            layout={'fill'}
-            objectFit={'cover'}
+            src={transformLink(image.url)}
+            layout={'responsive'}
+            objectFit={'fill'}
             objectPosition={'center center'}
+            width={image.width}
+            height={image.height}
             alt={thumbnail.alternativeText}
           />
         )}
