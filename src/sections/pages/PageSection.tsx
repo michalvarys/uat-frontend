@@ -26,12 +26,18 @@ export function PageSection(page: PageType) {
         </chakra.div>
       )}
 
-      <Flex flexDirection="column" padding="80px" paddingBottom="200px">
+      <Flex
+        p={{ base: 2, md: '80px' }}
+        pt={{ base: 4, md: '80px' }}
+        pb={{ base: 2, md: '200px' }}
+        flexDirection="column"
+      >
         {page.title && (
           <chakra.h1
             textTransform="uppercase"
             marginLeft="-3px"
             lineHeight="109%"
+            fontSize={{ base: '2xl', md: '3xl', lg: '4xl' }}
           >
             {page.title}
           </chakra.h1>

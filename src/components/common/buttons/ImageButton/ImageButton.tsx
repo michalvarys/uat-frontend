@@ -2,6 +2,7 @@ import Image from 'next/image'
 
 import styles from './ImageButton.module.scss'
 import { ImageButtonVariant } from './ImageButtonVariant'
+import { chakra } from '@chakra-ui/react'
 
 type Props = {
   image: any
@@ -22,10 +23,11 @@ const getVariantStyle = (variant: ImageButtonVariant): string => {
 
 const ImageButton = ({ image, title, variant }: Props) => {
   return (
-    <div className={`${styles.container} ${getVariantStyle(variant)}`}>
-      <span className={styles.title}>{title}</span>
+    // TODO use chakra styles
+    <chakra.div className={`${styles.container}  ${getVariantStyle(variant)}`}>
+      <chakra.span className={styles.title}>{title}</chakra.span>
       <Image src={image} alt="icon" />
-    </div>
+    </chakra.div>
   )
 }
 

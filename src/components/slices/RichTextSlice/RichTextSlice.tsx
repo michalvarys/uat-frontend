@@ -1,4 +1,4 @@
-import { As, chakra, Heading } from '@chakra-ui/react'
+import { chakra, Heading } from '@chakra-ui/react'
 import parse, { domToReact, DOMNode } from 'html-react-parser'
 import RichTextType from '../../../types/data/RichTextType'
 import styles from './RichTextSlice.module.scss'
@@ -13,7 +13,11 @@ function replace(node: DOMNode) {
     const size = 4 - Number(number)
 
     return (
-      <Heading as="p" size={`${size > 1 ? size : ''}xl`} color="gray.900">
+      <Heading
+        as="p"
+        size={{ base: 'lg', md: '2xl', lg: `${size > 1 ? size : ''}xl` }}
+        color="gray.900"
+      >
         {/** eslint-disable-next-line @typescript-eslint/ban-ts-comment
          * @ts-ignore */}
         {domToReact(node.children, { replace })}
@@ -28,7 +32,11 @@ const RichTextSlice = ({ data }: Props) => {
   return (
     <div className={styles.container}>
       {data.title && (
-        <Heading as="h2" size="4xl" color="gray.900">
+        <Heading
+          as="h2"
+          size={{ base: 'lg', md: '2xl', lg: '4xl' }}
+          color="gray.900"
+        >
           {data.title}
         </Heading>
       )}

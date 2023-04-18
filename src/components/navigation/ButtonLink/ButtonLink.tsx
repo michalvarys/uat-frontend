@@ -10,6 +10,7 @@ import ArrowDarkIcon from 'public/icons/common/arrow_right.svg'
 import { isExternalLink, transformLink } from 'src/utils/link'
 import { ButtonLinkVariant } from './ButtonLinkVariant'
 import { ButtonLinkImageType } from './ButtonLinkImageType'
+import { chakra } from '@chakra-ui/react'
 import ImageButton, {
   ImageButtonVariant,
 } from 'src/components/common/buttons/ImageButton'
@@ -70,8 +71,12 @@ const ButtonLink = ({
   const icon = getButtonIcon(variant, imageType, isExternal)
 
   return (
-    <Link href={link?.href ? url?.trim() : '#'} locale={link?.locale} passHref>
-      <a
+    <Link
+      href={link?.href || url?.trim() || '#'}
+      locale={link?.locale}
+      passHref
+    >
+      <chakra.a
         className={styles.container}
         target={
           !link && (imageType === ButtonLinkImageType.Download || isExternal)
@@ -84,7 +89,7 @@ const ButtonLink = ({
           image={icon}
           variant={getButtonVariant(variant)}
         />
-      </a>
+      </chakra.a>
     </Link>
   )
 }
