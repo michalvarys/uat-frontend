@@ -4,7 +4,7 @@ import Image from 'next/image'
 import PageType from 'src/components/pages/types/PageType'
 import { parseSections } from './utils'
 import { Section } from './components/Section'
-import { chakra, Flex } from '@chakra-ui/react'
+import { chakra, Flex, Heading, Text } from '@chakra-ui/react'
 import { useMemo } from 'react'
 
 export function PageSection(page: PageType) {
@@ -33,14 +33,31 @@ export function PageSection(page: PageType) {
         flexDirection="column"
       >
         {page.title && (
-          <chakra.h1
-            textTransform="uppercase"
-            marginLeft="-3px"
-            lineHeight="109%"
-            fontSize={{ base: '2xl', md: '3xl', lg: '4xl' }}
+          <Heading
+            lineHeight={1.1}
+            fontWeight={600}
+            fontSize={{ base: '3xl', sm: '4xl', lg: '6xl' }}
+            ml="-8px"
+            mb="28px"
           >
-            {page.title}
-          </chakra.h1>
+            <Text
+              as={'span'}
+              position={'relative'}
+              _after={{
+                // eslint-disable-next-line quotes
+                content: "''",
+                width: 'full',
+                height: '30%',
+                position: 'absolute',
+                bottom: 1,
+                left: 0,
+                bg: 'orange.500',
+                zIndex: -1,
+              }}
+            >
+              {page.title}
+            </Text>
+          </Heading>
         )}
 
         {sections.map((section, index) => (

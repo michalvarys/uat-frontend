@@ -26,8 +26,8 @@ const FestivalSection = ({ data }: Props) => {
                 title={festival.title}
                 subtitle={festival.subtitle}
                 image={transformLink(festival.thumbnail.url)}
-                imageWidth={200}
-                imageHeight={70}
+                imageWidth={festival.thumbnail.width}
+                imageHeight={festival.thumbnail.height}
                 url={`/festivals/${festival.id}`}
               />
             )

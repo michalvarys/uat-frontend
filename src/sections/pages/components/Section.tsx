@@ -14,8 +14,7 @@ export function Section({ section }) {
       return (
         <chakra.div
           lineHeight="30px"
-          pt="28px"
-          pb="104px"
+          pb={{ base: '40px', md: '60px', lg: '84px' }}
           key={`section-rich-text-${section.id}`}
         >
           <RichTextSlice data={section} />
@@ -24,14 +23,20 @@ export function Section({ section }) {
 
     case 'shared.you-tube-player-slice':
       return (
-        <chakra.div pb="104px" key={`section-youtube-${section.id}`}>
+        <chakra.div
+          pb={{ base: '40px', md: '60px', lg: '84px' }}
+          key={`section-youtube-${section.id}`}
+        >
           <YoutubePlayerSlice data={section} />
         </chakra.div>
       )
 
     case 'shared.gallery':
       return (
-        <chakra.div pb="104px" key={`section-gallery-${section.id}`}>
+        <chakra.div
+          pb={{ base: '40px', md: '60px', lg: '84px' }}
+          key={`section-gallery-${section.id}`}
+        >
           <GallerySlice data={section} />
         </chakra.div>
       )
@@ -39,8 +44,8 @@ export function Section({ section }) {
     case 'navigation.section':
       return (
         <chakra.div
-          mt="-80px"
-          pb="104px"
+          mt={{ base: '-30px', md: '-50px', lg: '-70px' }}
+          pb={{ base: '40px', md: '60px', lg: '84px' }}
           display="flex"
           flexWrap="wrap"
           w="full"
@@ -64,10 +69,11 @@ export function Section({ section }) {
 
     case 'shared.teachers-slice':
       return (
-        <chakra.div mx="-80px" pb="240px">
+        <chakra.div mx="-80px" pb={{ base: '60px', md: '120px', lg: '240px' }}>
           <TeachersCarusel teachers={section.teachers} isTitle={false} />
         </chakra.div>
       )
+
     case 'shared.tabs': {
       return (
         <>

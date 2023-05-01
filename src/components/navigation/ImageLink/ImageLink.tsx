@@ -29,10 +29,12 @@ const ImageLink = ({
           alt=""
           width={imageWidth}
           height={imageHeight}
-          layout={'fill'}
-          objectFit={'cover'}
+          layout={'responsive'}
+          objectFit={'fill'}
+          objectPosition={'center center'}
         />
       </div>
+
       <div className={styles.text_container}>
         <span className={styles.title}>{title}</span>
         <span className={styles.subtitle}>{subtitle}</span>

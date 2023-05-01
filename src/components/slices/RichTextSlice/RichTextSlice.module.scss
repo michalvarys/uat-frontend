@@ -3,31 +3,16 @@
 
 .container {
   width: 100%;
-  .title {
-    font-size: $xl;
-    color: $uat_dark;
-  }
 
   .content {
-    font-size: $l;
-    color: $uat_dark;
-
     a {
       color: $uat_orange;
     }
 
     img {
+      display: initial;
       max-width: 100%;
-    }
-
-    h2 {
-      font-size: 48px;
-      line-height: 1.1;
-    }
-
-    h3 {
-      font-size: 28px;
-      line-height: 1.1;
+      margin-left: 4px;
     }
 
     figure {
