@@ -61,7 +61,7 @@ export function PageSection(page: PageType) {
         )}
 
         {sections.map((section, index) => (
-          <Section section={section} key={section?.id || index} />
+          <Section section={section} index={index} key={section?.id || index} />
         ))}
       </Flex>
     </Container>

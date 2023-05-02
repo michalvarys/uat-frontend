@@ -7,8 +7,10 @@ import RichTextSlice from 'src/components/slices/RichTextSlice'
 import { TabsSclice } from 'src/components/slices/TabsSlice'
 import YoutubePlayerSlice from 'src/components/slices/YoutubePlayerSlice'
 import TeachersCarusel from 'src/components/teachers/TeachersCarusel'
+import { CardsSlice } from 'src/components/slices/CardsSlice'
+import { CodeSlice } from 'src/components/slices/CodeSlice'
 
-export function Section({ section }) {
+export function Section({ section, index }) {
   switch (section.__component) {
     case 'shared.rich-text-with-title':
       return (
@@ -44,7 +46,9 @@ export function Section({ section }) {
     case 'navigation.section':
       return (
         <chakra.div
-          mt={{ base: '-30px', md: '-50px', lg: '-70px' }}
+          mt={
+            index > 1 ? { base: '-30px', md: '-50px', lg: '-70px' } : undefined
+          }
           pb={{ base: '40px', md: '60px', lg: '84px' }}
           display="flex"
           flexWrap="wrap"
@@ -78,6 +82,22 @@ export function Section({ section }) {
       return (
         <>
           <TabsSclice {...section} />
+        </>
+      )
+    }
+
+    case 'shared.code': {
+      return (
+        <>
+          <CodeSlice {...section} />
+        </>
+      )
+    }
+
+    case 'shared.cards': {
+      return (
+        <>
+          <CardsSlice {...section} />
         </>
       )
     }

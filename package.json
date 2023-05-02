@@ -14,7 +14,7 @@
     "precommit": "yarn lint:fix && yarn format:fix"
   },
   "dependencies": {
-    "@chakra-ui/react": "^2.3.5",
+    "@chakra-ui/react": "^2.6.0",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@fontsource/inter": "^4.5.14",
@@ -27,6 +27,7 @@
     "react": "^18.2.0",
     "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^18.2.0",
+    "react-markdown": "^8.0.7",
     "react-modal": "^3.14.3",
     "react-resize-detector": "^6.7.6",
     "react-youtube": "^7.13.1",

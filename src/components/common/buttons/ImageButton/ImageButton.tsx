@@ -24,7 +24,10 @@ const getVariantStyle = (variant: ImageButtonVariant): string => {
 const ImageButton = ({ image, title, variant }: Props) => {
   return (
     // TODO use chakra styles
-    <chakra.div className={`${styles.container}  ${getVariantStyle(variant)}`}>
+    <chakra.div
+      maxW={{ base: '90vw', lg: 'md' }}
+      className={`${styles.container}  ${getVariantStyle(variant)}`}
+    >
       <chakra.span className={styles.title}>{title}</chakra.span>
       <Image src={image} alt="icon" />
     </chakra.div>

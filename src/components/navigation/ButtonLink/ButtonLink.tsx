@@ -77,7 +77,6 @@ const ButtonLink = ({
       passHref
     >
       <chakra.a
-        className={styles.container}
         target={
           !link && (imageType === ButtonLinkImageType.Download || isExternal)
             ? '_blank'
