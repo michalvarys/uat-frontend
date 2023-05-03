@@ -30,10 +30,6 @@ module.exports = {
     return [
       {
         source: '/cms/:path*',
-        destination: `${API_IMAGES_URL}/:path*`,
-      },
-      {
-        source: '/cms/:path*',
         destination: `${API_BASE_URL}/:path*`,
       },
     ]

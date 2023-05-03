@@ -10,10 +10,13 @@ import { BASE_URL } from 'src/constants'
 import '@fontsource/inter'
 import { Fonts } from 'src/theme/fonts'
 
-axios.defaults.baseURL = BASE_URL
-
+axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL || BASE_URL
 function App({ Component, pageProps }: AppProps) {
   const { locales, locale, defaultLocale } = useRouter()
+  if (typeof window === 'undefined') {
+    return null
+  }
+
   return (
     <ThemeProvider>
       <Fonts />
@@ -52,6 +55,7 @@ App.getInitialProps = async ({
       },
     }
   } catch (e) {
+    console.log(e.config)
     return {
       pageProps: {
         menuData: {},
