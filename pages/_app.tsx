@@ -4,20 +4,27 @@ import axios from 'axios'
 
 import Layout from 'src/components/common/Layout'
 import { AppProvider } from 'src/components/context/AppContext'
-import { ThemeProvider } from 'src/theme/ThemeProvider'
+// import { ThemeProvider } from 'src/theme/ThemeProvider'
 import { BASE_URL } from 'src/constants'
 
 import '@fontsource/inter'
 import { Fonts } from 'src/theme/fonts'
+import dynamic from 'next/dist/shared/lib/dynamic'
+
+const ThemeProvider = dynamic(() => import('src/theme/ThemeProvider'), {
+  ssr: false,
+})
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL || BASE_URL
 function App({ Component, pageProps }: AppProps) {
   const { locales, locale, defaultLocale } = useRouter()
-  if (typeof window === 'undefined') {
-    return null
-  }
+  // if (typeof window === 'undefined') {
+  //   return null
+  // }
 
   return (
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     <ThemeProvider>
       <Fonts />
       <AppProvider langs={locales || []} lang={locale || defaultLocale || ''}>
@@ -25,6 +32,8 @@ function App({ Component, pageProps }: AppProps) {
           <div id="modal-root" />
 
           {pageProps.menuData && (
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             <Layout
               menu={pageProps.menuData.menu}
               footer={pageProps.menuData.footer}

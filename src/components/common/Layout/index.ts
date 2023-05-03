@@ -1,7 +1,7 @@
-export { default } from './Layout'
+// export { default } from './Layout'
 // TODO
-// import dynamic from 'next/dynamic'
+import dynamic from 'next/dynamic'
 
-// export default dynamic(() => import('./Layout'), {
-//   ssr: false,
-// })
+export default dynamic(() => import('./Layout'), {
+  ssr: false,
+})

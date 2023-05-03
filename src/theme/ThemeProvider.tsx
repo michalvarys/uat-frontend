@@ -76,3 +76,5 @@ export const theme = extendTheme({
 export function ThemeProvider({ children }: PropsWithChildren<unknown>) {
   return <ChakraProvider theme={theme}>{children}</ChakraProvider>
 }
+
+export default ThemeProvider

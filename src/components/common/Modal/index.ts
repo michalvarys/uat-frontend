@@ -1,1 +1,5 @@
-export { default } from './Modal'
+import dynamic from 'next/dynamic'
+
+export default dynamic(() => import('./Modal'), {
+  ssr: false,
+})

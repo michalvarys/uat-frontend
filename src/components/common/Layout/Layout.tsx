@@ -11,7 +11,7 @@ type Props = {
   menu: MenuSection[]
 }
 
-const Layout = ({ children, footer, menu }: Props) => {
+function Layout({ children, footer, menu }: Props) {
   return (
     <VStack spacing={0} w="full" align="stretch">
       <Header data={menu} />
