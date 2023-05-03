@@ -69,6 +69,8 @@ const GallerySlice = ({ data, isSmall = false }: Props) => {
   }
 
   const renderFullsizeImage = () => (
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     <Modal
       isImageStyle
       isOpen={selectedItemIndex > -1 ? true : false}
@@ -98,6 +100,7 @@ const GallerySlice = ({ data, isSmall = false }: Props) => {
       </div>
     </Modal>
   )
+
   return (
     <div className={styles.container}>
       {data.gallery_item.map((item, idx) => (

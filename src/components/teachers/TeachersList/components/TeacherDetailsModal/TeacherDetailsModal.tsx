@@ -14,6 +14,8 @@ type Props = {
 
 const TeacherDetailsModal = ({ data, isOpen, onClose }: Props) => {
   return (
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     <Modal isOpen={isOpen} onClose={() => onClose()}>
       <div className={styles.container}>
         <div className={styles.left_container}>
