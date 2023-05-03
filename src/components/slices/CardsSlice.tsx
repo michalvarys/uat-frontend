@@ -1,4 +1,13 @@
-import { chakra, Heading, Link, IconButton, Stack } from '@chakra-ui/react'
+import {
+  chakra,
+  Heading,
+  Card,
+  CardBody,
+  Link,
+  IconButton,
+  CardFooter,
+  Stack,
+} from '@chakra-ui/react'
 import Image from 'next/image'
 import { transformLink } from 'src/utils/link'
 
@@ -11,13 +20,12 @@ export function CardsSlice(section) {
       padding={5}
     >
       {section.CardItem?.map((item) => (
-        <Stack
-          dir="row"
+        <Card
           maxW={{ base: '100%', md: 'md', lg: 'lg' }}
           minW="300px"
           key={item.id}
         >
-          <chakra.div
+          <CardBody
             sx={{
               img: {
                 borderRadius: 'md',
@@ -32,9 +40,9 @@ export function CardsSlice(section) {
               layout="responsive"
               objectFit="cover"
             />
-          </chakra.div>
+          </CardBody>
 
-          <chakra.div p={5} pt={0} w="full">
+          <CardFooter p={5} pt={0} w="full">
             <Heading
               w="full"
               position="relative"
@@ -63,8 +71,8 @@ export function CardsSlice(section) {
                 />
               </Link>
             </Heading>
-          </chakra.div>
-        </Stack>
+          </CardFooter>
+        </Card>
       ))}
     </Stack>
   )
