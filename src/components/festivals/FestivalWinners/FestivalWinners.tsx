@@ -55,7 +55,6 @@ const WinnerItem = ({ winner }: WinnerItemPros) => {
 }
 
 const FieldOfStudyCarusel = ({ winners }: Props) => {
-  const [years] = useState(winners.map((item) => item.year))
   const [currentWinners, setCurrentWinners] = useState(0)
 
   const router = useRouter()
@@ -66,12 +65,13 @@ const FieldOfStudyCarusel = ({ winners }: Props) => {
         <div>
           <YearSwitcher
             current={currentWinners}
-            years={years}
+            years={winners.map((item) => item.year)}
             onSelect={(index: number) => setCurrentWinners(index)}
             variant={YearSwitcherVariant.WhiteBackground}
           />
         </div>
       </div>
+
       <div className={styles.card_container}>
         {winners[currentWinners].single_winner.map(
           (item) =>

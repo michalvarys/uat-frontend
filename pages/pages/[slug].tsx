@@ -80,7 +80,6 @@ export async function getStaticProps({
   try {
     const { data: pages } = await axios(url)
     const page = pages?.length > 0 ? pages[0] : null
-
     if (!page) {
       return {
         notFound: true,

@@ -88,15 +88,18 @@ export default function Festival({ festival }: FestivalsProps) {
         <div className={styles.top_container}>
           <div className={styles.text_section}>
             <h1 className={styles.header}>{festival.title}</h1>
+
             <div className={styles.slogan_section}>
               {renderStudyBadge()}
               <div className={styles.slogan}>{festival.slogan}</div>
             </div>
+
             <div className={styles.description}>{festival.description}</div>
             {festival.buttons &&
               festival.buttons.length > 0 &&
               renderButtons(festival.buttons)}
           </div>
+
           <div className={styles.image}>
             {cover_image ? (
               <Image
@@ -114,29 +117,26 @@ export default function Festival({ festival }: FestivalsProps) {
           </div>
         </div>
       </Container>
+
       <Container variant={ContainerVariant.Transparent} isHigh>
         {prizes && <FestivalPrizes prizes={prizes} />}
       </Container>
+
       <Container variant={ContainerVariant.White}>
         <div>
           <div>
-            {content ? (
-              content.map((item: TextWithImageType, index: number) => (
-                <TextWithImageSlice
-                  key={item.id}
-                  data={item}
-                  extraTextTopSpace={index === 0 ? 194 : 0}
-                />
-              ))
-            ) : (
-              <></>
-            )}
+            {content?.map((item: TextWithImageType, index: number) => (
+              <TextWithImageSlice
+                key={item.id}
+                data={item}
+                extraTextTopSpace={index === 0 ? 194 : 0}
+              />
+            )) || <></>}
           </div>
         </div>
+
         <div className={styles.winners_container}>
-          {winners && winners.length > 0 && (
-            <FestivalWinners winners={winners} />
-          )}
+          {winners?.length > 0 && <FestivalWinners winners={winners} />}
         </div>
       </Container>
     </>

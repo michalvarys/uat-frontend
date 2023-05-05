@@ -1,9 +1,6 @@
-import { useState } from 'react'
-
-import styles from './NewsList.module.scss'
-
-import NewsType from '../types/NewsType'
 import NewsItem from './components/NewsItem'
+import NewsType from '../types/NewsType'
+import styles from './NewsList.module.scss'
 
 type Props = {
   news: NewsType[]

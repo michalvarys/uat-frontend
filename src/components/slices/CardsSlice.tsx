@@ -6,25 +6,22 @@ import {
   Link,
   IconButton,
   CardFooter,
-  Stack,
+  SimpleGrid,
 } from '@chakra-ui/react'
 import Image from 'next/image'
 import { transformLink } from 'src/utils/link'
 
 export function CardsSlice(section) {
   return (
-    <Stack
-      direction="row"
-      minBlockSize="200px"
+    <SimpleGrid
+      gap={2}
+      spacing={2}
+      minInlineSize="300px"
+      columns={[1, 2, 3, null, 5]}
       pb={{ base: '40px', md: '60px', lg: '84px' }}
-      padding={5}
     >
       {section.CardItem?.map((item) => (
-        <Card
-          maxW={{ base: '100%', md: 'md', lg: 'lg' }}
-          minW="300px"
-          key={item.id}
-        >
+        <Card w="full" key={item.id}>
           <CardBody
             sx={{
               img: {
@@ -74,6 +71,6 @@ export function CardsSlice(section) {
           </CardFooter>
         </Card>
       ))}
-    </Stack>
+    </SimpleGrid>
   )
 }

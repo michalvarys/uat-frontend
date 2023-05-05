@@ -4,7 +4,6 @@ import axios from 'axios'
 
 import Layout from 'src/components/common/Layout'
 import { AppProvider } from 'src/components/context/AppContext'
-// import { ThemeProvider } from 'src/theme/ThemeProvider'
 import { BASE_URL } from 'src/constants'
 
 import '@fontsource/inter'
@@ -15,12 +14,9 @@ const ThemeProvider = dynamic(() => import('src/theme/ThemeProvider'), {
   ssr: false,
 })
 
-axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL || BASE_URL
+axios.defaults.baseURL = BASE_URL
 function App({ Component, pageProps }: AppProps) {
   const { locales, locale, defaultLocale } = useRouter()
-  // if (typeof window === 'undefined') {
-  //   return null
-  // }
 
   return (
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -31,19 +27,18 @@ function App({ Component, pageProps }: AppProps) {
         <>
           <div id="modal-root" />
 
-          {pageProps.menuData && (
+          {/*}
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            <Layout
-              menu={pageProps.menuData.menu}
-              footer={pageProps.menuData.footer}
-            >
-              {/**
-               * eslint-disable-next-line @typescript-eslint/ban-ts-comment
-               * @ts-ignore */}
-              <Component {...pageProps} />
-            </Layout>
-          )}
+            // @ts-ignore */}
+          <Layout
+            menu={pageProps?.menuData?.menu}
+            footer={pageProps?.menuData?.footer}
+          >
+            {/**
+             * eslint-disable-next-line @typescript-eslint/ban-ts-comment
+             * @ts-ignore */}
+            <Component {...pageProps} />
+          </Layout>
         </>
       </AppProvider>
     </ThemeProvider>
@@ -56,7 +51,7 @@ App.getInitialProps = async ({
   const url = `/global?_locale=${router.locale}`
 
   try {
-    const { data } = await axios(url)
+    const { data } = await axios.get(url)
 
     return {
       pageProps: {
@@ -64,7 +59,6 @@ App.getInitialProps = async ({
       },
     }
   } catch (e) {
-    console.log(e.config)
     return {
       pageProps: {
         menuData: {},

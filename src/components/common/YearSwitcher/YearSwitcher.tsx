@@ -8,6 +8,7 @@ export enum YearSwitcherVariant {
 
 type Props = {
   current: number
+  // eslint-disable-next-line @typescript-eslint/ban-types
   onSelect: Function
   years: string[]
   variant: number
@@ -15,25 +16,24 @@ type Props = {
 
 const YearSwitcher = ({ current, onSelect, years, variant }: Props) => (
   <div className={styles.year_switcher_container}>
-    {years &&
-      years.map((item: string, index: number) => (
-        <div
-          className={styles.button}
-          key={`year-button-${index}`}
-          onClick={() => onSelect(index)}
-        >
-          <div className={styles.title}>{item}</div>
-          {current === index ? (
-            <div
-              className={classNames({
-                [styles.indicator]: true,
-                [styles.indicator_white]:
-                  variant === YearSwitcherVariant.OrangeBackground,
-              })}
-            />
-          ) : null}
-        </div>
-      ))}
+    {years?.map((item: string, index: number) => (
+      <div
+        className={styles.button}
+        key={`year-button-${item}-${index}`}
+        onClick={() => onSelect(index)}
+      >
+        <div className={styles.title}>{item}</div>
+        {current === index ? (
+          <div
+            className={classNames({
+              [styles.indicator]: true,
+              [styles.indicator_white]:
+                variant === YearSwitcherVariant.OrangeBackground,
+            })}
+          />
+        ) : null}
+      </div>
+    ))}
   </div>
 )
 

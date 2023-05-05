@@ -40,13 +40,13 @@ export type HomeSectionProps = {
 
 export function HomeSection(props: HomeSectionProps) {
   const {
+    news = [],
     cover_image,
     logo,
     festivals,
     fields_of_studies,
     galleries,
     galleryEvents,
-    news,
     importantNews,
     subtitle,
     text_with_image,
@@ -151,7 +151,7 @@ export function HomeSection(props: HomeSectionProps) {
       </Container>
 
       <Container variant={ContainerVariant.Orange}>
-        {news && <NewsSlice news={news} />}
+        <NewsSlice news={news} />
       </Container>
     </Flex>
   )
