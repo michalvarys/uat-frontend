@@ -31,6 +31,7 @@ ENV NEXT_BACKEND_DOMAINL="${NEXT_BACKEND_DOMAINL}"
 COPY . .
 COPY --from=deps /app/node_modules ./node_modules
 
+RUN npm install -g npm@9.6.5
 RUN npm run build
 RUN npm install --legacy-peer-deps --production --ignore-scripts --prefer-offline
 
