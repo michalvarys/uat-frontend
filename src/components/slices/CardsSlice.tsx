@@ -7,6 +7,7 @@ import {
   IconButton,
   CardFooter,
   SimpleGrid,
+  Box,
 } from '@chakra-ui/react'
 import Image from 'next/image'
 import { transformLink } from 'src/utils/link'
@@ -42,36 +43,39 @@ export function CardsSlice(section) {
               />
             </CardBody>
 
-            <CardFooter p={5} pt={0} w="full">
+            <Box
+              as={CardFooter}
+              display="flex"
+              justify="center"
+              alignContent="center"
+              p={5}
+              pt={0}
+              w="full"
+            >
               <Heading
-                w="full"
+                w="80%"
                 position="relative"
                 mt="2"
                 textAlign="center"
                 size="md"
               >
                 {item.Link.title}
-
-                <Link
-                  position="absolute"
-                  right={0}
-                  top={-2}
-                  target="_blank"
-                  href={item.Link.url}
-                >
-                  <IconButton
-                    variant="link"
-                    color="gray.800"
-                    _hover={{
-                      textDecoration: 'none',
-                    }}
-                    colorScheme="gray"
-                    aria-label="See menu"
-                    icon={<chakra.span fontSize="3xl">{'→'}</chakra.span>}
-                  />
-                </Link>
               </Heading>
-            </CardFooter>
+              <IconButton
+                as={Link}
+                target="_blank"
+                href={item.Link.url}
+                w="10%"
+                variant="link"
+                color="gray.800"
+                _hover={{
+                  textDecoration: 'none',
+                }}
+                colorScheme="gray"
+                aria-label="See menu"
+                icon={<chakra.span fontSize="xl">{'→'}</chakra.span>}
+              />
+            </Box>
           </Card>
         )
       })}
