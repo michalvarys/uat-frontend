@@ -32,7 +32,7 @@ const Footer = ({ data }: Props) => {
         pos="relative"
         w="full"
         h="70px"
-        bg={`url(${isOposit ? wave_yellow.src : wave.src}) white`}
+        bg={`url(${isOposit ? wave_yellow.src : wave.src})`}
       />
 
       <Container variant={ContainerVariant.Black}>

@@ -20,57 +20,61 @@ export function CardsSlice(section) {
       columns={[1, 2, 3, null, 5]}
       pb={{ base: '40px', md: '60px', lg: '84px' }}
     >
-      {section.CardItem?.map((item) => (
-        <Card w="full" key={item.id}>
-          <CardBody
-            sx={{
-              img: {
-                borderRadius: 'md',
-              },
-            }}
-          >
-            <Image
-              src={transformLink(item.Image.url)}
-              alt={item.Image.caption}
-              width={item.Image.formats.medium.width}
-              height={item.Image.formats.medium.height}
-              layout="responsive"
-              objectFit="cover"
-            />
-          </CardBody>
+      {section.CardItem?.map((item) => {
+        const img = item.Image?.formats?.small || item.Image
 
-          <CardFooter p={5} pt={0} w="full">
-            <Heading
-              w="full"
-              position="relative"
-              mt="2"
-              textAlign="center"
-              size="md"
+        return (
+          <Card w="full" key={item.id}>
+            <CardBody
+              sx={{
+                img: {
+                  borderRadius: 'md',
+                },
+              }}
             >
-              {item.Link.title}
+              <Image
+                src={transformLink(item.Image.url)}
+                alt={item.Image.caption}
+                width={img.width}
+                height={img.height}
+                layout="responsive"
+                objectFit="cover"
+              />
+            </CardBody>
 
-              <Link
-                position="absolute"
-                right={0}
-                top={-2}
-                target="_blank"
-                href={item.Link.url}
+            <CardFooter p={5} pt={0} w="full">
+              <Heading
+                w="full"
+                position="relative"
+                mt="2"
+                textAlign="center"
+                size="md"
               >
-                <IconButton
-                  variant="link"
-                  color="gray.800"
-                  _hover={{
-                    textDecoration: 'none',
-                  }}
-                  colorScheme="gray"
-                  aria-label="See menu"
-                  icon={<chakra.span fontSize="3xl">{'→'}</chakra.span>}
-                />
-              </Link>
-            </Heading>
-          </CardFooter>
-        </Card>
-      ))}
+                {item.Link.title}
+
+                <Link
+                  position="absolute"
+                  right={0}
+                  top={-2}
+                  target="_blank"
+                  href={item.Link.url}
+                >
+                  <IconButton
+                    variant="link"
+                    color="gray.800"
+                    _hover={{
+                      textDecoration: 'none',
+                    }}
+                    colorScheme="gray"
+                    aria-label="See menu"
+                    icon={<chakra.span fontSize="3xl">{'→'}</chakra.span>}
+                  />
+                </Link>
+              </Heading>
+            </CardFooter>
+          </Card>
+        )
+      })}
     </SimpleGrid>
   )
 }
