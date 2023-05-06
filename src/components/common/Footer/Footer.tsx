@@ -32,6 +32,7 @@ const Footer = ({ data }: Props) => {
         pos="relative"
         w="full"
         h="70px"
+        mt="-17px"
         bg={`url(${isOposit ? wave_yellow.src : wave.src})`}
       />
 
