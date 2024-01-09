@@ -14,6 +14,7 @@ import {
 export default function Home(props: HomeSectionProps) {
   const { locale } = useRouter()
   const title = getString(locale, Strings.HOME_PAGE_TITLE)
+  console.log({ props })
 
   return (
     <chakra.div w="full">
@@ -39,7 +40,7 @@ export async function getStaticProps({
     }
 
     return {
-      props: data,
+      props: { ...data, url },
       revalidate: REVALIDATE_TIME,
     }
   } catch (e) {

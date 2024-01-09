@@ -50,7 +50,7 @@ export async function getStaticPaths({
   locales,
 }: GetStaticPropsContext): Promise<GetStaticPathsResult<Params>> {
   const params = localesToParams(locales)
-  const url = `/cms/field-of-studies?${params}`
+  const url = `/field-of-studies?${params}`
 
   try {
     const { data: studies } = await axios.get<FieldOfStudyType[]>(url)

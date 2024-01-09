@@ -48,7 +48,7 @@ export async function getStaticPaths({
   locales,
 }: GetStaticPathsContext): Promise<GetStaticPathsResult<{}>> {
   const params = localesToParams(locales!)
-  const url = `/cms/pages?${params}`
+  const url = `/pages?${params}`
 
   try {
     const { data: pages } = await axios.get<PageType[]>(url)

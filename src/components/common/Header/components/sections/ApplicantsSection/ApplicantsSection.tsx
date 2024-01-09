@@ -17,14 +17,15 @@ type Props = {
 }
 
 const ApplicantsSection = ({ data }: Props) => {
+  console.log({ data })
   return (
     <div className={styles.container}>
       <div>
         <div className={styles.top_container}>
           <LinksSection links={data.links} />
           <div className={styles.buttons}>
-            {data.studies.map((item) => (
-              <FieldOfStudyButton key={item.id} study={item} />
+            {data.studies.filter(Boolean).map((item, index) => (
+              <FieldOfStudyButton key={`${index}-${item.id}`} study={item} />
             ))}
           </div>
         </div>
