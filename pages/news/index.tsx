@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import styles from './news.module.scss'
@@ -23,7 +23,10 @@ type NewsPageProps = {
 export default function News({ news, years }: NewsPageProps) {
   const router = useRouter()
   const { setLocalePaths } = useApp()
-  const year = (router.query.year || years[0]).toString()
+  const year = useMemo(
+    () => (router.query.year || years[0])?.toString(),
+    [router.query.year, years]
+  )
   const [currentFilter, setCurrentFilter] = useState(0)
   const [currentYearIndex, setCurrentYearIndex] = useState(
     years.findIndex((item: string) => item === year)

@@ -86,7 +86,7 @@ export function HomeSection(props: HomeSectionProps) {
         )}
 
         <chakra.div
-          p={{ base: '40px 20px', md: '40px', lg: '80px' }}
+          p={{ base: '0 20px 0', sm: '10px 20px', md: '40px', lg: '80px' }}
           mb={{ base: 0, lg: '80px' }}
         >
           {video_with_text && (
@@ -95,7 +95,7 @@ export function HomeSection(props: HomeSectionProps) {
         </chakra.div>
 
         {text_with_image?.length && (
-          <chakra.div mt={{ base: 0, lg: '-80px' }}>
+          <chakra.div mt={{ base: '20px', lg: '-80px' }}>
             <TextWithImageSlice
               data={text_with_image[0]}
               variant={ContainerVariant.Black}

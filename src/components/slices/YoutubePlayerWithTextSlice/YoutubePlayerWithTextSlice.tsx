@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/react'
 import { ContainerVariant } from '../../common/Container'
 import DescriptionSection from '../../common/DescriptionSection'
 
@@ -12,11 +13,7 @@ type YoutubeVideoWithTextProps = {
 
 const YoutubePlayerWithTextSlice = ({ data }: YoutubeVideoWithTextProps) => {
   const renderTextSection = () => (
-    <div
-      style={{
-        display: 'flex',
-      }}
-    >
+    <Box display="flex" mt={{ base: 20, sm: 0, md: 0 }}>
       <DescriptionSection
         data={{
           content: data.content || '',
@@ -25,7 +22,7 @@ const YoutubePlayerWithTextSlice = ({ data }: YoutubeVideoWithTextProps) => {
         }}
         variant={ContainerVariant.Black}
       />
-    </div>
+    </Box>
   )
 
   const renderVideo = () => (
