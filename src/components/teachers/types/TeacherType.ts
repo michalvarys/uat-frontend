@@ -9,6 +9,7 @@ type TeacherType = {
   post: string
   surname: string
   title: string
+  sort: number
 }
 
 export default TeacherType
