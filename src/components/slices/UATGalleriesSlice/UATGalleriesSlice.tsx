@@ -71,18 +71,18 @@ const UATGalleriesSlice = ({ galleries, events }: Props) => {
   return (
     <div className={styles.container}>
       <div className={styles.galleries}>
-        {galleries &&
-          galleries.map((item) => <UATGalleryItem key={item.id} item={item} />)}
+        {galleries?.filter(Boolean).map((item) => (
+          <UATGalleryItem key={item.id} item={item} />
+        ))}
       </div>
       <div className={styles.events}>
-        {events &&
-          events.map((item) => (
-            <GalleryEventItem
-              key={item.id}
-              event={item}
-              onSelect={onEventSelect}
-            />
-          ))}
+        {events?.filter(Boolean).map((item) => (
+          <GalleryEventItem
+            key={item.id}
+            event={item}
+            onSelect={onEventSelect}
+          />
+        ))}
       </div>
     </div>
   )
