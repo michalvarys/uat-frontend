@@ -8,6 +8,7 @@ import { useRouter } from 'next/router'
 import TextWithImageType from '../types/TextWithImageType'
 import { ContainerVariant } from '../../common/Container'
 import DescriptionSection from '../../common/DescriptionSection'
+import { getAttributes } from 'src/utils/data'
 
 type Props = {
   data: TextWithImageType
@@ -49,26 +50,29 @@ const TextWithImageSlice = ({
     </div>
   )
 
-  const renderImage = () => (
-    <div
-      style={{
-        marginBottom: extraBottomSpace,
-        marginTop: extraTopSpace,
-        position: 'relative',
-      }}
-    >
-      {data.image ? (
-        <Image
-          alt={data.image.alternativeText}
-          src={transformLink(data.image.url)}
-          width={data.image.width}
-          height={data.image.height}
-        />
-      ) : (
-        <></>
-      )}
-    </div>
-  )
+  const renderImage = () => {
+    const image = getAttributes(data.image)
+    return (
+      <div
+        style={{
+          marginBottom: extraBottomSpace,
+          marginTop: extraTopSpace,
+          position: 'relative',
+        }}
+      >
+        {image ? (
+          <Image
+            alt={image.alternativeText}
+            src={transformLink(image.url)}
+            width={image.width}
+            height={image.height}
+          />
+        ) : (
+          <></>
+        )}
+      </div>
+    )
+  }
 
   return (
     <div

@@ -5,10 +5,11 @@ import { useCallback, useRef, useState, useLayoutEffect } from 'react'
 import styles from './YoutubePlayerSlice.module.scss'
 
 import YouTubeVideoType from '../types/YouTubeVideoType'
-import { transformLink } from 'src/utils/link'
 
 import PlayIcon from 'public/icons/common/play.svg'
 import { AspectRatio } from '@chakra-ui/react'
+import { DbImage } from 'src/components/DbImage'
+import { getAttributes } from 'src/utils/data'
 
 type YoutubeVideoProps = {
   data: YouTubeVideoType
@@ -21,15 +22,17 @@ const YoutubePlayerSlice = ({ data }: YoutubeVideoProps) => {
   const containerRef = useRef(null)
   let player: any = null
 
+  const { cover_image } = data
+  const coverImage = getAttributes(cover_image)
+
   const onResize = useCallback(() => {
     const container: any = containerRef && containerRef.current
-    if (container && data.cover_image) {
+    if (container && coverImage) {
       setVideoHeight(
-        (container.offsetWidth * data.cover_image.height) /
-          data.cover_image.width
+        (container.offsetWidth * coverImage.height) / coverImage.width
       )
     }
-  }, [setVideoHeight, data])
+  }, [coverImage])
 
   useLayoutEffect(() => {
     window.addEventListener('resize', onResize)
@@ -70,16 +73,15 @@ const YoutubePlayerSlice = ({ data }: YoutubeVideoProps) => {
           <div className={styles.play_button}>
             <Image alt={'Play'} src={PlayIcon} />
           </div>
-          {data.cover_image && (
-            <Image
-              alt={data.cover_image.alternativeText}
-              src={transformLink(data.cover_image.url)}
-              width={data.cover_image.width}
-              height={data.cover_image.height}
-              layout={'fill'}
-              objectFit={'cover'}
-            />
-          )}
+          <DbImage
+            data={coverImage}
+            props={(image) => ({
+              width: image.width,
+              height: image.height,
+              objectFit: 'cover',
+              objectPosition: 'center center',
+            })}
+          />
         </div>
         <div className={styles.player}>
           {/**

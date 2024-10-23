@@ -1,14 +1,10 @@
 import Image from 'next/image'
 import { useState } from 'react'
-
 import { GalleryItemType, GalleryType } from '../types/GalleryType'
-import styles from './GallerySlice.module.scss'
-
-import { transformLink } from 'src/utils/link'
 import Modal from '../../common/Modal'
-
 import ArrowRightIcon from 'public/icons/common/arrow_right.svg'
-
+import { DbImage } from 'src/components/DbImage'
+import { Box, Flex, IconButton } from '@chakra-ui/react'
 type Props = {
   data: GalleryType
   isSmall?: boolean
@@ -21,32 +17,27 @@ type GalleryItemProps = {
 }
 
 const GalleryItem = ({ data, isSmall, onSelect }: GalleryItemProps) => {
-  const { thumbnail } = data
-  if (!thumbnail) {
-    return null
-  }
-  let thumbnailPath = thumbnail.url
-  if (thumbnail?.formats?.small) {
-    thumbnailPath = thumbnail.formats.small.url
-  } else if (thumbnail?.formats?.thumbnail) {
-    thumbnailPath = thumbnail.formats.thumbnail.url
-  }
-
   return (
-    <div
-      className={
-        isSmall ? styles.image_container_small : styles.image_container
-      }
+    <Box
       onClick={() => onSelect(data)}
+      cursor="pointer"
+      flexBasis={{ base: '100%', sm: '50%', md: '33.33%', lg: '25%' }}
+      padding="3px"
     >
-      <Image
-        src={transformLink(thumbnailPath)}
-        alt={thumbnail.alternativeText}
-        layout={'fill'}
-        objectFit={'cover'}
-        objectPosition={'50% 30%'}
-      />
-    </div>
+      <Box position="relative" paddingTop="75%" width="100%">
+        <DbImage
+          data={data.thumbnail_410x551}
+          format="small"
+          props={(img) => ({
+            // height: img.height,
+            // width: img.width,
+            layout: 'fill',
+            objectFit: 'fill',
+            objectPosition: '50% 30%',
+          })}
+        />
+      </Box>
+    </Box>
   )
 }
 
@@ -68,41 +59,71 @@ const GallerySlice = ({ data, isSmall = false }: Props) => {
     }
   }
 
-  const renderFullsizeImage = () => (
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    <Modal
-      isImageStyle
-      isOpen={selectedItemIndex > -1 ? true : false}
-      onClose={() => setSelectedItemIndex(-1)}
-    >
-      <div className={styles.modal_container}>
-        {selectedItemIndex > -1 && (
-          <Image
-            className={styles.full_image}
-            alt={data.gallery_item[selectedItemIndex].fullsize.alternativeText}
-            src={transformLink(
-              data.gallery_item[selectedItemIndex].fullsize.url
-            )}
-            width={data.gallery_item[selectedItemIndex].fullsize.width}
-            height={data.gallery_item[selectedItemIndex].fullsize.height}
-            // layout={'fill'}
-            objectFit={'contain'}
-            objectPosition={'center top'}
+  const renderFullsizeImage = () => {
+    return (
+      <Modal
+        isImageStyle
+        isOpen={selectedItemIndex > -1}
+        onClose={() => setSelectedItemIndex(-1)}
+      >
+        <Flex
+          direction="column"
+          minWidth="320px"
+          height="100%"
+          maxHeight="inherit"
+          overflow="hidden"
+          position="relative"
+        >
+          <Box flex={1} maxHeight="inherit">
+            <DbImage
+              data={data.gallery_item?.[selectedItemIndex].fullsize}
+              props={(image) => ({
+                width: image.width,
+                height: image.height,
+                objectFit: 'contain',
+                objectPosition: 'center top',
+              })}
+            />
+          </Box>
+          <IconButton
+            icon={
+              <Image src={ArrowRightIcon} alt="next" width={20} height={20} />
+            }
+            aria-label="Next image"
+            onClick={onNextImage}
+            position="absolute"
+            right="24px"
+            top="calc(50% - 27px)"
+            bg="rgba(255, 255, 255, 0.7)"
+            borderRadius="full"
+            size="lg"
           />
-        )}
-        <div className={styles.right_button} onClick={onNextImage}>
-          <Image src={ArrowRightIcon} alt={'arrow'} height={20} width={20} />
-        </div>
-        <div className={styles.left_button} onClick={onPrevImage}>
-          <Image src={ArrowRightIcon} alt={'arrow'} height={20} width={20} />
-        </div>
-      </div>
-    </Modal>
-  )
+          <IconButton
+            icon={
+              <Image
+                src={ArrowRightIcon}
+                alt="previous"
+                width={20}
+                height={20}
+              />
+            }
+            aria-label="Previous image"
+            onClick={onPrevImage}
+            position="absolute"
+            left="24px"
+            top="calc(50% - 27px)"
+            bg="rgba(255, 255, 255, 0.7)"
+            borderRadius="full"
+            size="lg"
+            transform="rotate(180deg)"
+          />
+        </Flex>
+      </Modal>
+    )
+  }
 
   return (
-    <div className={styles.container}>
+    <Flex flexWrap="wrap" margin="-3px">
       {data.gallery_item.map((item, idx) => (
         <GalleryItem
           isSmall={isSmall}
@@ -112,7 +133,7 @@ const GallerySlice = ({ data, isSmall = false }: Props) => {
         />
       ))}
       {selectedItemIndex > -1 && renderFullsizeImage()}
-    </div>
+    </Flex>
   )
 }
 

@@ -5,6 +5,9 @@ import styles from './TeacherDetailsModal.module.scss'
 import Modal from '../../../../common/Modal'
 import TeacherType from '../../../types/TeacherType'
 import { transformLink } from 'src/utils/link'
+import { getAttributes } from 'src/utils/data'
+import { DbImage } from 'src/components/DbImage'
+import { layout } from '@chakra-ui/react'
 
 type Props = {
   data: TeacherType
@@ -19,17 +22,28 @@ const TeacherDetailsModal = ({ data, isOpen, onClose }: Props) => {
     <Modal isOpen={isOpen} onClose={() => onClose()}>
       <div className={styles.container}>
         <div className={styles.left_container}>
-          {data.photo && (
+          <DbImage
+            data={data.photo_340x609}
+            props={(image) => ({
+              height: (image.height * 340) / image.width,
+              layout: 'responsive',
+              objectFit: 'cover',
+              objectPosition: 'center 0%',
+            })}
+          />
+          {/* {data.photo_340x609 && (
             <Image
-              alt={data.photo.alternativeText}
-              src={transformLink(data.photo.url)}
-              width={data.photo.width}
-              height={(data.photo.height * 340) / data.photo.width}
+              alt={data.photo_340x609.alternativeText}
+              src={transformLink(data.photo_340x609.url)}
+              width={data.photo_340x609.width}
+              height={
+                (data.photo_340x609.height * 340) / data.photo_340x609.width
+              }
               layout={'responsive'}
               objectFit={'cover'}
               objectPosition={'center 0%'}
             />
-          )}
+          )} */}
         </div>
         <div className={styles.right_container}>
           <span

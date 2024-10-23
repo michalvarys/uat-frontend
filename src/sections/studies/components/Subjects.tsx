@@ -5,20 +5,23 @@ import styles from './Subjects.module.scss'
 
 import { transformLink } from 'src/utils/link'
 import { SubjectsType } from 'src/types/fieldsOfStudy'
+import { getAttributes } from 'src/utils/data'
 
 type Props = {
   subjects: SubjectsType
 }
 
 export const Subjects = ({ subjects }: Props) => {
+  const image = getAttributes(subjects?.sponsor?.image)
+
   const renderSponsor = () => (
     <div className={styles.sponsor_container}>
-      {subjects.sponsor && subjects.sponsor.image && (
+      {image && (
         <Image
-          src={transformLink(subjects.sponsor.image.url)}
+          src={transformLink(image.url)}
           alt=""
-          width={subjects.sponsor.image.width}
-          height={subjects.sponsor.image.height}
+          width={image.width}
+          height={image.height}
         />
       )}
       <div className={styles.sponsor_text}>{parse(subjects.sponsor.text)}</div>

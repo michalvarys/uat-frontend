@@ -14,6 +14,8 @@ import { localesToParams } from 'src/utils/params'
 import { StudiesSection } from 'src/sections/studies/StudiesSection'
 import { FieldOfStudyType } from 'src/types/fieldsOfStudy'
 
+import { getStudyData } from 'src/queries/studies'
+
 type FieldOfStudyProps = {
   study: FieldOfStudyType
 }
@@ -22,7 +24,7 @@ export default function FieldOfStudy({ study }: FieldOfStudyProps) {
   const { setLocalePaths } = useApp()
 
   useEffect(() => {
-    if (study && study.localizations.length > 0) {
+    if (study?.localizations.length > 0) {
       setLocalizationData(setLocalePaths, study.localizations, '/studies')
     } else {
       setLocalizationData(setLocalePaths, null)
@@ -49,8 +51,9 @@ type Params = { id: string }
 export async function getStaticPaths({
   locales,
 }: GetStaticPropsContext): Promise<GetStaticPathsResult<Params>> {
+  // TODO
   const params = localesToParams(locales)
-  const url = `/field-of-studies?${params}`
+  const url = `/api/field-of-studies?${params}`
 
   try {
     const { data: studies } = await axios.get<FieldOfStudyType[]>(url)
@@ -78,10 +81,9 @@ export async function getStaticProps({
 }: GetStaticPropsContext<Params>): Promise<
   GetStaticPropsResult<FieldOfStudyProps>
 > {
-  const url = `/field-of-studies/${params!.id}?_locale=${locale}`
-
   try {
-    const { data: study } = await axios(url)
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const study = await getStudyData(params!.id, locale)
 
     if (!study) {
       return {
@@ -97,6 +99,8 @@ export async function getStaticProps({
       revalidate: REVALIDATE_TIME,
     }
   } catch (e) {
+    // eslint-disable-next-line no-console
+    console.log(e)
     return {
       redirect: {
         destination: '/500',

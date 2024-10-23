@@ -84,7 +84,7 @@ export default function AboutSchoolPage({ data }: AboutSchoolPageProps) {
           className={`${styles.inner_container} ${styles.inner_white_container}`}
         >
           <div className={styles.statistics_container}>
-            <EmploymentStatistics data={data.EmploymentStatistics} />
+            <EmploymentStatistics data={data.employment_statistics} />
           </div>
         </div>
       </Container>
@@ -112,7 +112,7 @@ export async function getServerSideProps({
   locale,
 }: GetServerSidePropsContext): Promise<GetServerSidePropsResult<unknown>> {
   try {
-    const url = `/about-school?_locale=${locale}`
+    const url = `/api/about-school?locale=${locale}`
     const { data } = await axios(url)
 
     return {

@@ -7,6 +7,7 @@ import { transformLink } from 'src/utils/link'
 
 import SlantArrowIcon from 'public/icons/common/arrow_slant.svg'
 import { useMemo } from 'react'
+import { DbImage } from 'src/components/DbImage'
 
 type Props = {
   isFixed?: boolean
@@ -15,24 +16,24 @@ type Props = {
 }
 
 const TeacherItem = ({ isFixed = false, item, onSelect }: Props) => {
-  const thumbnailPath = useMemo(() => {
-    if (!item.photo) {
-      return null
-    }
+  // const thumbnailPath = useMemo(() => {
+  //   if (!item.photo_340x609) {
+  //     return null
+  //   }
 
-    let url = item.photo.url
-    if (item?.photo?.formats?.small) {
-      url = item.photo.formats.small.url
-    } else if (item?.photo?.formats?.thumbnail) {
-      url = item.photo.formats.thumbnail.url
-    }
+  //   let url = item.photo_340x609.url
+  //   if (item?.photo_340x609?.formats?.small) {
+  //     url = item.photo_340x609.formats.small.url
+  //   } else if (item?.photo_340x609?.formats?.thumbnail) {
+  //     url = item.photo_340x609.formats.thumbnail.url
+  //   }
 
-    return url
-  }, [item.photo])
+  //   return url
+  // }, [item.photo_340x609])
 
-  if (!item.id) {
-    return null
-  }
+  // if (!thumbnailPath) {
+  //   return null
+  // }
 
   return (
     <div
@@ -40,15 +41,15 @@ const TeacherItem = ({ isFixed = false, item, onSelect }: Props) => {
       onClick={() => onSelect(item)}
     >
       <div className={styles.image_container}>
-        {thumbnailPath && (
-          <Image
-            src={transformLink(thumbnailPath)}
-            alt={item.photo?.alternativeText}
-            layout={'fill'}
-            objectFit={'cover'}
-            objectPosition={'50% 0%'}
-          />
-        )}
+        <DbImage
+          data={item.photo_340x609}
+          format="small"
+          props={{
+            layout: 'fill',
+            objectFit: 'cover',
+            objectPosition: '50% 0%',
+          }}
+        />
       </div>
       <div className={styles.bottom_container}>
         <span className={styles.name}>

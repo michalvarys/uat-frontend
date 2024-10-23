@@ -32,17 +32,14 @@ const TeachersCarusel = ({ isTitle = false, teachers }: Props) => {
       <div className={styles.container}>
         <Scrollbars autoHide style={{ height: 612 }}>
           <div className={styles.inner_container}>
-            {teachers.map(
-              (item: TeacherType) =>
-                item && (
-                  <TeacherItem
-                    // isFixed
-                    key={item.id}
-                    item={item}
-                    onSelect={() => onSelectTeacher(item.id)}
-                  />
-                )
-            )}
+            {teachers.filter(Boolean).map((item: TeacherType) => (
+              <TeacherItem
+                // isFixed
+                key={item.id}
+                item={item}
+                onSelect={() => onSelectTeacher(item.id)}
+              />
+            ))}
           </div>
         </Scrollbars>
       </div>

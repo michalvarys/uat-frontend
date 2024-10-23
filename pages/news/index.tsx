@@ -14,22 +14,28 @@ import SegmentedControl from 'src/components/common/buttons/SegmentedControl'
 import { useApp } from 'src/components/context/AppContext'
 import { setLocalizationData } from 'src/utils/localizationsUtils'
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next'
+import qs from 'qs'
 
 type NewsPageProps = {
   news: NewsType[]
   years: string[]
+  year: string
 }
 
-export default function News({ news, years }: NewsPageProps) {
+export default function News({
+  news,
+  years,
+  year: fetchedYear,
+}: NewsPageProps) {
   const router = useRouter()
   const { setLocalePaths } = useApp()
   const year = useMemo(
-    () => (router.query.year || years[0])?.toString(),
-    [router.query.year, years]
+    () => (router.query.year || fetchedYear || years[0])?.toString(),
+    [router.query.year, years, fetchedYear]
   )
   const [currentFilter, setCurrentFilter] = useState(0)
   const [currentYearIndex, setCurrentYearIndex] = useState(
-    years.findIndex((item: string) => item === year)
+    years.findIndex((item) => item.toString() === year)
   )
 
   useEffect(() => {
@@ -96,22 +102,43 @@ export default function News({ news, years }: NewsPageProps) {
 
 export async function getServerSideProps({
   locale,
-  query,
+  query: q,
 }: GetServerSidePropsContext): Promise<
   GetServerSidePropsResult<NewsPageProps>
 > {
-  const { year } = query
-  const url = `/news?_locale=${locale}&year=${year}`
+  const defaultYear = '' + new Date().getFullYear()
+  const { year = defaultYear } = q
+
+  const query = qs.stringify({
+    locale,
+    filters: {
+      date: {
+        $gte: new Date(`${year}-01-01`),
+        $lte: new Date(`${year}-12-31`),
+      },
+    },
+    populate: {
+      sections: {
+        populate: '*',
+      },
+      localizations: {
+        populate: '*',
+        publicationState: 'live',
+      },
+    },
+    sort: {
+      date: 'desc',
+    },
+    limit: 25,
+    offset: 0,
+  })
+
+  const url = `/api/news-entries?${query}`
 
   try {
     const { data } = await axios(url)
-    const { news, years } = data
-
     return {
-      props: {
-        news,
-        years,
-      },
+      props: data,
     }
   } catch (e) {
     return {

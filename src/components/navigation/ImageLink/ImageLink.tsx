@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 import styles from './ImageLink.module.scss'
+import { DbImage } from 'src/components/DbImage'
 
 type Props = {
   url: string

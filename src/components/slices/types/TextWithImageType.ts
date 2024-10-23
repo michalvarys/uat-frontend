@@ -1,3 +1,4 @@
+import { DataType } from 'src/types/data/DataType'
 import ImageType from '../../common/types/ImageType'
 import LinkType from '../../navigation/types/LinkType'
 

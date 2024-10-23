@@ -6,6 +6,7 @@ import { parseSections } from './utils'
 import { Section } from './components/Section'
 import { chakra, Flex, Heading, Text } from '@chakra-ui/react'
 import { useMemo } from 'react'
+import { DbImage } from 'src/components/DbImage'
 
 export function PageSection(page: PageType) {
   const sections = useMemo(() => {
@@ -14,17 +15,16 @@ export function PageSection(page: PageType) {
 
   return (
     <Container variant={ContainerVariant.White}>
-      {page?.cover_image && (
-        <chakra.div position="relative" w="full" height="300px">
-          <Image
-            src={transformLink(page.cover_image.url)}
-            alt={page.cover_image.alternativeText}
-            layout={'fill'}
-            objectFit={'cover'}
-            objectPosition={'50% 30%'}
-          />
-        </chakra.div>
-      )}
+      <chakra.div position="relative" w="full" height="300px">
+        <DbImage
+          data={page.cover_image}
+          props={{
+            layout: 'fill',
+            objectFit: 'cover',
+            objectPosition: '50% 30%',
+          }}
+        />
+      </chakra.div>
 
       <Flex
         p={{ base: 2, md: '80px' }}

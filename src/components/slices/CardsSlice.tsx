@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react'
 import Image from 'next/image'
 import { transformLink } from 'src/utils/link'
+import { DbImage } from '../DbImage'
 
 export function CardsSlice(section) {
   return (
@@ -33,13 +34,15 @@ export function CardsSlice(section) {
                 },
               }}
             >
-              <Image
-                src={transformLink(item.Image.url)}
-                alt={item.Image.caption}
-                width={img.width}
-                height={img.height}
-                layout="responsive"
-                objectFit="cover"
+              <DbImage
+                data={img}
+                format="small"
+                props={(image) => ({
+                  width: image.width,
+                  height: image.height,
+                  layout: 'responsive',
+                  objectFit: 'cover',
+                })}
               />
             </CardBody>
 

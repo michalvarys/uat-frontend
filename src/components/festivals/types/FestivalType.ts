@@ -3,6 +3,12 @@ import TextWithImageType from '../../slices/types/TextWithImageType'
 import FestivalPrizesType from './FestivalPrizesType'
 import FestivalWinnerType from './FestivalWinner'
 
+export type FestivalRelationship = {
+  festival: FestivalType
+  id: number
+  title: string
+}
+
 type FestivalType = {
   id: number
   title: string

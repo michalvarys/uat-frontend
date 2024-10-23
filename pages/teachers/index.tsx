@@ -8,10 +8,10 @@ import TeachersList from 'src/components/teachers/TeachersList'
 import TeacherType from 'src/components/teachers/types/TeacherType'
 import TeacherDetailsModal from 'src/components/teachers/TeachersList/components/TeacherDetailsModal'
 import { getString, Strings } from '../../src/locales'
-import axios from 'axios'
 import { setLocalizationData } from '../../src/utils/localizationsUtils'
 import { useApp } from 'src/components/context/AppContext'
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next'
+import { getTeachersData } from 'src/queries/teachers'
 
 type TeachersPageProps = {
   teachers: TeacherType[]
@@ -79,10 +79,8 @@ export async function getServerSideProps({
 }: GetServerSidePropsContext): Promise<
   GetServerSidePropsResult<TeachersPageProps>
 > {
-  const url = `/teachers?_locale=${locale}`
-
   try {
-    const { data: teachers } = await axios(url)
+    const teachers = await getTeachersData(locale)
 
     return {
       props: {

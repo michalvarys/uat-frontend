@@ -2,7 +2,7 @@ import { chakra, Flex } from '@chakra-ui/react'
 import { useMemo } from 'react'
 import Container, { ContainerVariant } from 'src/components/common/Container'
 import ImageType from 'src/components/common/types/ImageType'
-import FestivalType from 'src/components/festivals/types/FestivalType'
+import { FestivalRelationship } from 'src/components/festivals/types/FestivalType'
 import { GalleryEventType } from 'src/components/galleries/types/GalleryEventType'
 import NewsType from 'src/components/news/types/NewsType'
 import FestivalsSlice from 'src/components/slices/FestivalsSlice'
@@ -15,14 +15,15 @@ import { YouTubeVideoWithTextType } from 'src/components/slices/types/YouTubeVid
 import UATGalleriesSlice from 'src/components/slices/UATGalleriesSlice'
 import YoutubePlayerWithTextSlice from 'src/components/slices/YoutubePlayerWithTextSlice'
 import SocialLinkType from 'src/types/data/SocialLinkType'
-import { FieldOfStudyType } from 'src/types/fieldsOfStudy'
+import { FieldOfStudyRelationshipData } from 'src/types/fieldsOfStudy'
 import FieldOfStudyCarusel from '../studies/components/FieldOfStudyCarusel'
+import { prepareFestivals } from 'src/components/slices/FestivalsSlice/components/FestivalsGrid/FestivalsGrid'
 
 export type HomeSectionProps = {
   cover_image: ImageType
   logo: ImageType
-  festivals: FestivalType[]
-  fields_of_studies: FieldOfStudyType[]
+  festivals: FestivalRelationship[]
+  fields_of_studies: FieldOfStudyRelationshipData[]
   galleries: GalleriesInfoType
   galleryEvents: GalleryEventType[]
   news: NewsType[]
@@ -112,7 +113,11 @@ export function HomeSection(props: HomeSectionProps) {
             display={{ base: 'flex', md: 'block' }}
             justifyContent="center"
           >
-            <FieldOfStudyCarusel fields={fields_of_studies.filter(Boolean)} />
+            <FieldOfStudyCarusel
+              fields={fields_of_studies
+                .map((item) => item?.field_of_study)
+                .filter(Boolean)}
+            />
           </chakra.div>
         )}
       </Container>
@@ -121,7 +126,7 @@ export function HomeSection(props: HomeSectionProps) {
 
       <Container variant={ContainerVariant.Black}>
         <FestivalsSlice
-          festivals={festivals?.filter(Boolean)}
+          festivals={prepareFestivals(festivals?.filter(Boolean))}
           variant={ContainerVariant.Black}
         />
       </Container>

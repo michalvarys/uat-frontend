@@ -19,7 +19,7 @@ const FestivalSection = ({ data }: Props) => {
       </div>
       <div className={styles.festivals}>
         {data.festivals.map(
-          ({ festival }, idx: number) =>
+          (festival, idx: number) =>
             festival.thumbnail && (
               <ImageLink
                 key={`image-link-${idx}-${festival.thumbnail.hash}`}

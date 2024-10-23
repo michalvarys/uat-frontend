@@ -75,7 +75,7 @@ export async function getStaticProps({
   locale,
   params,
 }: GetStaticPropsContext): Promise<GetStaticPropsResult<PageProps>> {
-  const url = `/pages?_locale=${locale}&slug=${params!.slug}`
+  const url = `/api/pages?locale=${locale}&slug=${params!.slug}`
 
   try {
     const { data: pages } = await axios(url)

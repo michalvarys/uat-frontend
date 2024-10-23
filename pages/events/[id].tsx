@@ -15,6 +15,7 @@ import { useEffect } from 'react'
 import { setLocalizationData } from 'src/utils/localizationsUtils'
 import { GetStaticPropsContext, GetStaticPropsResult } from 'next'
 import { localesToParams } from 'src/utils/params'
+import { DbImage } from 'src/components/DbImage'
 
 type GalleryEventProps = {
   galleryEvent: GalleryEventType
@@ -42,19 +43,14 @@ export default function GalleryEvent({ galleryEvent }: GalleryEventProps) {
         <Head>
           <title>{galleryEvent.title}</title>
         </Head>
-        {cover_image ? (
-          <div className={styles.cover_image}>
-            <Image
-              src={transformLink(cover_image.url)}
-              alt={cover_image.alternativeText}
-              layout={'fill'}
-              objectFit={'cover'}
-              objectPosition={'50% 30%'}
-            />
-          </div>
-        ) : (
-          <></>
-        )}
+        <DbImage
+          data={cover_image}
+          props={{
+            layout: 'fill',
+            objectFit: 'cover',
+            objectPosition: '50% 30%',
+          }}
+        />
         <div className={styles.container}>
           <div className={styles.title}>
             <h1 className={styles.header}>{galleryEvent.title}</h1>

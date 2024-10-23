@@ -5,12 +5,15 @@ import { FieldOfStudyType } from 'src/types/fieldsOfStudy'
 import { chakra, Flex } from '@chakra-ui/react'
 import { HeaderBadge } from './HeaderBadge'
 import { HeaderButton } from './HeaderButtons'
+import { DbImage } from 'src/components/DbImage'
+import { getAttributes } from 'src/utils/data'
 
 type Props = {
   data: FieldOfStudyType
 }
 
 export const FieldOfStudyHeader = ({ data }: Props) => {
+  const icon = getAttributes(data.icon_svg)
   return (
     <Flex
       position="relative"
@@ -51,7 +54,7 @@ export const FieldOfStudyHeader = ({ data }: Props) => {
             alignItems="stretch"
             pt={4}
           >
-            <HeaderBadge code={data?.code} icon={data?.icon_svg} />
+            <HeaderBadge code={data?.code} icon={icon} />
             <chakra.span
               display="flex"
               flex="1 1"
@@ -98,17 +101,16 @@ export const FieldOfStudyHeader = ({ data }: Props) => {
         maxH={{ base: '42vh', md: '75vh', lg: '100%' }}
         sx={{ '> div': { width: '100%', height: '100%' } }}
       >
-        {data.image && (
-          <Image
-            alt={data.image.alternativeText}
-            src={transformLink(data.image.url)}
-            width={data.image.width}
-            height={data.image.height}
-            layout="responsive"
-            objectFit="cover"
-            objectPosition="left top"
-          />
-        )}
+        <DbImage
+          data={data.image}
+          props={(image) => ({
+            width: image.width,
+            height: image.height,
+            objectFit: 'cover',
+            objectPosition: 'left top',
+            layout: 'responsive',
+          })}
+        />
       </Flex>
     </Flex>
   )

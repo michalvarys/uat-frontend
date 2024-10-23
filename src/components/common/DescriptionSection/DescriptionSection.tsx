@@ -28,7 +28,11 @@ const DescriptionSection = ({ data, isGreen, variant }: Props) => {
       >
         {data.subtitle}
       </span>
-      <span className={styles.content}>{parse(data.content)}</span>
+      <span className={styles.content}>
+        {typeof data.content === 'string'
+          ? parse(data.content)
+          : JSON.stringify(data.content)}
+      </span>
       <div className={styles.links}>
         {data.download_link && (
           <ButtonLink

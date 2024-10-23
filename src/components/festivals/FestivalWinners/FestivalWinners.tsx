@@ -10,6 +10,7 @@ import { getString, Strings } from 'src/locales'
 import { useRouter } from 'next/router'
 import YearSwitcher from '../../common/YearSwitcher'
 import { YearSwitcherVariant } from '../../common/YearSwitcher/YearSwitcher'
+import { DbImage } from 'src/components/DbImage'
 
 type Props = {
   winners: {
@@ -27,17 +28,17 @@ const WinnerItem = ({ winner }: WinnerItemPros) => {
   return (
     <a className={styles.item} href={winner.link}>
       <div className={styles.image}>
-        {winner.image && (
-          <Image
-            src={transformLink(winner.image.url)}
-            width={winner.image.width}
-            height={winner.image.height}
-            alt="icon"
-            layout={'responsive'}
-            objectFit={'cover'}
-            objectPosition={'center center'}
-          />
-        )}
+        <DbImage
+          data={winner.image}
+          props={(image) => ({
+            width: image.width,
+            height: image.height,
+            objectFit: 'cover',
+            objectPosition: 'center center',
+            layout: 'responsive',
+            alt: 'icon',
+          })}
+        />
       </div>
       <div className={styles.content}>
         <div className={styles.text}>

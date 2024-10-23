@@ -4,17 +4,21 @@ import axios from 'axios'
 
 import Layout from 'src/components/common/Layout'
 import { AppProvider } from 'src/components/context/AppContext'
-import { BASE_URL } from 'src/constants'
+import { BASE_URL, API_TOKEN } from 'src/constants'
 
 import '@fontsource/inter'
 import { Fonts } from 'src/theme/fonts'
 import dynamic from 'next/dist/shared/lib/dynamic'
+import { MenuSection } from 'src/components/common/Header/Header'
+import FooterType from 'src/types/data/FooterType'
+import { getInitialPropsData } from 'src/queries/initial'
 
 const ThemeProvider = dynamic(() => import('src/theme/ThemeProvider'), {
   ssr: false,
 })
 
 axios.defaults.baseURL = BASE_URL
+axios.defaults.headers['Authorization'] = `Bearer ${API_TOKEN}`
 function App({ Component, pageProps }: AppProps) {
   const { locales, locale, defaultLocale } = useRouter()
 
@@ -44,14 +48,20 @@ function App({ Component, pageProps }: AppProps) {
     </ThemeProvider>
   )
 }
+export type InitialProps = {
+  menuData: {
+    footer: FooterType
+    menu: MenuSection[]
+  }
+}
+
+export type PageProps<T extends object> = InitialProps & T
 
 App.getInitialProps = async ({
   router,
 }: AppContext): Promise<AppInitialProps> => {
-  const url = `/global?_locale=${router.locale}`
-
   try {
-    const { data } = await axios.get(url)
+    const data = await getInitialPropsData(router.locale)
 
     return {
       pageProps: {

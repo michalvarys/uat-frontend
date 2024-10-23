@@ -4,7 +4,7 @@ type UATGalleryType = {
   id: number
   name: string
   address: string
-  image: ImageType
+  image_424x488: ImageType
 }
 
 export default UATGalleryType

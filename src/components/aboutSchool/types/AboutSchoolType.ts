@@ -11,7 +11,7 @@ type AboutSchoolType = {
   video: YouTubeVideoType
   history: any
   graduates: any
-  EmploymentStatistics: EmploymentStatisticsType
+  employment_statistics: EmploymentStatisticsType
   applications_at_university: ApplicationsAtUniversityType
   eu_projects: EUProjectType[]
 }

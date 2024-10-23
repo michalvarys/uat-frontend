@@ -11,19 +11,31 @@ function replace(node: DOMNode) {
   if (node.type === 'tag' && 'name' in node) {
     switch (node.name) {
       case 'strong':
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        return <Text as="b">{domToReact(node.children, { replace })}</Text>
+        return (
+          <Text w="full" as="b">
+            {/** eslint-disable-next-line @typescript-eslint/ban-ts-comment
+             * @ts-ignore */}
+            {domToReact(node.children, { replace })}
+          </Text>
+        )
 
       case 'i':
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        return <Text as="i">{domToReact(node.children, { replace })}</Text>
+        return (
+          <Text w="full" as="i">
+            {/** eslint-disable-next-line @typescript-eslint/ban-ts-comment
+             * @ts-ignore */}
+            {domToReact(node.children, { replace })}
+          </Text>
+        )
 
       case 'p':
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        return <Text as="span">{domToReact(node.children, { replace })}</Text>
+        return (
+          <Text w="full" as="span">
+            {/** eslint-disable-next-line @typescript-eslint/ban-ts-comment
+             * @ts-ignore */}
+            {domToReact(node.children, { replace })}
+          </Text>
+        )
 
       default:
         if (/^h[1-3]$/.test(node.name)) {
@@ -43,7 +55,7 @@ function replace(node: DOMNode) {
           }
 
           return (
-            <Heading as="p" size={fs} color="gray.700">
+            <Heading w="full" as="p" size={fs} color="gray.700">
               {/** eslint-disable-next-line @typescript-eslint/ban-ts-comment
                * @ts-ignore */}
               {domToReact(node.children, { replace })}
@@ -63,13 +75,14 @@ const RichTextSlice = ({ data }: Props) => (
         as="h2"
         size={{ base: 'lg', md: 'xl', lg: '2xl' }}
         color="gray.700"
+        w="full"
       >
         {data.title}
       </Heading>
     )}
 
     {data.content && (
-      <Stack spacing={1} className={styles.content} color="gray.700">
+      <Stack spacing={1} className={styles.content} w="full" color="gray.700">
         {parse(data.content, {
           replace,
         })}

@@ -45,7 +45,7 @@ const EmploymentStatistics = ({ data }: Props) => {
         variant={YearSwitcherVariant.WhiteBackground}
       />
       <div className={styles.entriesContainer}>
-        {data.statistic_entry[currentSectionIndex].single_entry.map(
+        {data.statistic_entry[currentSectionIndex]?.single_entry?.map(
           (item: StatisticsSingleEntry) => (
             <StatsEntry
               key={item.title}

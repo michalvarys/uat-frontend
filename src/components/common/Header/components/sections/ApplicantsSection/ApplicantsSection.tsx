@@ -17,7 +17,6 @@ type Props = {
 }
 
 const ApplicantsSection = ({ data }: Props) => {
-  console.log({ data })
   return (
     <div className={styles.container}>
       <div>

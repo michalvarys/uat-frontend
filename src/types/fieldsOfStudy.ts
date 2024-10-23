@@ -2,7 +2,6 @@ import { GalleryType } from 'src/components/slices/types/GalleryType'
 import TextWithImageType from 'src/components/slices/types/TextWithImageType'
 import TeacherType from 'src/components/teachers/types/TeacherType'
 import ImageType from 'src/components/common/types/ImageType'
-
 export type SponsorType = {
   id: number
   image: ImageType
@@ -27,6 +26,11 @@ export type SubjectsType = {
   sponsor: SponsorType
 }
 
+export type FieldOfStudyRelationshipData = {
+  field_of_study: FieldOfStudyType
+  id: number
+  title: string
+}
 export type FieldOfStudyType = {
   id: number
   name: string

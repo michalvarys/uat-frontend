@@ -4,10 +4,10 @@ import parse from 'html-react-parser'
 
 import styles from './UATGalleriesSlice.module.scss'
 import UATGalleryType from '../types/UATGalleryType'
-import { transformLink } from 'src/utils/link'
 import { GalleryEventType } from '../../galleries/types/GalleryEventType'
 
 import ArrowRightIcon from 'public/icons/common/arrow_right.svg'
+import { DbImage } from 'src/components/DbImage'
 
 type ItemProps = {
   item: UATGalleryType
@@ -17,17 +17,15 @@ const UATGalleryItem = ({ item }: ItemProps) => {
     <div className={styles.item_container}>
       <div className={styles.top_container}>
         <div className={styles.thumbnail}>
-          {item.image && (
-            <Image
-              src={transformLink(item.image.url)}
-              alt={item.image.alternativeText}
-              width={item.image.width}
-              height={item.image.height}
-              layout={'responsive'}
-              objectFit={'cover'}
-              objectPosition={'center center'}
-            />
-          )}
+          <DbImage
+            data={item.image_424x488}
+            props={(image) => ({
+              width: image.width,
+              height: image.height,
+              objectFit: 'cover',
+              objectPosition: 'center center',
+            })}
+          />
         </div>
         <div className={styles.text_container}>
           <span className={styles.name}>{item.name}</span>
@@ -75,6 +73,7 @@ const UATGalleriesSlice = ({ galleries, events }: Props) => {
           <UATGalleryItem key={item.id} item={item} />
         ))}
       </div>
+
       <div className={styles.events}>
         {events?.filter(Boolean).map((item) => (
           <GalleryEventItem

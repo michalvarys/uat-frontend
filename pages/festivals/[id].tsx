@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import Head from 'next/head'
 import moment from 'moment'
 
@@ -8,7 +7,6 @@ import Container, { ContainerVariant } from 'src/components/common/Container'
 import FestivalType from 'src/components/festivals/types/FestivalType'
 import axios from 'axios'
 import { REVALIDATE_TIME } from 'src/constants'
-import { transformLink } from 'src/utils/link'
 import TextWithImageSlice from 'src/components/slices/TextWithImageSlice'
 import TextWithImageType from 'src/components/slices/types/TextWithImageType'
 import FestivalWinners from 'src/components/festivals/FestivalWinners'
@@ -27,6 +25,7 @@ import {
   GetStaticPropsResult,
 } from 'next'
 import { localesToParams } from 'src/utils/params'
+import { DbImage } from 'src/components/DbImage'
 
 type FestivalsProps = {
   festival: FestivalType
@@ -101,19 +100,16 @@ export default function Festival({ festival }: FestivalsProps) {
           </div>
 
           <div className={styles.image}>
-            {cover_image ? (
-              <Image
-                alt={cover_image.alternativeText}
-                src={transformLink(cover_image.url)}
-                width={cover_image.width}
-                height={cover_image.height}
-                layout={'responsive'}
-                objectFit={'contain'}
-                objectPosition={'center center'}
-              />
-            ) : (
-              <></>
-            )}
+            <DbImage
+              data={cover_image}
+              props={(image) => ({
+                width: image.width,
+                height: image.height,
+                layout: 'responsive',
+                objectFit: 'contain',
+                objectPosition: 'center center',
+              })}
+            />
           </div>
         </div>
       </Container>

@@ -7,6 +7,7 @@ import { transformLink } from 'src/utils/link'
 
 import ArrowIcon from 'public/icons/common/arrow_right.svg'
 import { FieldOfStudyType } from 'src/types/fieldsOfStudy'
+import { getAttributes } from 'src/utils/data'
 
 type Props = {
   fields: FieldOfStudyType[]
@@ -17,6 +18,7 @@ type FieldItemPros = {
 }
 
 const FieldItem = ({ field }: FieldItemPros) => {
+  const img = getAttributes(field.icon_svg)
   const router = useRouter()
 
   const onSelect = () => {
@@ -27,9 +29,9 @@ const FieldItem = ({ field }: FieldItemPros) => {
     <div onClick={onSelect} className={styles.item}>
       <div className={styles.content}>
         <div className={styles.image}>
-          {field.icon_svg && (
+          {img && (
             <Image
-              src={transformLink(field.icon_svg.url)}
+              src={transformLink(img.url)}
               width={90}
               height={90}
               alt="icon"

@@ -8,6 +8,7 @@ import SocialLinkType from 'src/types/data/SocialLinkType'
 import { transformLink } from 'src/utils/link'
 
 import { HeaderImage } from './HeaderImage'
+import { DbImage } from 'src/components/DbImage'
 
 type Props = {
   title?: string
@@ -96,11 +97,12 @@ const HeaderSlice = ({
                 },
               }}
             >
-              <Image
-                src={transformLink(logo.url)}
-                alt={logo.alternativeText}
-                width={logo.width}
-                height={logo.height}
+              <DbImage
+                data={logo}
+                props={(image) => ({
+                  width: image.width,
+                  height: image.height,
+                })}
               />
             </chakra.div>
           )}

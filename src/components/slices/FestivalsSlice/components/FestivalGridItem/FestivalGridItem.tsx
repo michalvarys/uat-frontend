@@ -6,7 +6,8 @@ import { transformLink } from 'src/utils/link'
 import FestivalType from '../../../../festivals/types/FestivalType'
 
 import ArrowIcon from 'public/icons/common/arrow_right.svg'
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
+import { DbImage } from 'src/components/DbImage'
 
 type Props = {
   festival: FestivalType
@@ -14,24 +15,23 @@ type Props = {
 }
 
 const FestivalsGridItem = ({ festival, onSelect }: Props) => {
-  const { thumbnail } = festival
   const ref = useRef(null)
-  const image = thumbnail.formats.small
+  const { thumbnail } = festival
 
   return (
     <div className={styles.container} onClick={() => onSelect(festival)}>
       <div className={styles.image} ref={ref}>
-        {thumbnail && (
-          <Image
-            src={transformLink(image.url)}
-            layout={'responsive'}
-            objectFit={'fill'}
-            objectPosition={'center center'}
-            width={image.width}
-            height={image.height}
-            alt={thumbnail.alternativeText}
-          />
-        )}
+        <DbImage
+          data={thumbnail}
+          format="small"
+          props={(image) => ({
+            width: image.width,
+            height: image.height,
+            layout: 'responsive',
+            objectFit: 'fill',
+            objectPosition: 'center center',
+          })}
+        />
       </div>
       <div className={styles.bottom_container}>
         <div className={styles.content}>

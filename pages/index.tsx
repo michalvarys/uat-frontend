@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import axios from 'axios'
 import { useRouter } from 'next/router'
 import { GetStaticPropsContext, GetStaticPropsResult } from 'next'
 
@@ -10,11 +9,13 @@ import {
   HomeSection,
   HomeSectionProps,
 } from 'src/sections/homepage/HomeSection'
+import { PageProps } from './_app'
+import { getHomepageData } from 'src/queries/homepage'
 
-export default function Home(props: HomeSectionProps) {
+export default function Home(props: PageProps<HomeSectionProps>) {
+  console.log(props)
   const { locale } = useRouter()
   const title = getString(locale, Strings.HOME_PAGE_TITLE)
-  console.log({ props })
 
   return (
     <chakra.div w="full">
@@ -22,28 +23,34 @@ export default function Home(props: HomeSectionProps) {
         <title>{title}</title>
       </Head>
 
-      <HomeSection {...props} />
+      <HomeSection
+        {...{
+          ...props,
+          social: {
+            ...props.menuData.footer,
+          },
+        }}
+      />
     </chakra.div>
   )
 }
 
 export async function getStaticProps({
-  locale,
+  locale: lang,
   defaultLocale,
 }: GetStaticPropsContext): Promise<GetStaticPropsResult<unknown>> {
-  const url = `/home-page?_locale=${locale || defaultLocale}&inl=${6}`
+  const locale = lang || defaultLocale
 
   try {
-    const { data } = await axios(url)
-    if (!data) {
-      throw new Error('no data')
-    }
+    const homepage = await getHomepageData(locale)
 
     return {
-      props: { ...data, url },
+      props: homepage,
       revalidate: REVALIDATE_TIME,
     }
   } catch (e) {
+    // eslint-disable-next-line no-console
+    console.log(e)
     return {
       props: {},
       revalidate: REVALIDATE_TIME,

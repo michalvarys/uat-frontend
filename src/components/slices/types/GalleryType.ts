@@ -3,7 +3,7 @@ import ImageType from '../../common/types/ImageType'
 type GalleryItemType = {
   id: number
   fullsize: ImageType
-  thumbnail: ImageType
+  thumbnail_410x551: ImageType
 }
 
 type GalleryType = {

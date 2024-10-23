@@ -5,7 +5,7 @@ type TeacherType = {
   extra_role?: string
   firstname: string
   id: number
-  photo: ImageType
+  photo_340x609: ImageType
   post: string
   surname: string
   title: string

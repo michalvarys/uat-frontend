@@ -7,6 +7,7 @@ import styles from './EventItem.module.scss'
 import ArrowRightIcon from 'public/icons/common/arrow_right.svg'
 import { GalleryEventType } from '../../../types/GalleryEventType'
 import { transformLink } from 'src/utils/link'
+import { DbImage } from 'src/components/DbImage'
 
 type Props = {
   event: GalleryEventType
@@ -17,15 +18,14 @@ const EUProjectItem = ({ event, onSelect }: Props) => {
   return (
     <div className={styles.container} onClick={() => onSelect(event)}>
       <div className={styles.image_container}>
-        {event.image && (
-          <Image
-            src={transformLink(event.image.url)}
-            alt={event.image.alternativeText}
-            layout={'fill'}
-            objectFit={'cover'}
-            objectPosition={'50% 30%'}
-          />
-        )}
+        <DbImage
+          data={event.image}
+          props={{
+            layout: 'fill',
+            objectFit: 'cover',
+            objectPosition: '50% 30%',
+          }}
+        />
       </div>
       <div className={styles.content}>
         <span className={styles.date}>

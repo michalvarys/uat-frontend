@@ -47,7 +47,7 @@ const Footer = ({ data }: Props) => {
               {data?.footer_sections.map((item) => (
                 <div className={styles.item} key={`footer_section_${item.id}`}>
                   <div className={styles.title}>{item.title}</div>
-                  {item.links.map((link: LinkType) => (
+                  {item?.links?.map((link: LinkType) => (
                     <GenericLink data={link} key={`link_${link.id}`}>
                       <div className={styles.link}>{link.title}</div>
                     </GenericLink>

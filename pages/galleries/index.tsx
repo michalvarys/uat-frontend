@@ -1,5 +1,4 @@
 import 'moment/locale/sk'
-import axios from 'axios'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import styles from './galleries.module.scss'
@@ -15,12 +14,14 @@ import { useEffect } from 'react'
 import { setLocalizationData } from 'src/utils/localizationsUtils'
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next'
 import { chakra } from '@chakra-ui/react'
+import { getGalleriesData } from 'src/queries/galleries'
 
 type PageProps = {
   data: GalleriesOverviewType
 }
 
 export default function GalleriesOverview({ data }: PageProps) {
+  console.log(data)
   const router = useRouter()
   const { setLocalePaths } = useApp()
 
@@ -30,7 +31,9 @@ export default function GalleriesOverview({ data }: PageProps) {
   }, [])
 
   const firstEvent =
-    data.events && data.events.length > 0 ? data.events[0] : null
+    data.galleryEvents && data.galleryEvents.length > 0
+      ? data.galleryEvents[0]
+      : null
 
   return (
     <chakra.div w="full" className={styles.container}>
@@ -47,8 +50,8 @@ export default function GalleriesOverview({ data }: PageProps) {
 
       <Container variant={ContainerVariant.White} isHigh>
         <div className={styles.bottom_container}>
-          {data.galleries_uats ? (
-            <UATGalleriesSlice galleries={data.galleries_uats} />
+          {data.galleries_uat ? (
+            <UATGalleriesSlice galleries={data.galleries_uat} />
           ) : (
             <></>
           )}
@@ -78,7 +81,7 @@ export default function GalleriesOverview({ data }: PageProps) {
         ) : (
           <></>
         )}
-        <EventsSlice events={data.events} />
+        <EventsSlice events={data.galleryEvents} />
       </Container>
     </chakra.div>
   )
@@ -87,10 +90,8 @@ export default function GalleriesOverview({ data }: PageProps) {
 export async function getServerSideProps({
   locale,
 }: GetServerSidePropsContext): Promise<GetServerSidePropsResult<unknown>> {
-  const url = `/galleries?_locale=${locale}`
-
   try {
-    const { data } = await axios(url)
+    const data = await getGalleriesData(locale)
 
     return {
       props: {
@@ -98,6 +99,8 @@ export async function getServerSideProps({
       },
     }
   } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error(e.message)
     return {
       props: {},
     }

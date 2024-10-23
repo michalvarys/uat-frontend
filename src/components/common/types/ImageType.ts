@@ -1,4 +1,6 @@
-type ImageType = {
+import { DataType } from 'src/types/data/DataType'
+
+export type ImageTypeProps = {
   height: number
   width: number
   name: string
@@ -9,5 +11,7 @@ type ImageType = {
   alternativeText: string
   formats: any
 }
+
+type ImageType = DataType<ImageTypeProps> | ImageTypeProps
 
 export default ImageType
