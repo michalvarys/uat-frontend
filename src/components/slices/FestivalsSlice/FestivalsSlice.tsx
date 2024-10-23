@@ -6,8 +6,7 @@ import FestivalType, {
 } from '../../festivals/types/FestivalType'
 import { ContainerVariant } from '../../common/Container'
 import DescriptionSection from '../../common/DescriptionSection'
-import FestivalsGrid from './components/FestivalsGrid'
-import { prepareFestivals } from './components/FestivalsGrid/FestivalsGrid'
+import FestivalsGrid, { prepareFestivals } from './components/FestivalsGrid'
 
 type Props = {
   festivals?: FestivalRelationship[] | FestivalType[]

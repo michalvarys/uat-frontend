@@ -17,7 +17,7 @@ import YoutubePlayerWithTextSlice from 'src/components/slices/YoutubePlayerWithT
 import SocialLinkType from 'src/types/data/SocialLinkType'
 import { FieldOfStudyRelationshipData } from 'src/types/fieldsOfStudy'
 import FieldOfStudyCarusel from '../studies/components/FieldOfStudyCarusel'
-import { prepareFestivals } from 'src/components/slices/FestivalsSlice/components/FestivalsGrid/FestivalsGrid'
+import { prepareFestivals } from 'src/components/slices/FestivalsSlice/components/FestivalsGrid'
 
 export type HomeSectionProps = {
   cover_image: ImageType

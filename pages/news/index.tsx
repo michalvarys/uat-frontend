@@ -6,7 +6,6 @@ import styles from './news.module.scss'
 import Container, { ContainerVariant } from 'src/components/common/Container'
 import { getString, Strings } from 'src/locales'
 import NewsType from 'src/components/news/types/NewsType'
-import NewsList from 'src/components/news/NewsList'
 import YearSwitcher from 'src/components/common/YearSwitcher'
 import axios from 'axios'
 import { YearSwitcherVariant } from 'src/components/common/YearSwitcher/YearSwitcher'
@@ -15,6 +14,7 @@ import { useApp } from 'src/components/context/AppContext'
 import { setLocalizationData } from 'src/utils/localizationsUtils'
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next'
 import qs from 'qs'
+import NewsList from 'src/components/slices/NewsList'
 
 type NewsPageProps = {
   news: NewsType[]

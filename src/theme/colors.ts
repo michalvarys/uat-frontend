@@ -4,6 +4,17 @@ export const colors = {
   black: '#000000',
   white: '#FFFFFF',
 
+  uat_dark: '#000000',
+  uat_light: '#FFFFFF',
+  uat_green: '#69E2BE',
+  uat_orange: '#FF7A00',
+
+  //gray-scale
+  $gray: '#636363',
+
+  //header
+  $sunshade: '#FF902A',
+
   whiteAlpha: {
     50: 'rgba(255, 255, 255, 0.04)',
     100: 'rgba(255, 255, 255, 0.06)',

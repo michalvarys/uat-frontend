@@ -9,8 +9,6 @@ import {
   SimpleGrid,
   Box,
 } from '@chakra-ui/react'
-import Image from 'next/image'
-import { transformLink } from 'src/utils/link'
 import { DbImage } from '../DbImage'
 
 export function CardsSlice(section) {
