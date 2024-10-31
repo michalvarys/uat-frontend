@@ -14,7 +14,11 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "baseUrl": "./",
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "paths": {
+      "@/*": ["./src/*"],
+      "react": [ "./node_modules/@types/react" ]
+    }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.d.ts", "**/*.tsx"],
   "exclude": ["node_modules"]

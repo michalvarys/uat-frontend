@@ -49,7 +49,7 @@ export function HeaderImage({ image }: Props) {
         },
       }}
     >
-      {image && (
+      {image && 'url' in image && (
         <Image
           src={transformLink(image.url)}
           alt={image.alternativeText}
