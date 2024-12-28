@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import axios from 'axios'
 import Head from 'next/head'
 import {
   GetStaticPathsResult,
@@ -10,11 +9,9 @@ import {
 import { REVALIDATE_TIME } from 'src/constants'
 import { useApp } from 'src/components/context/AppContext'
 import { setLocalizationData } from 'src/utils/localizationsUtils'
-import { localesToParams } from 'src/utils/params'
 import { StudiesSection } from 'src/sections/studies/StudiesSection'
 import { FieldOfStudyType } from 'src/types/fieldsOfStudy'
-
-import { getStudyData } from 'src/queries/studies'
+import { getStudyData, getStudyList } from 'src/queries/studies'
 
 type FieldOfStudyProps = {
   study: FieldOfStudyType
@@ -51,13 +48,8 @@ type Params = { id: string }
 export async function getStaticPaths({
   locales,
 }: GetStaticPropsContext): Promise<GetStaticPathsResult<Params>> {
-  // TODO
-  const params = localesToParams(locales)
-  const url = `/api/field-of-studies?${params}`
-
   try {
-    const { data: studies } = await axios.get<FieldOfStudyType[]>(url)
-
+    const studies = await getStudyList(locales)
     return {
       paths: studies.map((item) => ({
         params: {

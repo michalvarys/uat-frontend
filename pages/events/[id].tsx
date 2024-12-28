@@ -8,7 +8,6 @@ import Container, { ContainerVariant } from 'src/components/common/Container'
 import FestivalType from 'src/components/festivals/types/FestivalType'
 import { GalleryEventType } from 'src/components/galleries/types/GalleryEventType'
 import { REVALIDATE_TIME } from 'src/constants'
-import { transformLink } from 'src/utils/link'
 import GallerySlice from 'src/components/slices/GallerySlice'
 import { useApp } from 'src/components/context/AppContext'
 import { useEffect } from 'react'
@@ -16,6 +15,7 @@ import { setLocalizationData } from 'src/utils/localizationsUtils'
 import { GetStaticPropsContext, GetStaticPropsResult } from 'next'
 import { localesToParams } from 'src/utils/params'
 import { DbImage } from 'src/components/DbImage'
+import { getEventList, getEventDetail } from '@/queries/events'
 
 type GalleryEventProps = {
   galleryEvent: GalleryEventType
@@ -26,8 +26,12 @@ export default function GalleryEvent({ galleryEvent }: GalleryEventProps) {
   const { setLocalePaths } = useApp()
 
   useEffect(() => {
-    if (galleryEvent && galleryEvent.localizations.length > 0) {
-      setLocalizationData(setLocalePaths, galleryEvent.localizations, '/events')
+    if (galleryEvent?.localizations?.data?.length > 0) {
+      setLocalizationData(
+        setLocalePaths,
+        galleryEvent.localizations.data,
+        '/events'
+      )
     } else {
       setLocalizationData(setLocalePaths, null)
     }
@@ -37,20 +41,23 @@ export default function GalleryEvent({ galleryEvent }: GalleryEventProps) {
   if (!galleryEvent) {
     return <></>
   }
+
   return (
     <>
       <Container variant={ContainerVariant.Black}>
         <Head>
           <title>{galleryEvent.title}</title>
         </Head>
-        <DbImage
-          data={cover_image}
-          props={{
-            layout: 'fill',
-            objectFit: 'cover',
-            objectPosition: '50% 30%',
-          }}
-        />
+        <div className={styles.cover_image}>
+          <DbImage
+            data={cover_image}
+            props={{
+              layout: 'fill',
+              objectFit: 'cover',
+              objectPosition: '50% 30%',
+            }}
+          />
+        </div>
         <div className={styles.container}>
           <div className={styles.title}>
             <h1 className={styles.header}>{galleryEvent.title}</h1>
@@ -70,11 +77,8 @@ export default function GalleryEvent({ galleryEvent }: GalleryEventProps) {
 }
 
 export async function getStaticPaths({ locales }: GetStaticPropsContext) {
-  const params = localesToParams(locales)
-  const url = `/cms/gallery-events?${params}`
-
   try {
-    const { data: galleryEvents } = await axios.get<FestivalType[]>(url)
+    const galleryEvents = await getEventList(locales)
 
     return {
       paths: galleryEvents.map((item) => ({
@@ -102,10 +106,8 @@ export async function getStaticProps({
 }: GetStaticPropsContext<Params>): Promise<
   GetStaticPropsResult<GalleryEventProps>
 > {
-  const url = `/gallery-events/${params!.id}?_locale=${locale}`
-
   try {
-    const { data: galleryEvent } = await axios(url)
+    const galleryEvent = await getEventDetail(params!.id, locale)
 
     if (!galleryEvent) {
       return {

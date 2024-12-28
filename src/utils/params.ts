@@ -7,5 +7,5 @@ export function valuesToParams(key: string, values?: string[]) {
 }
 
 export function localesToParams(locales?: string[]) {
-  return valuesToParams('_locale', locales)
+  return valuesToParams('locale', locales)
 }

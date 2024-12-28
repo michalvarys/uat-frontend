@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import Head from 'next/head'
-import axios from 'axios'
 import {
   GetStaticPathsContext,
   GetStaticPathsResult,
@@ -11,8 +10,8 @@ import { REVALIDATE_TIME } from 'src/constants'
 import PageType from 'src/components/pages/types/PageType'
 import { useApp } from 'src/components/context/AppContext'
 import { setLocalizationData } from 'src/utils/localizationsUtils'
-import { localesToParams } from 'src/utils/params'
 import { PageSection } from 'src/sections/pages/PageSection'
+import { getPageDetail, getPagesData } from '@/queries/pages'
 
 import 'moment/locale/sk'
 
@@ -25,8 +24,12 @@ export default function Page({ page }: PageProps) {
   const { setLocalePaths } = useApp()
 
   useEffect(() => {
-    if (page.localizations?.length > 0) {
-      setLocalizationData(setLocalePaths, page.localizations, '/pages')
+    if (page?.attributes?.localizations?.data.length > 0) {
+      setLocalizationData(
+        setLocalePaths,
+        page.attributes.localizations.data,
+        '/pages'
+      )
       return
     }
 
@@ -37,7 +40,7 @@ export default function Page({ page }: PageProps) {
   return (
     <>
       <Head>
-        <title>{page.title}</title>
+        <title>{page.attributes.title}</title>
       </Head>
       <PageSection {...page} />
     </>
@@ -47,16 +50,12 @@ export default function Page({ page }: PageProps) {
 export async function getStaticPaths({
   locales,
 }: GetStaticPathsContext): Promise<GetStaticPathsResult<{}>> {
-  const params = localesToParams(locales!)
-  const url = `/pages?${params}`
-
   try {
-    const { data: pages } = await axios.get<PageType[]>(url)
-
+    const pages = await getPagesData(locales)
     return {
       paths: pages.map((item) => ({
         params: {
-          slug: item.slug,
+          slug: item.attributes.slug,
           page: item,
         },
       })),
@@ -75,11 +74,9 @@ export async function getStaticProps({
   locale,
   params,
 }: GetStaticPropsContext): Promise<GetStaticPropsResult<PageProps>> {
-  const url = `/api/pages?locale=${locale}&slug=${params!.slug}`
-
   try {
-    const { data: pages } = await axios(url)
-    const page = pages?.length > 0 ? pages[0] : null
+    const page = await getPageDetail(params!.slug as string, locale)
+    // console.dir(page, { depth: 5 })
     if (!page) {
       return {
         notFound: true,

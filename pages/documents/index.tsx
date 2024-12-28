@@ -15,7 +15,7 @@ import SearchBox from 'src/components/common/SearchBox'
 import { useApp } from 'src/components/context/AppContext'
 import { setLocalizationData } from 'src/utils/localizationsUtils'
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next'
-import { valuesToParams } from 'src/utils/params'
+import { getDocumentList } from '@/queries/documents'
 
 const sortByName = (a: DocumentType, b: DocumentType) => {
   return a.name.toLowerCase().localeCompare(b.name.toLowerCase())
@@ -110,24 +110,8 @@ export default function Documents({ documents }: DocumentsProps) {
 export async function getServerSideProps(
   _ctx: GetServerSidePropsContext
 ): Promise<GetServerSidePropsResult<DocumentsProps>> {
-  const extensions = [
-    '.doc',
-    '.docx',
-    '.xls',
-    '.xlsx',
-    '.pdf',
-    '.pages',
-    '.numbers',
-    '.keynote',
-    '.ppt',
-    '.pptx',
-  ]
-
-  const params = valuesToParams('ext', extensions)
-  const url = `/upload/files?${params}`
-
   try {
-    const { data: documents } = await axios(url)
+    const documents = await getDocumentList()
 
     return {
       props: {

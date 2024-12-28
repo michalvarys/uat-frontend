@@ -3,6 +3,40 @@ import axios from 'axios'
 import { FieldOfStudyType } from 'src/types/fieldsOfStudy'
 import { getAttributes } from 'src/utils/data'
 
+export async function getStudyList(
+  locales: string[]
+): Promise<FieldOfStudyType[]> {
+  const { data } = await axios(
+    `/api/field-of-studies?${qs.stringify(
+      {
+        locale: locales,
+        populate: '*',
+      },
+      {
+        encodeValuesOnly: true,
+      }
+    )}`
+  )
+
+  return data.data.map((item) => ({ id: item.id, ...item.attributes }))
+}
+
+export async function getStudiesData(locale: string) {
+  const { data } = await axios(
+    `/api/field-of-studies?${qs.stringify(
+      {
+        locale,
+        populate: '*',
+      },
+      {
+        encodeValuesOnly: true,
+      }
+    )}`
+  )
+
+  return data.data.map((item) => ({ id: item.id, ...item.attributes }))
+}
+
 export async function getStudyData(
   id: string,
   locale: string

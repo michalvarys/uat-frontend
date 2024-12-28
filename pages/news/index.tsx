@@ -1,20 +1,18 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
-import styles from './news.module.scss'
-
 import Container, { ContainerVariant } from 'src/components/common/Container'
 import { getString, Strings } from 'src/locales'
 import NewsType from 'src/components/news/types/NewsType'
 import YearSwitcher from 'src/components/common/YearSwitcher'
-import axios from 'axios'
 import { YearSwitcherVariant } from 'src/components/common/YearSwitcher/YearSwitcher'
 import SegmentedControl from 'src/components/common/buttons/SegmentedControl'
 import { useApp } from 'src/components/context/AppContext'
 import { setLocalizationData } from 'src/utils/localizationsUtils'
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next'
-import qs from 'qs'
 import NewsList from 'src/components/slices/NewsList'
+import { getNewsByYear } from '@/queries/news'
+import styles from './news.module.scss'
 
 type NewsPageProps = {
   news: NewsType[]
@@ -106,39 +104,10 @@ export async function getServerSideProps({
 }: GetServerSidePropsContext): Promise<
   GetServerSidePropsResult<NewsPageProps>
 > {
-  const defaultYear = '' + new Date().getFullYear()
-  const { year = defaultYear } = q
-
-  const query = qs.stringify({
-    locale,
-    filters: {
-      date: {
-        $gte: new Date(`${year}-01-01`),
-        $lte: new Date(`${year}-12-31`),
-      },
-    },
-    populate: {
-      sections: {
-        populate: '*',
-      },
-      localizations: {
-        populate: '*',
-        publicationState: 'live',
-      },
-    },
-    sort: {
-      date: 'desc',
-    },
-    limit: 25,
-    offset: 0,
-  })
-
-  const url = `/api/news-entries?${query}`
-
   try {
-    const { data } = await axios(url)
+    const props = await getNewsByYear(q, locale)
     return {
-      props: data,
+      props,
     }
   } catch (e) {
     return {

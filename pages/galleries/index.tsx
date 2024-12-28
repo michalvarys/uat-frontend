@@ -21,7 +21,6 @@ type PageProps = {
 }
 
 export default function GalleriesOverview({ data }: PageProps) {
-  console.log(data)
   const router = useRouter()
   const { setLocalePaths } = useApp()
 

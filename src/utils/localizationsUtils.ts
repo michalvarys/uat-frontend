@@ -1,19 +1,19 @@
 const setLocalizationData = (
   setter: Function,
-  data: any,
+  data: { id: number; attributes: { locale: string; slug: string } }[] | null,
   subpath?: string | null
 ) => {
   if (!data || !subpath) {
     setter(null)
     return
   }
-  const values: { [name: string]: string } = data.reduce((item, memo) => {
-    memo[item.locale] = `${subpath}/${item.slug || item.id}`
-    return item
+
+  const values: { [name: string]: string } = data.reduce((memo, item) => {
+    const locale = item?.attributes?.locale
+    memo[locale] = `${subpath}/${item?.attributes?.slug || item.id}`
+    return memo
   }, {})
-  // data.forEach(
-  //   (item: any) => (values[item.locale] = `${subpath}/${item.slug || item.id}`)
-  // )
+
   setter(values)
 }
 

@@ -1,5 +1,21 @@
-import { Heading, Text, Stack } from '@chakra-ui/react'
-import parse, { domToReact, DOMNode } from 'html-react-parser'
+import {
+  Heading,
+  Text,
+  Stack,
+  Tr,
+  Td,
+  Table,
+  Tbody,
+  List,
+  OrderedList,
+  UnorderedList,
+  ListItem,
+} from '@chakra-ui/react'
+import parse, {
+  domToReact,
+  DOMNode,
+  attributesToProps,
+} from 'html-react-parser'
 import RichTextType from '../../../types/data/RichTextType'
 import styles from './RichTextSlice.module.scss'
 
@@ -8,54 +24,93 @@ type Props = {
 }
 
 function replace(node: DOMNode) {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const props = attributesToProps(node.attribs)
+
   if (node.type === 'tag' && 'name' in node) {
     switch (node.name) {
+      case 'a':
+      case 'em':
+      case 'b':
       case 'strong':
-        return (
-          <Text w="full" as="b">
-            {/** eslint-disable-next-line @typescript-eslint/ban-ts-comment
-             * @ts-ignore */}
-            {domToReact(node.children, { replace })}
-          </Text>
-        )
-
       case 'i':
-        return (
-          <Text w="full" as="i">
-            {/** eslint-disable-next-line @typescript-eslint/ban-ts-comment
-             * @ts-ignore */}
-            {domToReact(node.children, { replace })}
-          </Text>
-        )
-
+      case 'u':
       case 'p':
         return (
-          <Text w="full" as="span">
+          <Text w="full" as={node.name} {...props}>
             {/** eslint-disable-next-line @typescript-eslint/ban-ts-comment
              * @ts-ignore */}
             {domToReact(node.children, { replace })}
           </Text>
         )
-
+      case 'td':
+        return (
+          <Td {...props}>
+            {/** eslint-disable-next-line @typescript-eslint/ban-ts-comment
+             * @ts-ignore */}
+            {domToReact(node.children, { ...props, replace })}
+          </Td>
+        )
+      case 'tr':
+        return (
+          <Tr {...props}>
+            {/** eslint-disable-next-line @typescript-eslint/ban-ts-comment
+             * @ts-ignore */}
+            {domToReact(node.children, { replace })}
+          </Tr>
+        )
+      case 'tbody':
+        return (
+          <Tbody {...props}>
+            {/** eslint-disable-next-line @typescript-eslint/ban-ts-comment
+             * @ts-ignore */}
+            {domToReact(node.children, { replace })}
+          </Tbody>
+        )
+      case 'table':
+        return (
+          <Table className={styles.table} {...props}>
+            {/** eslint-disable-next-line @typescript-eslint/ban-ts-comment
+             * @ts-ignore */}
+            {domToReact(node.children, { replace })}
+          </Table>
+        )
+      case 'li':
+        return (
+          <UnorderedList>
+            {/** eslint-disable-next-line @typescript-eslint/ban-ts-comment
+             * @ts-ignore */}
+            {node.children.map((node, index) => (
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              //@ts-ignore
+              <ListItem key={index}>{domToReact([node], { replace })}</ListItem>
+            ))}
+          </UnorderedList>
+        )
       default:
         if (/^h[1-3]$/.test(node.name)) {
           const number = node.name.charAt(-1)
           const size = 4 - Number(number)
-          let fs = { base: 'lg', md: 'xl', lg: '2xl' }
+          let fs = { base: 'md', md: 'md', lg: 'lg' }
           switch (size) {
             case 1:
-              fs = { base: 'lg', md: 'xl', lg: '2xl' }
+              fs = { base: 'xl', md: '2xl', lg: '4xl' }
               break
             case 2:
-              fs = { base: 'md', md: 'lg', lg: 'xl' }
+              fs = { base: 'lg', md: 'xl', lg: '2xl' }
               break
             case 3:
+              fs = { base: 'md', md: 'lg', lg: 'xl' }
+              break
+            case 4:
+            default:
               fs = { base: 'md', md: 'md', lg: 'lg' }
               break
           }
 
           return (
-            <Heading w="full" as="p" size={fs} color="gray.700">
+            <Heading w="full" as="p" size={fs} color="gray.700" {...props}>
               {/** eslint-disable-next-line @typescript-eslint/ban-ts-comment
                * @ts-ignore */}
               {domToReact(node.children, { replace })}
@@ -65,7 +120,17 @@ function replace(node: DOMNode) {
     }
   }
 
-  return node
+  if (node.type === 'text' && 'data' in node) {
+    return <>{node.data}</>
+  }
+
+  if ('children' in node && node.children.length) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    return domToReact(node.children, { replace })
+  }
+
+  return node //domToReact([node], props)
 }
 
 const RichTextSlice = ({ data }: Props) => (
@@ -83,9 +148,9 @@ const RichTextSlice = ({ data }: Props) => (
 
     {data.content && (
       <Stack spacing={1} className={styles.content} w="full" color="gray.700">
-        {parse(data.content, {
-          replace,
-        })}
+        {/** eslint-disable-next-line @typescript-eslint/ban-ts-comment
+         * @ts-ignore */}
+        {parse(data.content, { replace })}
       </Stack>
     )}
   </div>

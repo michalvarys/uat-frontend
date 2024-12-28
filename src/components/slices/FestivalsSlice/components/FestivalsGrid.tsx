@@ -18,13 +18,15 @@ export const prepareFestivals = (
     return []
   }
 
-  return festivals.map((item: FestivalType | FestivalRelationship) => {
-    if ('festival' in item) {
-      return item.festival
-    }
+  return festivals
+    .map((item: FestivalType | FestivalRelationship) => {
+      if (item && 'festival' in item) {
+        return item.festival
+      }
 
-    return item
-  })
+      return null
+    })
+    .filter(Boolean)
 }
 
 const FestivalsGrid = ({ festivals: data, onSelect }: Props) => {

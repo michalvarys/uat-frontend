@@ -26,6 +26,7 @@ import {
 } from 'next'
 import { localesToParams } from 'src/utils/params'
 import { DbImage } from 'src/components/DbImage'
+import { getFestivalDetail, getFestivalList } from '@/queries/festivals'
 
 type FestivalsProps = {
   festival: FestivalType
@@ -36,8 +37,12 @@ export default function Festival({ festival }: FestivalsProps) {
   const { setLocalePaths } = useApp()
 
   useEffect(() => {
-    if (festival && festival.localizations.length > 0) {
-      setLocalizationData(setLocalePaths, festival.localizations, '/festivals')
+    if (festival?.localizations?.data?.length > 0) {
+      setLocalizationData(
+        setLocalePaths,
+        festival.localizations.data,
+        '/festivals'
+      )
     } else {
       setLocalizationData(setLocalePaths, null)
     }
@@ -146,11 +151,8 @@ type Params = {
 export async function getStaticPaths({
   locales,
 }: GetStaticPathsContext): Promise<GetStaticPathsResult<Params>> {
-  const params = localesToParams(locales)
-  const url = `/cms/festivals?${params}`
-
   try {
-    const { data: festivals } = await axios.get<FestivalType[]>(url)
+    const festivals = await getFestivalList(locales)
 
     return {
       paths: festivals.map((item) => ({
@@ -174,10 +176,8 @@ export async function getStaticProps({
 }: GetStaticPropsContext<Params>): Promise<
   GetStaticPropsResult<FestivalsProps>
 > {
-  const url = `/festivals/${params!.id}?_locale=${locale}`
-
   try {
-    const { data: festival } = await axios.get<FestivalType>(url)
+    const festival = await getFestivalDetail(params!.id, locale)
 
     if (!festival) {
       return {

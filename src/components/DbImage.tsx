@@ -13,7 +13,7 @@ type Props = {
 export function DbImage({ data, format, props: getProps }: Props) {
   const img = getAttributes(data)
   const image = useMemo(() => {
-    if (!format || !img) {
+    if (!format || !img || !img.formats) {
       return img
     }
 

@@ -1,6 +1,4 @@
 import Container, { ContainerVariant } from 'src/components/common/Container'
-import { transformLink } from 'src/utils/link'
-import Image from 'next/image'
 import PageType from 'src/components/pages/types/PageType'
 import { parseSections } from './utils'
 import { Section } from './components/Section'
@@ -10,21 +8,28 @@ import { DbImage } from 'src/components/DbImage'
 
 export function PageSection(page: PageType) {
   const sections = useMemo(() => {
-    return parseSections(page.sections).filter(Boolean)
-  }, [page.sections])
+    return parseSections(page.attributes.sections).filter(Boolean)
+  }, [page.attributes.sections])
+
+  const hasCover =
+    page.attributes.cover_image &&
+    'data' in page.attributes.cover_image &&
+    page.attributes.cover_image.data
 
   return (
     <Container variant={ContainerVariant.White}>
-      <chakra.div position="relative" w="full" height="300px">
-        <DbImage
-          data={page.cover_image}
-          props={{
-            layout: 'fill',
-            objectFit: 'cover',
-            objectPosition: '50% 30%',
-          }}
-        />
-      </chakra.div>
+      {hasCover && (
+        <chakra.div position="relative" w="full" height="300px">
+          <DbImage
+            data={page.attributes.cover_image}
+            props={{
+              layout: 'fill',
+              objectFit: 'cover',
+              objectPosition: '50% 30%',
+            }}
+          />
+        </chakra.div>
+      )}
 
       <Flex
         p={{ base: 2, md: '80px' }}
@@ -32,7 +37,7 @@ export function PageSection(page: PageType) {
         pb={{ base: 2, md: '200px' }}
         flexDirection="column"
       >
-        {page.title && (
+        {page.attributes.title && (
           <Heading
             lineHeight={1.1}
             fontWeight={600}
@@ -55,7 +60,7 @@ export function PageSection(page: PageType) {
                 zIndex: -1,
               }}
             >
-              {page.title}
+              {page.attributes.title}
             </Text>
           </Heading>
         )}

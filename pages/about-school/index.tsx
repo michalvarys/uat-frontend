@@ -19,6 +19,7 @@ import { useApp } from 'src/components/context/AppContext'
 import { setLocalizationData } from 'src/utils/localizationsUtils'
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next'
 import { chakra } from '@chakra-ui/react'
+import { getAboutSchoolDetail } from '@/queries/aboutSchool'
 
 type AboutSchoolPageProps = {
   data: AboutSchoolType
@@ -112,12 +113,11 @@ export async function getServerSideProps({
   locale,
 }: GetServerSidePropsContext): Promise<GetServerSidePropsResult<unknown>> {
   try {
-    const url = `/api/about-school?locale=${locale}`
-    const { data } = await axios(url)
+    const aboutSchool = await getAboutSchoolDetail(locale)
 
     return {
       props: {
-        data,
+        data: aboutSchool,
       },
     }
   } catch (e) {

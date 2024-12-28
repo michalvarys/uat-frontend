@@ -17,7 +17,7 @@ import { useEffect } from 'react'
 import { setLocalizationData } from 'src/utils/localizationsUtils'
 import { useApp } from 'src/components/context/AppContext'
 import { GetStaticPropsContext, GetStaticPropsResult } from 'next'
-import qs from 'qs'
+import { getNewsDetail, getNewsByLocales } from '@/queries/news'
 
 type NewsDetailsPageProps = {
   slug?: string
@@ -27,11 +27,9 @@ type NewsDetailsPageProps = {
 export default function NewsDetails({ news, ...rest }: NewsDetailsPageProps) {
   const { setLocalePaths } = useApp()
 
-  console.log(news)
-
   useEffect(() => {
-    if (news?.localizations?.length > 0) {
-      setLocalizationData(setLocalePaths, news.localizations, '/news')
+    if (news?.localizations?.data.length > 0) {
+      setLocalizationData(setLocalePaths, news.localizations.data, '/news')
     } else {
       setLocalizationData(setLocalePaths, null)
     }
@@ -134,15 +132,8 @@ type StaticPathsPropsType = {
 }
 
 export async function getStaticPaths({ locales }: StaticPathsPropsType) {
-  const url = `/api/news-generate?${locales
-    .map((locale: string, idx: number) => {
-      return `locale=${locale}${idx < locales.length - 1 ? '&' : ''}`
-    })
-    .join('')}`
-
   try {
-    const { data } = await axios(url)
-    const { news } = data
+    const news = await getNewsByLocales(locales)
 
     return {
       paths: news.map((item: NewsType) => ({
@@ -169,42 +160,12 @@ export async function getStaticProps({
 }: GetStaticPropsContext<Params>): Promise<
   GetStaticPropsResult<NewsDetailsPageProps>
 > {
-  const query = qs.stringify({
-    locale,
-    populate: {
-      sections: {
-        populate: {
-          gallery_item: {
-            populate: {
-              thumbnail_410x551: {
-                populate: '*',
-              },
-              fullsize: {
-                populate: '*',
-              },
-            },
-          },
-          content: true,
-          cover_image: {
-            populate: '*',
-          },
-        },
-      },
-      localizations: {
-        populate: '*',
-        publicationState: 'live',
-      },
-    },
-  })
-
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const url = `/api/news/${params!.slug}?${query}`
-
   try {
-    const { data } = await axios(url)
+    const news = await getNewsDetail(params!.slug as string, locale)
+
     return {
       props: {
-        news: data,
+        news,
       },
       revalidate: REVALIDATE_TIME,
     }
