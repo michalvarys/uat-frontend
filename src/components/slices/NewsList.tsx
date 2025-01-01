@@ -3,8 +3,7 @@ import Image from 'next/image'
 import { Grid, Box, Flex, Text, useColorModeValue } from '@chakra-ui/react'
 import ArrowRightIcon from 'public/icons/common/arrow_right.svg'
 import NewsType from '../news/types/NewsType'
-
-import { colors } from 'src/theme/colors'
+import { colors } from '@ssupat/components'
 
 type NewsItemProps = {
   news: NewsType

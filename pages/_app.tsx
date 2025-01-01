@@ -7,15 +7,18 @@ import { AppProvider } from 'src/components/context/AppContext'
 import { BASE_URL, API_TOKEN } from 'src/constants'
 
 import '@fontsource/inter'
-import { Fonts } from 'src/theme/fonts'
 import dynamic from 'next/dist/shared/lib/dynamic'
 import { MenuSection } from 'src/components/common/Header/Header'
 import FooterType from 'src/types/data/FooterType'
 import { getInitialPropsData } from 'src/queries/initial'
+import { Fonts } from '@ssupat/components/src/theme/fonts'
 
-const ThemeProvider = dynamic(() => import('src/theme/ThemeProvider'), {
-  ssr: false,
-})
+const ThemeProvider = dynamic(
+  () => import('@ssupat/components/src/theme').then((mod) => mod.default),
+  {
+    ssr: false,
+  }
+)
 
 axios.defaults.baseURL = BASE_URL
 axios.defaults.headers['Authorization'] = `Bearer ${API_TOKEN}`

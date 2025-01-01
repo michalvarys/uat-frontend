@@ -4,7 +4,7 @@ import FestivalType, {
   FestivalRelationship,
 } from '../../../festivals/types/FestivalType'
 import FestivalGridItem from './FestivalGridItem'
-import { colors } from 'src/theme/colors'
+import { colors } from '@ssupat/components'
 
 type Props = {
   festivals: (FestivalType | FestivalRelationship)[]
