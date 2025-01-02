@@ -18,6 +18,9 @@ import parse, {
 } from 'html-react-parser'
 import RichTextType from '../../../types/data/RichTextType'
 import styles from './RichTextSlice.module.scss'
+import InternalLink from '@/components/navigation/InternalLink'
+import ExternalLink from '@/components/navigation/ExternalLink'
+import ButtonLink from '@/components/navigation/ButtonLink'
 
 type Props = {
   data: RichTextType
@@ -31,6 +34,24 @@ function replace(node: DOMNode) {
   if (node.type === 'tag' && 'name' in node) {
     switch (node.name) {
       case 'a':
+        if (props['data-link-type'] === 'button') {
+          return (
+            <ButtonLink
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              title={domToReact(node.children, { replace })}
+              link={{ href: props.href }}
+            />
+          )
+        }
+
+        return (
+          <InternalLink path={props.href}>
+            {/** eslint-disable-next-line @typescript-eslint/ban-ts-comment
+             * @ts-ignore */}
+            {domToReact(node.children, { replace })}
+          </InternalLink>
+        )
       case 'em':
       case 'b':
       case 'strong':
