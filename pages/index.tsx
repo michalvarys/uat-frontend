@@ -13,7 +13,6 @@ import { PageProps } from './_app'
 import { getHomepageData } from 'src/queries/homepage'
 
 export default function Home(props: PageProps<HomeSectionProps>) {
-  console.log(props)
   const { locale } = useRouter()
   const title = getString(locale, Strings.HOME_PAGE_TITLE)
 

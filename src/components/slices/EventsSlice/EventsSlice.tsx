@@ -17,6 +17,8 @@ const EventsSlice = ({ events }: Props) => {
   const [currentPage, setCurrentPage] = useState(0)
   const pagesCount = Math.ceil(events.length / 6)
 
+  console.log({ events })
+
   const onSelectProject = (event: GalleryEventType) => {
     router.push(`/events/${event.id}`)
   }

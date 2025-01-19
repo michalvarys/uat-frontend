@@ -24,7 +24,7 @@ export const prepareFestivals = (
         return item.festival
       }
 
-      return null
+      return item as FestivalType
     })
     .filter(Boolean)
 }

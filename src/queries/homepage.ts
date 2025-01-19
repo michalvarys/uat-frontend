@@ -58,11 +58,11 @@ export async function getHomepageData(locale: string) {
   const importantNews = await getNewsData(locale, true, 6)
   const news = await getNewsData(locale, false, 24)
 
+  // TODO missing id in events
   const homepage: HomeSectionProps = {
     ...data,
     news: news,
     importantNews,
-    // fields_of_studies: [],
     galleryEvents: galleryEvents.slice(0, 3),
     galleries: {
       ...gallery,
