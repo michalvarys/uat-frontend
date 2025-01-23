@@ -7,6 +7,10 @@ export async function getTeachersData(locale: string) {
       {
         locale,
         populate: '*',
+        pagination: {
+          page: 1,
+          pageSize: 1000,
+        },
       },
       {
         encodeValuesOnly: true,
