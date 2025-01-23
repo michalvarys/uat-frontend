@@ -18,7 +18,10 @@ export async function getStudyList(
     )}`
   )
 
-  return data.data.map((item) => ({ id: item.id, ...item.attributes }))
+  return data.data.map((item) => ({
+    id: item.id,
+    ...item.attributes,
+  }))
 }
 
 export async function getStudiesData(locale: string) {
@@ -34,7 +37,10 @@ export async function getStudiesData(locale: string) {
     )}`
   )
 
-  return data.data.map((item) => ({ id: item.id, ...item.attributes }))
+  return data.data.map((item) => ({
+    id: item.id,
+    ...item.attributes,
+  }))
 }
 
 export async function getStudyData(
@@ -104,7 +110,7 @@ export async function getStudyData(
 
   const study: FieldOfStudyType = {
     ...attributes,
-    galleries: attributes.galleries || [],
+    galleries: attributes?.galleries || [],
     icon_svg: getAttributes(attributes.icon_svg),
     image: getAttributes(attributes.image) || null,
     teachers:

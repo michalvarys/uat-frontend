@@ -8,7 +8,12 @@ export function getAttributes<T extends Record<string, any>>(
     return null
   }
 
-  const image = 'data' in entity ? entity?.data.attributes : entity
+  const values =
+    'data' in entity
+      ? entity.data?.attributes
+        ? { ...entity.data.attributes, id: entity.data.id }
+        : entity.data
+      : entity
 
-  return image
+  return values
 }
