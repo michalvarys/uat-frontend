@@ -25,6 +25,7 @@ const TeacherDetailsModal = ({ data, isOpen, onClose }: Props) => {
           <DbImage
             data={data.photo_340x609}
             props={(image) => ({
+              width: image.width,
               height: (image.height * 340) / image.width,
               layout: 'responsive',
               objectFit: 'cover',

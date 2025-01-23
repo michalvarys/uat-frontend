@@ -60,8 +60,8 @@ export default function GalleriesOverview({ data }: PageProps) {
       <Container variant={ContainerVariant.White}>
         {firstEvent ? (
           <TextWithImageSlice
-            extraTopSpace={-357}
-            extraTextTopSpace={-300}
+            extraTopSpace={-157}
+            extraTextTopSpace={-150}
             data={{
               title: firstEvent.title,
               subtitle: firstEvent.subtitle,

@@ -13,6 +13,11 @@ export async function getTeachersData(locale: string) {
       }
     )}`
   )
-  const teachers = data.data.map((item) => item.attributes)
+
+  const teachers = data.data.map((item) => ({
+    ...item.attributes,
+    id: item.id,
+  }))
+
   return teachers
 }

@@ -62,7 +62,6 @@ type Props = {
 
 const UATGalleriesSlice = ({ galleries, events }: Props) => {
   const router = useRouter()
-  console.log({ galleries, events })
 
   const onEventSelect = (event: GalleryEventType) => {
     router.push(`/events/${event.id}`)

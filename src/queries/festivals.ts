@@ -83,7 +83,5 @@ export async function getFestivalDetail(id: string, locale: string) {
     },
   } = await axios(url)
 
-  console.log(attributes)
-
   return attributes
 }

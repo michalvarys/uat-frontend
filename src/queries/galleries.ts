@@ -12,7 +12,7 @@ export async function getGalleryEvents(locale: string) {
     })}`
   )
 
-  return data.data.map((item) => item.attributes)
+  return data.data.map((item) => ({ ...item.attributes, id: item.id }))
 }
 
 export async function getGallery(locale: string) {
