@@ -47,12 +47,7 @@ export async function getPageDetail(slug: string, locale: string) {
                 content: true,
                 title: true,
                 items: {
-                  populate: {
-                    title: true,
-                    links: {
-                      populate: '*',
-                    },
-                  },
+                  populate: '*',
                 },
               },
             },

@@ -76,7 +76,6 @@ export async function getStaticProps({
 }: GetStaticPropsContext): Promise<GetStaticPropsResult<PageProps>> {
   try {
     const page = await getPageDetail(params!.slug as string, locale)
-    // console.dir(page, { depth: 5 })
     if (!page) {
       return {
         notFound: true,

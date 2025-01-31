@@ -14,12 +14,49 @@ import ButtonLink, {
 } from 'src/components/navigation/ButtonLink'
 import { useApp } from 'src/components/context/AppContext'
 import { getString } from 'src/locales'
+import { getAttributes } from '@/utils/data'
+import { useCallback } from 'react'
+import { renderContent } from './RichTextSlice/RichTextSlice'
 
 export function TabsSclice(section) {
   const { currentLanguage } = useApp()
   const { title, description, tabs } = section
 
   const filteredTabs = tabs?.filter(Boolean) || []
+
+  const renderLinks = useCallback(
+    (links) => {
+      if (!links?.data?.length) {
+        return null
+      }
+
+      return (
+        <Stack mt={5} direction={{ base: 'column', md: 'row' }} spacing="40px">
+          {links.data.map((linkData) => {
+            const link = getAttributes(linkData)
+
+            return (
+              <ButtonLink
+                key={link.id}
+                imageType={ButtonLinkImageType.Arrow}
+                title={getString(currentLanguage, 'READ_MORE')}
+                link={{
+                  locale: link.locale,
+                  href: {
+                    pathname: `/news/[slug]`,
+                    query: {
+                      slug: link.slug,
+                    },
+                  },
+                }}
+              />
+            )
+          })}
+        </Stack>
+      )
+    },
+    [currentLanguage]
+  )
 
   return (
     <chakra.div>
@@ -81,35 +118,10 @@ export function TabsSclice(section) {
                       },
                     }}
                   >
-                    {content ? parse(content) : <p>-</p>}
+                    {content ? renderContent(content) : <p>-</p>}
                   </Box>
 
-                  {links?.length ? (
-                    <Stack
-                      mt={5}
-                      direction={{ base: 'column', md: 'row' }}
-                      spacing="40px"
-                    >
-                      {links?.map((link) =>
-                        link?.slug ? (
-                          <ButtonLink
-                            key={link.id}
-                            imageType={ButtonLinkImageType.Arrow}
-                            title={getString(currentLanguage, 'READ_MORE')}
-                            link={{
-                              locale: link.locale,
-                              href: {
-                                pathname: `/news/[slug]`,
-                                query: {
-                                  slug: link.slug,
-                                },
-                              },
-                            }}
-                          />
-                        ) : null
-                      )}
-                    </Stack>
-                  ) : null}
+                  {renderLinks(links)}
                 </Box>
               ))}
             </TabPanel>

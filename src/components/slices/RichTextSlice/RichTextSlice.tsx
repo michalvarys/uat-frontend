@@ -6,8 +6,6 @@ import {
   Td,
   Table,
   Tbody,
-  List,
-  OrderedList,
   UnorderedList,
   ListItem,
 } from '@chakra-ui/react'
@@ -154,6 +152,12 @@ function replace(node: DOMNode) {
   return node //domToReact([node], props)
 }
 
+export function renderContent(data: any) {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  return parse(data, { replace })
+}
+
 const RichTextSlice = ({ data }: Props) => (
   <div className={styles.container}>
     {data.title && (
@@ -169,9 +173,7 @@ const RichTextSlice = ({ data }: Props) => (
 
     {data.content && (
       <Stack spacing={1} className={styles.content} w="full" color="gray.700">
-        {/** eslint-disable-next-line @typescript-eslint/ban-ts-comment
-         * @ts-ignore */}
-        {parse(data.content, { replace })}
+        {renderContent(data.content)}
       </Stack>
     )}
   </div>
