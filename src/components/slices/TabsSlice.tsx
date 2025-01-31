@@ -91,7 +91,16 @@ export function TabsSclice(section) {
           {filteredTabs.map(({ id, items }) => (
             <TabPanel key={id}>
               {items?.filter(Boolean).map(({ id, title, content, links }) => (
-                <Box key={id} mb={6}>
+                <Box
+                  key={id}
+                  mb={6}
+                  sx={{
+                    'a:hover': {
+                      color: 'uat_orange',
+                      textDecoration: 'underline',
+                    },
+                  }}
+                >
                   <Box
                     fontSize="2xl"
                     color="brand.500"
