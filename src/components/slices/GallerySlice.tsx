@@ -32,8 +32,8 @@ const GalleryItem = ({ data, isSmall, onSelect }: GalleryItemProps) => {
             // height: img.height,
             // width: img.width,
             layout: 'fill',
-            objectFit: 'fill',
-            objectPosition: '50% 30%',
+            objectFit: 'cover',
+            objectPosition: '10% 10%',
           })}
         />
       </Box>
@@ -80,7 +80,8 @@ const GallerySlice = ({ data, isSmall = false }: Props) => {
               props={(image) => ({
                 width: image.width,
                 height: image.height,
-                objectFit: 'contain',
+                layout: 'responsive',
+                objectFit: 'fill',
                 objectPosition: 'center top',
               })}
             />

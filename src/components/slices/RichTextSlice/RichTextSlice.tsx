@@ -19,6 +19,7 @@ import styles from './RichTextSlice.module.scss'
 import InternalLink from '@/components/navigation/InternalLink'
 import ExternalLink from '@/components/navigation/ExternalLink'
 import ButtonLink from '@/components/navigation/ButtonLink'
+import { AccordionView, HTMLCodeBlockView } from '@ssupat/components'
 
 type Props = {
   data: RichTextType
@@ -28,6 +29,25 @@ function replace(node: DOMNode) {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const props = attributesToProps(node.attribs)
+  const type = props['data-type']
+
+  switch (type) {
+    case 'html-code-block':
+      return (
+        <HTMLCodeBlockView
+          htmlContent={props['data-html-content']}
+          props={{ mt: 8 }}
+        />
+      )
+    case 'accordion':
+      return (
+        <AccordionView title={props['data-title']}>
+          {/** eslint-disable-next-line @typescript-eslint/ban-ts-comment
+           * @ts-ignore */}
+          {domToReact(node.children, { replace })}
+        </AccordionView>
+      )
+  }
 
   if (node.type === 'tag' && 'name' in node) {
     switch (node.name) {
@@ -56,6 +76,7 @@ function replace(node: DOMNode) {
       case 'i':
       case 'u':
       case 'p':
+        console.log(node)
         return (
           <Text w="full" as={node.name} {...props}>
             {/** eslint-disable-next-line @typescript-eslint/ban-ts-comment
