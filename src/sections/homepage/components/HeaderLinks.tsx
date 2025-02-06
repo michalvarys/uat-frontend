@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { chakra, keyframes, usePrefersReducedMotion } from '@chakra-ui/react'
+import { keyframes } from '@emotion/react';
+import { chakra, usePrefersReducedMotion } from '@chakra-ui/react'
 
 import RightArrowIcon from 'public/icons/common/arrow_right.svg'
 
