@@ -1,13 +1,26 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { chakra } from '@chakra-ui/react'
+import { chakra, keyframes, usePrefersReducedMotion } from '@chakra-ui/react'
 
 import RightArrowIcon from 'public/icons/common/arrow_right.svg'
 
+const blink = keyframes`
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+`
+
 export function HeaderLinks({ news }) {
-  return news.map(({ slug, id, title }) => (
+  const prefersReducedMotion = usePrefersReducedMotion()
+
+  const animation = prefersReducedMotion
+    ? undefined
+    : `${blink} 2s ease-in-out infinite`
+
+  return news.map(({ slug, id, title, blinking }) => (
     <Link key={id} href={`/news/${slug}`} passHref>
       <chakra.a
+        animation={blinking ? animation : undefined}
         display="flex"
         flexDir="row"
         textDecoration="unset"

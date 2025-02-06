@@ -5,6 +5,7 @@ type NewsType = {
   slug: string
   sections: any[]
   important_news: boolean
+  blinking?: boolean
   localizations: any
 }
 
