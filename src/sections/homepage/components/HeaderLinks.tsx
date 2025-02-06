@@ -1,27 +1,28 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { keyframes } from '@emotion/react';
+// import { keyframes } from '@emotion/react'
 import { chakra, usePrefersReducedMotion } from '@chakra-ui/react'
 
 import RightArrowIcon from 'public/icons/common/arrow_right.svg'
-
-const blink = keyframes`
-  0% { opacity: 1; }
-  50% { opacity: 0; }
-  100% { opacity: 1; }
-`
+import styles from './HeaderLinks.module.scss'
+// const blink = keyframes`
+//   0% { opacity: 1; }
+//   50% { opacity: 0; }
+//   100% { opacity: 1; }
+// `
 
 export function HeaderLinks({ news }) {
   const prefersReducedMotion = usePrefersReducedMotion()
 
-  const animation = prefersReducedMotion
-    ? undefined
-    : `${blink} 2s ease-in-out infinite`
+  // const animation = prefersReducedMotion
+  //   ? undefined
+  //   : `${blink} 2s ease-in-out infinite`
 
   return news.map(({ slug, id, title, blinking }) => (
     <Link key={id} href={`/news/${slug}`} passHref>
       <chakra.a
-        animation={blinking ? animation : undefined}
+        className={blinking ? styles.blinking : undefined}
+        // animation={blinking ? animation : undefined}
         display="flex"
         flexDir="row"
         textDecoration="unset"
