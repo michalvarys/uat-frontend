@@ -8,6 +8,7 @@ import {
   Tbody,
   UnorderedList,
   ListItem,
+  Box,
 } from '@chakra-ui/react'
 import parse, {
   domToReact,
@@ -30,8 +31,17 @@ function replace(node: DOMNode) {
   // @ts-ignore
   const props = attributesToProps(node.attribs)
   const type = props['data-type']
+  // console.log({ type, props, node })
 
   switch (type) {
+    case 'box':
+      return (
+        <Box sx={props}>
+          {/** eslint-disable-next-line @typescript-eslint/ban-ts-comment
+           * @ts-ignore */}
+          {domToReact(node.children, { replace })}
+        </Box>
+      )
     case 'html-code-block':
       return (
         <HTMLCodeBlockView
