@@ -1940,10 +1940,10 @@
   resolved "https://registry.npmjs.org/@rushstack/eslint-patch/-/eslint-patch-1.2.0.tgz"
   integrity sha512-sXo/qW2/pAcmT43VoRKOJbDOfV3cYpq3szSVfIThQXNt+E4DfKj361vaAt3c88U5tPUxzEswam7GW48PJqtKAg==
 
-"@ssupat/components@^0.0.17":
-  version "0.0.17"
-  resolved "https://registry.yarnpkg.com/@ssupat/components/-/components-0.0.17.tgz#dc7288aa6354a89e29f027147e95c4eef97c49eb"
-  integrity sha512-XWvipQ/S952ragpRM9wfVxUxF3ckKgkz/8PFJ84hNT1u/dyBTkaJOWfO5C2MyUlyINVY13doY2/zNs3zu7OHhg==
+"@ssupat/components@^0.0.23":
+  version "0.0.23"
+  resolved "https://registry.yarnpkg.com/@ssupat/components/-/components-0.0.23.tgz#f7625a65c76cca7fa319d380e4cab9f8463f41a7"
+  integrity sha512-aa5b6IufWp1YTTlkuqU/E932Czw9ZSpFzhxeS/3HRZLNc+yNaXC+Np4xQcdIsOWR71DYgXQfvDINUvc+wUE/7A==
   dependencies:
     "@chakra-ui/anatomy" "^2.3.4"
     "@chakra-ui/icons" "^2.2.4"

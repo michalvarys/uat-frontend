@@ -7,14 +7,9 @@ import {
   Table,
   Tbody,
   UnorderedList,
-  OrderedList,
   ListItem,
   Box,
-  Tabs,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
+  Image,
 } from '@chakra-ui/react'
 import parse, {
   domToReact,
@@ -24,64 +19,17 @@ import parse, {
 import RichTextType from '../../../types/data/RichTextType'
 import styles from './RichTextSlice.module.scss'
 import InternalLink from '@/components/navigation/InternalLink'
-import ExternalLink from '@/components/navigation/ExternalLink'
 import ButtonLink from '@/components/navigation/ButtonLink'
-import { AccordionView, HTMLCodeBlockView } from '@ssupat/components'
+import {
+  GalleryView,
+  AccordionView,
+  HTMLCodeBlockView,
+  TabsView,
+  TapsViewProps,
+} from '@ssupat/components'
 
 type Props = {
   data: RichTextType
-}
-
-function renderJSON(content: any[]) {
-  return content.map((item) => {
-    const { attrs, content, type, text } = item
-    try {
-      switch (type) {
-        case 'text':
-          return text
-
-        case 'paragraph':
-          return renderJSON(content)
-
-        case 'htmlCodeBlock':
-          return <HTMLCodeBlockView {...attrs} props={{ mt: 8 }} />
-
-        case 'heading': {
-          const { level, ...props } = attrs as {
-            level: 1 | 2 | 3 | 4
-            textAlign: 'left' | 'right' | 'center'
-          }
-
-          return (
-            <Heading {...props} as={`h${level}`}>
-              {renderJSON(content)}
-            </Heading>
-          )
-        }
-        case 'accordion':
-          return <AccordionView {...attrs}>{renderJSON(content)}</AccordionView>
-
-        case 'orderedList':
-          return <OrderedList>{renderJSON(content)}</OrderedList>
-
-        case 'listItem':
-          return <ListItem>{renderJSON(content)}</ListItem>
-
-        case 'table':
-          return <Table>{renderJSON(content)}</Table>
-        case 'tableRow':
-          return <Tr {...attrs}>{renderJSON(content)}</Tr>
-        case 'tableCell':
-          return <Td {...attrs}>{renderJSON(content)}</Td>
-        case 'bulletList':
-          return <UnorderedList>{renderJSON(content)}</UnorderedList>
-        case 'bulletListItem':
-          return <ListItem>{renderJSON(content)}</ListItem>
-      }
-    } catch {
-      return null
-    }
-  })
 }
 
 function replace(node: DOMNode) {
@@ -89,16 +37,22 @@ function replace(node: DOMNode) {
   // @ts-ignore
   const props = attributesToProps(node.attribs)
   const type = props['data-type']
-  // console.log({ type, props, node })
+  console.log({ type, props, node })
 
   switch (type) {
+    case 'gallery':
+      // eslint-disable-next-line no-case-declarations
+      const gallery = JSON.parse(props['data-gallery'] || '{}')
+      return <GalleryView attrs={gallery} />
+
+    case 'chakraImage':
+      // eslint-disable-next-line jsx-a11y/alt-text
+      return <Image {...props} />
     case 'tabs':
       // eslint-disable-next-line no-case-declarations
-      let tabs = JSON.parse(props['data-tabs']) as unknown as {
-        title: string
-        content: string
-        json: any
-      }[]
+      let tabs = JSON.parse(
+        props['data-tabs']
+      ) as unknown as TapsViewProps['tabs']
 
       try {
         tabs = tabs.map((props) => ({
@@ -108,48 +62,7 @@ function replace(node: DOMNode) {
       } catch {
         // silent
       }
-
-      // TODO sjednotit web a admin přes @ssupat/components knihovnu
-      return (
-        <Tabs
-          variant="solid-rounded"
-          border="1px solid"
-          borderColor="gray.100"
-          borderRadius="md"
-          py={4}
-          mt={4}
-        >
-          <TabList>
-            {tabs.map(({ title }, index) => (
-              <Tab
-                _active={{ color: 'white', bgColor: 'brand.500' }}
-                key={index}
-              >
-                {title}
-              </Tab>
-            ))}
-          </TabList>
-
-          <TabPanels>
-            {tabs.map(({ title, content, json }, index) => (
-              <TabPanel key={index}>
-                <Box
-                  key={title}
-                  mb={6}
-                  sx={{
-                    'a:hover': {
-                      color: 'uat_orange',
-                      textDecoration: 'underline',
-                    },
-                  }}
-                >
-                  {renderJSON(json.content)}
-                </Box>
-              </TabPanel>
-            ))}
-          </TabPanels>
-        </Tabs>
-      )
+      return <TabsView tabs={tabs} />
 
     case 'box':
       return (
