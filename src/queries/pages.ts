@@ -14,9 +14,10 @@ export async function getPagesData(locales: string[]): Promise<PageType[]> {
 }
 
 export async function getPageDetail(slug: string, locale: string) {
+  const filters = Number.isNaN(Number(slug)) ? { slug } : { id: Number(slug) }
   const { data } = await axios(
     `/api/pages?${qs.stringify({
-      filters: { slug },
+      filters,
       locale,
       populate: {
         localizations: {

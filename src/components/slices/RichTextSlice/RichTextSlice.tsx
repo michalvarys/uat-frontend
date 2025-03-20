@@ -1,3 +1,4 @@
+import { useEffect, useState, useCallback } from 'react'
 import {
   Heading,
   Text,
@@ -27,9 +28,46 @@ import {
   TabsView,
   TapsViewProps,
 } from '@ssupat/components'
+import axios from 'axios'
 
 type Props = {
   data: RichTextType
+}
+
+function CustomLink({ href, type, children }) {
+  const [link, setLink] = useState('')
+
+  const getLink = useCallback(async () => {
+    if (!href) {
+      return
+    }
+
+    if (href.startsWith('http') || href.startsWith('/')) {
+      setLink(href)
+      return
+    }
+
+    const [type, id] = href.split(':')
+    setLink(`/${type}/${id}`)
+
+    try {
+      const { data } = await axios(`/api/${type}/${id}`)
+      setLink(`/${type}/${data.attributes.slug}`)
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error)
+    }
+  }, [href])
+
+  useEffect(() => {
+    getLink()
+  }, [href, getLink])
+
+  if (type === 'button') {
+    return <ButtonLink title={children} link={{ href: link }} />
+  }
+
+  return <InternalLink path={link}>{children}</InternalLink>
 }
 
 function replace(node: DOMNode) {
@@ -37,7 +75,7 @@ function replace(node: DOMNode) {
   // @ts-ignore
   const props = attributesToProps(node.attribs)
   const type = props['data-type']
-  console.log({ type, props, node })
+  // console.log({ type, props, node })
 
   switch (type) {
     case 'gallery':
@@ -94,23 +132,16 @@ function replace(node: DOMNode) {
   if (node.type === 'tag' && 'name' in node) {
     switch (node.name) {
       case 'a':
-        if (props['data-link-type'] === 'button') {
-          return (
-            <ButtonLink
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              title={domToReact(node.children, { replace })}
-              link={{ href: props.href }}
-            />
-          )
-        }
-
         return (
-          <InternalLink path={props.href}>
-            {/** eslint-disable-next-line @typescript-eslint/ban-ts-comment
-             * @ts-ignore */}
-            {domToReact(node.children, { replace })}
-          </InternalLink>
+          <CustomLink
+            {...props}
+            href={props.href}
+            type={props['data-link-type']}
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            // eslint-disable-next-line react/no-children-prop
+            children={domToReact(node.children, { replace })}
+          />
         )
       case 'em':
       case 'b':
@@ -118,7 +149,7 @@ function replace(node: DOMNode) {
       case 'i':
       case 'u':
       case 'p':
-        console.log(node)
+        // console.log(node)
         return (
           <Text w="full" as={node.name} {...props}>
             {/** eslint-disable-next-line @typescript-eslint/ban-ts-comment

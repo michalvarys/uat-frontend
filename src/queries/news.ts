@@ -60,11 +60,10 @@ export async function getNewsData(
 }
 
 export async function getNewsDetail(slug: string, locale: string) {
+  const filters = Number.isNaN(Number(slug)) ? { slug } : { id: Number(slug) }
   const { data } = await axios(
     `/api/news?${qs.stringify({
-      filters: {
-        slug,
-      },
+      filters,
       locale,
       populate: {
         sections: {
