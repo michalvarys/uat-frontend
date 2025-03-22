@@ -11,6 +11,13 @@ import {
   ListItem,
   Box,
   Image,
+  Card,
+  SimpleGrid,
+  CardBody,
+  CardFooter,
+  chakra,
+  IconButton,
+  Link,
 } from '@chakra-ui/react'
 import parse, {
   domToReact,
@@ -29,12 +36,13 @@ import {
   TapsViewProps,
 } from '@ssupat/components'
 import axios from 'axios'
+import { DbImage } from '@/components/DbImage'
 
 type Props = {
   data: RichTextType
 }
 
-function CustomLink({ href, type, children }) {
+function useLink({ href }) {
   const [link, setLink] = useState('')
 
   const getLink = useCallback(async () => {
@@ -63,11 +71,83 @@ function CustomLink({ href, type, children }) {
     getLink()
   }, [href, getLink])
 
+  return link
+}
+
+function CustomLink({ href, type, children }) {
+  const link = useLink({ href })
+
   if (type === 'button') {
     return <ButtonLink title={children} link={{ href: link }} />
   }
 
   return <InternalLink path={link}>{children}</InternalLink>
+}
+
+function CardItem({ card }) {
+  const link = useLink(card)
+
+  return (
+    <Card key={card.id}>
+      {card.image && (
+        <CardBody
+          pos="relative"
+          minH="200px"
+          sx={{
+            img: {
+              borderRadius: 'md',
+            },
+          }}
+        >
+          <DbImage
+            data={card.image}
+            format="large"
+            props={(image) => ({
+              width: image.width,
+              height: image.height,
+              layout: 'fill',
+              objectFit: 'cover',
+            })}
+          />
+        </CardBody>
+      )}
+
+      <Box
+        as={CardFooter}
+        display="flex"
+        justify="center"
+        alignContent="center"
+        p={5}
+        pt={0}
+        w="full"
+      >
+        <Heading
+          w="80%"
+          position="relative"
+          mt="2"
+          textAlign="center"
+          size="md"
+        >
+          {card.title}
+        </Heading>
+
+        <IconButton
+          as={Link}
+          target="_self"
+          href={link}
+          w="10%"
+          variant="link"
+          color="gray.800"
+          _hover={{
+            textDecoration: 'none',
+          }}
+          colorScheme="gray"
+          aria-label="See menu"
+          icon={<chakra.span fontSize="xl">{'→'}</chakra.span>}
+        />
+      </Box>
+    </Card>
+  )
 }
 
 function replace(node: DOMNode) {
@@ -78,11 +158,28 @@ function replace(node: DOMNode) {
   // console.log({ type, props, node })
 
   switch (type) {
-    case 'gallery':
-      // eslint-disable-next-line no-case-declarations
+    case 'card-list': {
+      const list = JSON.parse(props['data-cards'] || '{}')
+      const columns = JSON.parse(props['data-columns'] || '{}')
+      console.log({ props, type, columns, list })
+      return (
+        <SimpleGrid
+          gap={2}
+          spacing={2}
+          minInlineSize="300px"
+          columns={columns}
+          pb={{ base: '40px', md: '60px', lg: '84px' }}
+        >
+          {list.map((card, index) => (
+            <CardItem card={card} key={index} />
+          ))}
+        </SimpleGrid>
+      )
+    }
+    case 'gallery': {
       const gallery = JSON.parse(props['data-gallery'] || '{}')
       return <GalleryView attrs={gallery} />
-
+    }
     case 'chakraImage':
       // eslint-disable-next-line jsx-a11y/alt-text
       return <Image {...props} />
