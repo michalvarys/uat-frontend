@@ -74,14 +74,17 @@ function useLink({ href }) {
   return link
 }
 
-function CustomLink({ href, type, children }) {
+function CustomLink({ href, type, children, target }) {
   const link = useLink({ href })
 
-  if (type === 'button') {
-    return <ButtonLink title={children} link={{ href: link }} />
-  }
+  const content =
+    type === 'button' ? (
+      <ButtonLink title={children} link={{ href: link }} />
+    ) : (
+      <InternalLink path={link}>{children}</InternalLink>
+    )
 
-  return <InternalLink path={link}>{children}</InternalLink>
+  return <chakra.div display="inline-block">{content}</chakra.div>
 }
 
 function CardItem({ card }) {
@@ -158,6 +161,28 @@ function replace(node: DOMNode) {
   // console.log({ type, props, node })
 
   switch (type) {
+    case 'custom-link': {
+      const linkType = props['data-link-type']
+      // const linkCategory = props['data-link-category']
+      // const recordType = props['data-record-type']
+      // const recordId = props['data-record-id']
+      // console.log(
+      //   'custom-link',
+      //   props,
+      // )
+      return (
+        <CustomLink
+          {...props}
+          target={props.target || '_self'}
+          href={props.href}
+          type={linkType}
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          // eslint-disable-next-line react/no-children-prop
+          children={domToReact(node.children, { replace })}
+        />
+      )
+    }
     case 'card-list': {
       const list = JSON.parse(props['data-cards'] || '{}')
       const columns = JSON.parse(props['data-columns'] || '{}')
@@ -230,10 +255,8 @@ function replace(node: DOMNode) {
     switch (node.name) {
       case 'a':
         return (
-          <CustomLink
+          <a
             {...props}
-            href={props.href}
-            type={props['data-link-type']}
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             // eslint-disable-next-line react/no-children-prop

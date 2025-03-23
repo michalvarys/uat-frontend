@@ -15,6 +15,8 @@ module.exports = {
       beDomain,
       FRONTEND_DOMAIN,
       BACKEND_DOMAIN,
+      'devbackend.uat.sk',
+      'cms.uat.sk',
       'localhost',
     ].filter(Boolean),
   },
