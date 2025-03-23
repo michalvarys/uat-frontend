@@ -27,7 +27,9 @@ import parse, {
 import RichTextType from '../../../types/data/RichTextType'
 import styles from './RichTextSlice.module.scss'
 import InternalLink from '@/components/navigation/InternalLink'
-import ButtonLink from '@/components/navigation/ButtonLink'
+import ButtonLink, {
+  ButtonLinkImageType,
+} from '@/components/navigation/ButtonLink'
 import {
   GalleryView,
   AccordionView,
@@ -74,14 +76,25 @@ function useLink({ href }) {
   return link
 }
 
-function CustomLink({ href, type, children, target }) {
+function CustomLink({ href, type, children, target, isDownload }) {
   const link = useLink({ href })
 
+  console.log({ href, type, link, target, isDownload })
+
   const content =
-    type === 'button' ? (
-      <ButtonLink title={children} link={{ href: link }} />
+    type === 'link' ? (
+      <InternalLink path={link} target={target}>
+        {children}
+      </InternalLink>
     ) : (
-      <InternalLink path={link}>{children}</InternalLink>
+      <ButtonLink
+        imageType={
+          isDownload ? ButtonLinkImageType.Download : ButtonLinkImageType.Arrow
+        }
+        target={target}
+        title={children}
+        link={{ href: link }}
+      />
     )
 
   return <chakra.div display="inline-block">{content}</chakra.div>
@@ -163,7 +176,7 @@ function replace(node: DOMNode) {
   switch (type) {
     case 'custom-link': {
       const linkType = props['data-link-type']
-      // const linkCategory = props['data-link-category']
+      const linkCategory = props['data-link-category']
       // const recordType = props['data-record-type']
       // const recordId = props['data-record-id']
       // console.log(
@@ -176,6 +189,7 @@ function replace(node: DOMNode) {
           target={props.target || '_self'}
           href={props.href}
           type={linkType}
+          isDownload={linkCategory === 'download'}
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           // eslint-disable-next-line react/no-children-prop

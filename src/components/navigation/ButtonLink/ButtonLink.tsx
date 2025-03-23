@@ -1,7 +1,5 @@
 import Link, { LinkProps } from 'next/link'
 
-import styles from './ButtonLink.module.scss'
-
 import DownloadIcon from 'public/icons/common/download.svg'
 import DownloadDarkIcon from 'public/icons/common/download_dark.svg'
 import ArrowIcon from 'public/icons/common/arrow_right_light.svg'
@@ -21,6 +19,7 @@ type Props = {
   variant?: ButtonLinkVariant
   imageType?: ButtonLinkImageType
   link?: LinkProps
+  target?: '_blank' | '_self'
 }
 
 const getButtonVariant = (variant: ButtonLinkVariant): ImageButtonVariant => {
@@ -63,12 +62,17 @@ const ButtonLink = ({
   path = '',
   title,
   link,
+  target,
 }: Props) => {
   const url =
     imageType === ButtonLinkImageType.Download ? transformLink(path) : path
 
   const isExternal = isExternalLink(url)
   const icon = getButtonIcon(variant, imageType, isExternal)
+  const linkTarget =
+    !link && (imageType === ButtonLinkImageType.Download || isExternal)
+      ? '_blank'
+      : '_self'
 
   return (
     <Link
@@ -76,13 +80,7 @@ const ButtonLink = ({
       locale={link?.locale}
       passHref
     >
-      <chakra.a
-        target={
-          !link && (imageType === ButtonLinkImageType.Download || isExternal)
-            ? '_blank'
-            : '_self'
-        }
-      >
+      <chakra.a target={target || linkTarget}>
         <ImageButton
           title={title}
           image={icon}
