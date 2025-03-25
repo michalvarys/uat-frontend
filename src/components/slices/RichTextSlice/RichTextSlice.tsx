@@ -36,6 +36,7 @@ import {
   HTMLCodeBlockView,
   TabsView,
   TapsViewProps,
+  CardsView,
 } from '@ssupat/components'
 import axios from 'axios'
 import { DbImage } from '@/components/DbImage'
@@ -79,8 +80,6 @@ function useLink({ href }) {
 function CustomLink({ href, type, children, target, isDownload }) {
   const link = useLink({ href })
 
-  console.log({ href, type, link, target, isDownload })
-
   const content =
     type === 'link' ? (
       <InternalLink path={link} target={target}>
@@ -100,71 +99,18 @@ function CustomLink({ href, type, children, target, isDownload }) {
   return <chakra.div display="inline-block">{content}</chakra.div>
 }
 
-function CardItem({ card }) {
-  const link = useLink(card)
-
-  return (
-    <Card key={card.id}>
-      {card.image && (
-        <CardBody
-          pos="relative"
-          minH="200px"
-          sx={{
-            img: {
-              borderRadius: 'md',
-            },
-          }}
-        >
-          <DbImage
-            data={card.image}
-            format="large"
-            props={(image) => ({
-              width: image.width,
-              height: image.height,
-              layout: 'fill',
-              objectFit: 'cover',
-            })}
-          />
-        </CardBody>
-      )}
-
-      <Box
-        as={CardFooter}
-        display="flex"
-        justify="center"
-        alignContent="center"
-        p={5}
-        pt={0}
-        w="full"
-      >
-        <Heading
-          w="80%"
-          position="relative"
-          mt="2"
-          textAlign="center"
-          size="md"
-        >
-          {card.title}
-        </Heading>
-
-        <IconButton
-          as={Link}
-          target="_self"
-          href={link}
-          w="10%"
-          variant="link"
-          color="gray.800"
-          _hover={{
-            textDecoration: 'none',
-          }}
-          colorScheme="gray"
-          aria-label="See menu"
-          icon={<chakra.span fontSize="xl">{'→'}</chakra.span>}
-        />
-      </Box>
-    </Card>
-  )
-}
+CardsView.setCardImageRenderer((card) => (
+  <DbImage
+    data={card.image}
+    format="large"
+    props={(image) => ({
+      width: image.width,
+      height: image.height,
+      layout: 'fill',
+      objectFit: 'cover',
+    })}
+  />
+))
 
 function replace(node: DOMNode) {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -198,23 +144,11 @@ function replace(node: DOMNode) {
       )
     }
     case 'card-list': {
-      const list = JSON.parse(props['data-cards'] || '{}')
+      const cards = JSON.parse(props['data-cards'] || '{}')
       const columns = JSON.parse(props['data-columns'] || '{}')
-      console.log({ props, type, columns, list })
-      return (
-        <SimpleGrid
-          gap={2}
-          spacing={2}
-          minInlineSize="300px"
-          columns={columns}
-          pb={{ base: '40px', md: '60px', lg: '84px' }}
-        >
-          {list.map((card, index) => (
-            <CardItem card={card} key={index} />
-          ))}
-        </SimpleGrid>
-      )
+      return <CardsView cards={cards} columns={columns} />
     }
+
     case 'gallery': {
       const gallery = JSON.parse(props['data-gallery'] || '{}')
       return <GalleryView attrs={gallery} />
