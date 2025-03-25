@@ -11,13 +11,7 @@ import {
   ListItem,
   Box,
   Image,
-  Card,
-  SimpleGrid,
-  CardBody,
-  CardFooter,
   chakra,
-  IconButton,
-  Link,
 } from '@chakra-ui/react'
 import parse, {
   domToReact,
