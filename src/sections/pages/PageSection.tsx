@@ -8,20 +8,18 @@ import { DbImage } from 'src/components/DbImage'
 
 export function PageSection(page: PageType) {
   const sections = useMemo(() => {
-    return parseSections(page.attributes.sections).filter(Boolean)
-  }, [page.attributes.sections])
+    return parseSections(page.sections).filter(Boolean)
+  }, [page.sections])
 
   const hasCover =
-    page.attributes.cover_image &&
-    'data' in page.attributes.cover_image &&
-    page.attributes.cover_image.data
+    page.cover_image && 'data' in page.cover_image && page.cover_image.data
 
   return (
     <Container variant={ContainerVariant.White}>
       {hasCover && (
         <chakra.div position="relative" w="full" height="300px">
           <DbImage
-            data={page.attributes.cover_image}
+            data={page.cover_image}
             props={{
               layout: 'fill',
               objectFit: 'cover',
@@ -37,7 +35,7 @@ export function PageSection(page: PageType) {
         pb={{ base: 2, md: '200px' }}
         flexDirection="column"
       >
-        {page.attributes.title && (
+        {page.title && (
           <Heading
             lineHeight={1.1}
             fontWeight={600}
@@ -60,7 +58,7 @@ export function PageSection(page: PageType) {
                 zIndex: -1,
               }}
             >
-              {page.attributes.title}
+              {page.title}
             </Text>
           </Heading>
         )}

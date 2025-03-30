@@ -26,13 +26,13 @@ export function TabsSclice(section) {
 
   const renderLinks = useCallback(
     (links) => {
-      if (!links?.data?.length) {
+      if (!links?.length) {
         return null
       }
 
       return (
         <Stack mt={5} direction={{ base: 'column', md: 'row' }} spacing="40px">
-          {links.data.map((linkData) => {
+          {links.map((linkData) => {
             const link = getAttributes(linkData)
 
             return (

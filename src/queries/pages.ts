@@ -10,7 +10,7 @@ export async function getPagesData(locales: string[]): Promise<PageType[]> {
     })}`
   )
 
-  return data.data || []
+  return data
 }
 
 export async function getPageDetail(slug: string, locale: string) {
@@ -64,6 +64,5 @@ export async function getPageDetail(slug: string, locale: string) {
       },
     })}`
   )
-
-  return data.data[0]
+  return data[0]
 }

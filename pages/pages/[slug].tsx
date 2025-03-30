@@ -24,10 +24,10 @@ export default function Page({ page }: PageProps) {
   const { setLocalePaths } = useApp()
 
   useEffect(() => {
-    if (page?.attributes?.localizations?.data.length > 0) {
+    if (page?.localizations?.length > 0) {
       setLocalizationData(
         setLocalePaths,
-        page.attributes.localizations.data,
+        page.localizations.map((item) => ({ id: item.id, attributes: item })),
         '/pages'
       )
       return
@@ -40,7 +40,7 @@ export default function Page({ page }: PageProps) {
   return (
     <>
       <Head>
-        <title>{page.attributes.title}</title>
+        <title>{page.title}</title>
       </Head>
       <PageSection {...page} />
     </>
@@ -55,11 +55,10 @@ export async function getStaticPaths({
     return {
       paths: pages.map((item) => ({
         params: {
-          slug: item.attributes.slug,
+          slug: item.slug,
           page: item,
         },
       })),
-
       fallback: 'blocking',
     }
   } catch (e) {
