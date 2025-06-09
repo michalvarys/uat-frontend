@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useMemo, cloneElement } from 'react'
 import {
   Heading,
   Text,
@@ -12,6 +12,8 @@ import {
   Box,
   Image,
   chakra,
+  ResponsiveValue,
+  FlexProps,
 } from '@chakra-ui/react'
 import parse, {
   domToReact,
@@ -31,9 +33,13 @@ import {
   TabsView,
   TapsViewProps,
   CardsView,
+  renderJSON,
 } from '@ssupat/components'
 import axios from 'axios'
 import { DbImage } from '@/components/DbImage'
+import { LinkView } from '@ssupat/components/src/components/editor/link/LinkView'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 type Props = {
   data: RichTextType
@@ -106,14 +112,47 @@ CardsView.setCardImageRenderer((card) => (
   />
 ))
 
+function LinkRenderer({ link: linkProps, children, ...props }) {
+  const link = useLink({ href: linkProps.href })
+
+  return (
+    <Link passHref href={link} {...props}>
+      <a target={linkProps.target}>{children}</a>
+    </Link>
+  )
+}
+
+LinkView.setLinkRenderer(LinkRenderer)
+
 function replace(node: DOMNode) {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const props = attributesToProps(node.attribs)
   const type = props['data-type']
-  // console.log({ type, props, node })
+  console.log({ type, props, node })
 
   switch (type) {
+    case 'flexbox': {
+      const responsive = JSON.parse(props['data-responsive'] || '{}')
+      const direction = props['data-direction']
+      const flexDirection = {
+        base: responsive?.mobile?.direction || direction,
+        md: responsive?.tablet?.direction,
+        lg: direction,
+      } as FlexProps['flexDirection']
+
+      return (
+        <Box
+          display="flex"
+          {...props}
+          flexDirection={flexDirection}
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          // eslint-disable-next-line react/no-children-prop
+          children={domToReact(node.children, { replace })}
+        />
+      )
+    }
     case 'custom-link': {
       const linkType = props['data-link-type']
       const linkCategory = props['data-link-category']
@@ -145,25 +184,37 @@ function replace(node: DOMNode) {
 
     case 'gallery': {
       const gallery = JSON.parse(props['data-gallery'] || '{}')
-      return <GalleryView attrs={gallery} />
+      return <GalleryView {...gallery} attrs={gallery as any} />
     }
+
     case 'chakraImage':
       // eslint-disable-next-line jsx-a11y/alt-text
       return <Image {...props} />
     case 'tabs':
       // eslint-disable-next-line no-case-declarations
-      let tabs = JSON.parse(
-        props['data-tabs']
-      ) as unknown as TapsViewProps['tabs']
-
+      let tabs = []
       try {
+        tabs = JSON.parse(
+          props['data-tabs']
+        ) as unknown as TapsViewProps['tabs']
+
         tabs = tabs.map((props) => ({
           ...props,
           json: JSON.parse(props.json || '[]'),
         }))
       } catch {
         // silent
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        tabs = node?.children?.map((child: any) => ({
+          title: child.attribs['data-title'],
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          content: domToReact(child.children, { replace }),
+        }))
       }
+
+      console.log('tabs', props, tabs)
       return <TabsView tabs={tabs} />
 
     case 'box':
@@ -210,8 +261,8 @@ function replace(node: DOMNode) {
       case 'strong':
       case 'i':
       case 'u':
+      case 'span':
       case 'p':
-        // console.log(node)
         return (
           <Text w="full" as={node.name} {...props}>
             {/** eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -314,25 +365,39 @@ export function renderContent(data: any) {
   return parse(data, { replace })
 }
 
-const RichTextSlice = ({ data }: Props) => (
-  <div className={styles.container}>
-    {data.title && (
-      <Heading
-        as="h2"
-        size={{ base: 'lg', md: 'xl', lg: '2xl' }}
-        color="gray.700"
-        w="full"
-      >
-        {data.title}
-      </Heading>
-    )}
+const RichTextSlice = ({ data }: Props) => {
+  const content = useMemo(() => {
+    try {
+      const { content } = JSON.parse(data.content)
+      return renderJSON(content)
+    } catch {
+      // do nothing
+    }
 
-    {data.content && (
+    // render html
+    return (
       <Stack spacing={1} className={styles.content} w="full" color="gray.700">
         {renderContent(data.content)}
       </Stack>
-    )}
-  </div>
-)
+    )
+  }, [data.content])
+
+  return (
+    <div className={styles.container}>
+      {data.title && (
+        <Heading
+          as="h2"
+          size={{ base: 'lg', md: 'xl', lg: '2xl' }}
+          color="gray.700"
+          w="full"
+        >
+          {data.title}
+        </Heading>
+      )}
+
+      {content}
+    </div>
+  )
+}
 
 export default RichTextSlice
