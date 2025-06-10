@@ -7,5 +7,6 @@ export async function getInitialPropsData(locale: string) {
       locale,
     })}`
   )
+
   return data
 }

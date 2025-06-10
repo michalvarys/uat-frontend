@@ -1,3 +1,4 @@
+import ImageType from '@/components/common/types/ImageType'
 import LinkType from '../../components/navigation/types/LinkType'
 import RichTextType from './RichTextType'
 import SocialLinkType from './SocialLinkType'
@@ -16,6 +17,8 @@ type FooterType = {
   school_name: string
   contact: RichTextType[]
   footer_sections: FooterSectionType[]
+  logo?: ImageType
+  logo_dark?: ImageType
 }
 
 export default FooterType

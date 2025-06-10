@@ -17,6 +17,7 @@ import GenericLink from '../../navigation/GenericLink'
 import { chakra } from '@chakra-ui/react'
 
 import styles from './Footer.module.scss'
+import { DbImage } from '@/components/DbImage'
 
 type Props = {
   data: FooterType | null
@@ -25,6 +26,7 @@ const Footer = ({ data }: Props) => {
   const { pathname } = useRouter()
   const site = pathname.split('/')[1]
   const isOposit = site === 'events' || site === 'about-school'
+  const logo = isOposit ? data.logo_dark : data.logo
 
   return (
     <>
@@ -75,7 +77,19 @@ const Footer = ({ data }: Props) => {
           <div className={styles.bottom_container}>
             <div className={styles.school}>
               <div className={styles.logo}>
-                <Image src={isOposit ? LogoDarkIcon : LogoIcon} alt="logo" />
+                {logo ? (
+                  <DbImage
+                    data={logo}
+                    props={{
+                      height: 150,
+                      width: 150,
+                      alt: 'logo',
+                      className: 'logo',
+                    }}
+                  />
+                ) : (
+                  <Image src={isOposit ? LogoDarkIcon : LogoIcon} alt="logo" />
+                )}
               </div>
               {data && (
                 <>
