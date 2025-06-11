@@ -4,8 +4,8 @@ import { useRouter } from 'next/router'
 import classNames from 'classnames'
 
 import FooterType from 'src/types/data/FooterType'
-import LogoIcon from 'public/icons/common/logo.svg'
-import LogoDarkIcon from 'public/icons/common/logo_dark.svg'
+import LogoIcon from 'public/icons/common/LOGO_WHITE.svg'
+import LogoDarkIcon from 'public/icons/common/LOGO_BLACK.svg'
 
 import wave from 'public/icons/common/Wave-black.svg'
 import wave_yellow from 'public/icons/common/Wave.svg'
@@ -26,7 +26,7 @@ const Footer = ({ data }: Props) => {
   const { pathname } = useRouter()
   const site = pathname.split('/')[1]
   const isOposit = site === 'events' || site === 'about-school'
-  const logo = isOposit ? data.logo_dark : data.logo
+  const logo = isOposit ? data?.logo_dark : data?.logo
 
   return (
     <>
@@ -88,7 +88,12 @@ const Footer = ({ data }: Props) => {
                     }}
                   />
                 ) : (
-                  <Image src={isOposit ? LogoDarkIcon : LogoIcon} alt="logo" />
+                  <Image
+                    width={150}
+                    height={150}
+                    src={isOposit ? LogoDarkIcon : LogoIcon}
+                    alt="logo"
+                  />
                 )}
               </div>
               {data && (
