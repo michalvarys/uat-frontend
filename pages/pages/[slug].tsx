@@ -53,12 +53,18 @@ export async function getStaticPaths({
   try {
     const pages = await getPagesData(locales)
     return {
-      paths: pages.map((item) => ({
-        params: {
-          slug: item.slug,
-          page: item,
-        },
-      })),
+      // Stránky bez slugu (rozepsané záznamy v CMS) by build shodily na
+      // "A required parameter (slug) was not provided as a string".
+      // Do předgenerování nepatří; fallback 'blocking' je stejně doplní,
+      // až slug dostanou.
+      paths: pages
+        .filter((item) => typeof item.slug === 'string' && item.slug !== '')
+        .map((item) => ({
+          params: {
+            slug: item.slug,
+            page: item,
+          },
+        })),
       fallback: 'blocking',
     }
   } catch (e) {

@@ -1,9 +1,15 @@
+import { useMemo } from 'react'
 import parse from 'html-react-parser'
 import Image from 'next/image'
 import { Grid, Box, Flex, Text, useColorModeValue } from '@chakra-ui/react'
 import ArrowRightIcon from 'public/icons/common/arrow_right.svg'
 import NewsType from '../news/types/NewsType'
-import { colors } from '@ssupat/components'
+import { colors, renderJSON } from '@ssupat/components'
+import {
+  parseRichTextDocument,
+  truncateHtml,
+  truncateRichTextDocument,
+} from 'src/utils/richText'
 
 type NewsItemProps = {
   news: NewsType
@@ -15,6 +21,31 @@ const NewsItem = ({ news, onSelect }: NewsItemProps) => {
     (item: any) => item.__component === 'shared.rich-text-with-title'
   )
   const text = textData?.content ?? ''
+
+  // Po migraci Strapi chodí content buď jako HTML (starší články), nebo jako
+  // serializovaný TipTap dokument (novější). Náhled musí zvládnout obojí —
+  // stejně jako RichTextSlice na detailu článku.
+  const preview = useMemo(() => {
+    const document = parseRichTextDocument(text)
+
+    if (document) {
+      const { nodes, truncated } = truncateRichTextDocument(document.content)
+      return (
+        <>
+          {renderJSON(nodes)}
+          {truncated && '…'}
+        </>
+      )
+    }
+
+    const { html, truncated } = truncateHtml(text)
+    return (
+      <>
+        {parse(html)}
+        {truncated && '…'}
+      </>
+    )
+  }, [text])
 
   const bgColor = useColorModeValue('transparent', 'transparent')
   const hoverBgColor = useColorModeValue(colors.uat_dark, colors.uat_dark)
@@ -72,7 +103,7 @@ const NewsItem = ({ news, onSelect }: NewsItemProps) => {
           textOverflow="ellipsis"
           maxHeight="194px"
         >
-          {parse(text)}
+          {preview}
         </Text>
       </Box>
       <Image src={ArrowRightIcon} alt={'arrow'} />

@@ -365,11 +365,58 @@ export function renderContent(data: any) {
   return parse(data, { replace })
 }
 
+/**
+ * renderJSON vrací u odstavce jen jeho vnitřek (`case 'paragraph'` nevrací
+ * žádný element), takže by se všechny odstavce slily do jednoho bloku textu.
+ * Odstavce nejvyšší úrovně proto obalíme sami; ostatní uzly (tabulky,
+ * galerie, akordeony, nadpisy) necháme na renderJSON.
+ */
+function renderDocument(nodes: any[]) {
+  return nodes.map((node, index) => {
+    const key = `${node?.type ?? 'node'}-${index}`
+
+    if (node?.type === 'paragraph') {
+      // Prázdný = neobsahuje nic než textové uzly se samými mezerami
+      // (CMS tam ukládá nbsp). Obrázek nebo zalomení prázdný není.
+      const isEmpty = !node.content?.some((child: any) =>
+        child?.type === 'text' ? (child.text ?? '').trim() !== '' : true
+      )
+
+      // Prázdný odstavec drží v CMS vertikální mezeru — zachováme ji.
+      if (isEmpty) {
+        return <Box key={key} height={4} aria-hidden />
+      }
+
+      return (
+        <Text key={key} as="p" textAlign={node.attrs?.textAlign}>
+          {renderJSON(node.content)}
+        </Text>
+      )
+    }
+
+    return <Box key={key}>{renderJSON([node])}</Box>
+  })
+}
+
 const RichTextSlice = ({ data }: Props) => {
   const content = useMemo(() => {
     try {
       const { content } = JSON.parse(data.content)
-      return renderJSON(content)
+
+      if (Array.isArray(content)) {
+        // Stejný obal i styly jako HTML větev, ať detail vypadá shodně
+        // bez ohledu na to, ve kterém formátu je článek uložený.
+        return (
+          <Stack
+            spacing={1}
+            className={styles.content}
+            w="full"
+            color="gray.700"
+          >
+            {renderDocument(content)}
+          </Stack>
+        )
+      }
     } catch {
       // do nothing
     }

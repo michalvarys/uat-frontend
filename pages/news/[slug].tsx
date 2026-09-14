@@ -136,12 +136,18 @@ export async function getStaticPaths({ locales }: StaticPathsPropsType) {
     const news = await getNewsByLocales(locales)
 
     return {
-      paths: news.map((item: NewsType) => ({
-        params: {
-          slug: item.slug,
-          news: item,
-        },
-      })),
+      // Novinka bez slugu (rozepsaný záznam v CMS) by build shodila stejně
+      // jako u /pages/[slug]. fallback 'blocking' ji doplní, až slug dostane.
+      paths: news
+        .filter(
+          (item: NewsType) => typeof item.slug === 'string' && item.slug !== ''
+        )
+        .map((item: NewsType) => ({
+          params: {
+            slug: item.slug,
+            news: item,
+          },
+        })),
       fallback: 'blocking',
     }
   } catch (e) {
