@@ -1,5 +1,4 @@
-import getConfig from 'next/config'
-const { publicRuntimeConfig } = getConfig()
+import { BASE_URL } from 'src/constants'
 
 export const transformLink = (url: string): string => {
   url = url?.trim() || ''
@@ -7,11 +6,11 @@ export const transformLink = (url: string): string => {
     return url
   }
 
-  return `${publicRuntimeConfig.baseURL}${url}`
+  return `${BASE_URL}${url}`
 }
 
 export function isExternalLink(url: string) {
   url = url?.trim() || ''
-  const { hostname } = new URL(publicRuntimeConfig.baseURL)
+  const { hostname } = new URL(BASE_URL)
   return url.startsWith('http') && !url.includes(hostname)
 }
