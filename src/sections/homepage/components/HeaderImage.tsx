@@ -1,4 +1,5 @@
-import Image, { ImageProps } from 'next/image'
+import Image from 'next/image'
+import type { CSSProperties } from 'react'
 import { chakra, useBreakpointValue } from '@chakra-ui/react'
 
 import ImageType from 'src/components/common/types/ImageType'
@@ -11,7 +12,7 @@ type Props = {
 
 export function HeaderImage({ image }: Props) {
   const isLandscape = useLandscape()
-  const imgPos = useBreakpointValue<ImageProps['objectPosition']>(
+  const imgPos = useBreakpointValue<CSSProperties['objectPosition']>(
     {
       base: '70px center',
       md: '20px center',
@@ -20,7 +21,7 @@ export function HeaderImage({ image }: Props) {
     { fallback: 'base', ssr: false }
   )
 
-  const imgFit = useBreakpointValue<ImageProps['objectFit']>(
+  const imgFit = useBreakpointValue<CSSProperties['objectFit']>(
     {
       base: 'contain',
       lg: 'cover',
@@ -52,11 +53,10 @@ export function HeaderImage({ image }: Props) {
       {image && 'url' in image && (
         <Image
           src={transformLink(image.url)}
-          alt={image.alternativeText}
+          alt={image.alternativeText || ''}
           width={image.width}
           height={image.height}
-          objectFit={imgFit}
-          objectPosition={imgPos}
+          style={{ objectFit: imgFit, objectPosition: imgPos }}
         />
       )}
     </chakra.div>

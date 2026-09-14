@@ -22,13 +22,14 @@ export function HeaderBadge({ icon, code }: Props) {
       >
         {icon && (
           <Image
-            alt={icon.alternativeText}
+            alt={icon.alternativeText || ''}
             src={transformLink(icon.url)}
             width={44}
             height={44}
-            layout={'fixed'}
-            objectFit={'contain'}
-            objectPosition={'center center'}
+            style={{
+              objectFit: 'contain',
+              objectPosition: 'center center',
+            }}
           />
         )}
       </Flex>

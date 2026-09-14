@@ -30,9 +30,12 @@ const ImageLink = ({
           alt=""
           width={imageWidth}
           height={imageHeight}
-          layout={'responsive'}
-          objectFit={'fill'}
-          objectPosition={'center center'}
+          style={{
+            width: '100%',
+            height: 'auto',
+            objectFit: 'fill',
+            objectPosition: 'center center',
+          }}
         />
       </div>
 

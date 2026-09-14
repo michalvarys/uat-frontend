@@ -1,4 +1,4 @@
-import Image from "next/legacy/image"
+import Image from 'next/image'
 import styles from './404.module.scss'
 import { getString, Strings } from '../src/locales'
 import { useRouter } from 'next/router'
@@ -18,9 +18,12 @@ export default function InternalErrorPage() {
           <Image
             src={LogoIcon}
             alt="logo"
-            layout={'responsive'}
-            objectFit={'cover'}
-            objectPosition={'center center'}
+            style={{
+              width: '100%',
+              height: 'auto',
+              objectFit: 'cover',
+              objectPosition: 'center center',
+            }}
           />
         </div>
         <h2>{getString(router.locale, Strings.PAGE_NOT_FOUND)}</h2>

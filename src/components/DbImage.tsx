@@ -4,12 +4,75 @@ import Image, { ImageProps } from 'next/image'
 import { transformLink } from 'src/utils/link'
 import { useMemo } from 'react'
 
-type PropsFn = (image: ImageTypeProps) => Partial<ImageProps>
+/**
+ * Props z Next.js 11, které v moderním next/image už neexistují.
+ * Volající je po celém projektu používají, proto je DbImage přijímá
+ * a překládá na CSS ekvivalenty (viz toModernProps).
+ */
+type LegacyImageProps = {
+  layout?: 'fill' | 'responsive' | 'intrinsic' | 'fixed'
+  objectFit?: React.CSSProperties['objectFit']
+  objectPosition?: React.CSSProperties['objectPosition']
+}
+
+type DbImageProps = Partial<ImageProps> & LegacyImageProps
+
+type PropsFn = (image: ImageTypeProps) => DbImageProps
 type Props = {
   data: ImageType
-  props?: Partial<ImageProps> | PropsFn
+  props?: DbImageProps | PropsFn
   format?: 'large' | 'medium' | 'small' | 'thumbnail'
 }
+
+/**
+ * Převede props ve stylu Next 11 na moderní next/image.
+ *
+ *   layout="fill"        -> fill (rodič musí mít position: relative)
+ *   layout="responsive"  -> width/height + style pro roztažení na šířku
+ *   objectFit/Position   -> style
+ */
+function toModernProps(
+  props: DbImageProps,
+  fallback: { width?: number; height?: number }
+): Partial<ImageProps> {
+  const { layout, objectFit, objectPosition, style, ...rest } = props
+
+  const objectStyle: React.CSSProperties = {
+    ...(objectFit ? { objectFit } : {}),
+    ...(objectPosition ? { objectPosition } : {}),
+  }
+
+  if (layout === 'fill') {
+    return {
+      ...rest,
+      fill: true,
+      style: { ...objectStyle, ...style },
+    }
+  }
+
+  if (layout === 'responsive' || layout === 'intrinsic') {
+    return {
+      ...rest,
+      width: rest.width ?? fallback.width,
+      height: rest.height ?? fallback.height,
+      style: {
+        width: '100%',
+        height: 'auto',
+        ...objectStyle,
+        ...style,
+      },
+    }
+  }
+
+  // layout="fixed" i chybějící layout se chovají stejně: rozměry beze změny.
+  return {
+    ...rest,
+    width: rest.width ?? fallback.width,
+    height: rest.height ?? fallback.height,
+    style: { ...objectStyle, ...style },
+  }
+}
+
 export function DbImage({ data, format, props: getProps }: Props) {
   const img = getAttributes(data)
   const image = useMemo(() => {
@@ -33,12 +96,17 @@ export function DbImage({ data, format, props: getProps }: Props) {
     return null
   }
 
-  const props = typeof getProps === 'function' ? getProps(image) : getProps
+  const rawProps = typeof getProps === 'function' ? getProps(image) : getProps
+  const props = toModernProps(rawProps || {}, {
+    width: image.width,
+    height: image.height,
+  })
+
   return (
     <Image
-      alt={img.alternativeText}
+      alt={img.alternativeText || ''}
       src={transformLink(image.url)}
-      {...(props || { width: image.width, height: image.height })}
+      {...props}
     />
   )
 }
