@@ -46,6 +46,7 @@
     "@babel/preset-es2015": "^7.0.0-beta.53",
     "@babel/preset-react": "^7.26.3",
     "@babel/preset-typescript": "^7.26.0",
+    "@types/node": "20.17.6",
     "@types/react": "17.0.39",
     "@types/react-custom-scrollbars": "^4.0.8",
     "@types/react-modal": "^3.12.1",

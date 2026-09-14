@@ -4,14 +4,15 @@ import React, { createContext, useContext, useState } from 'react'
 
 type AppProviderType = {
   children?: JSX.Element
-  langs: string[]
+  // Next 15 vrací router.locales jako readonly.
+  langs: readonly string[]
   lang: string
 }
 
 type LocalesDictionary = { [name: string]: string }
 
 type AppContextType = {
-  languages: string[]
+  languages: readonly string[]
   setCurrentLanguage(locale: string): void
   setLocalePaths: React.Dispatch<React.SetStateAction<LocalesDictionary | null>>
   currentLanguage: string
