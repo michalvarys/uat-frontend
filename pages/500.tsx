@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import Image from "next/legacy/image"
 import styles from './404.module.scss'
 import { getString, Strings } from '../src/locales'
 import { useRouter } from 'next/router'

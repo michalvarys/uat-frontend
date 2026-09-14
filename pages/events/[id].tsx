@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import Image from "next/legacy/image"
 import Head from 'next/head'
 import parse from 'html-react-parser'
 import axios from 'axios'
