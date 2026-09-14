@@ -360,6 +360,13 @@ function replace(node: DOMNode) {
 }
 
 export function renderContent(data: any) {
+  // Obsah ze Strapi nemusí být řetězec: tiptap ukládá dokument jako objekt
+  // a starší záznamy mohou mít pole prázdné. html-react-parser v takovém
+  // případě vyhodí "First argument must be a string" a shodí celý build.
+  if (typeof data !== 'string') {
+    return null
+  }
+
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   return parse(data, { replace })

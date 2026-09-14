@@ -7,18 +7,11 @@ import { AppProvider } from 'src/components/context/AppContext'
 import { BASE_URL, API_TOKEN } from 'src/constants'
 
 import '@fontsource/inter'
-import dynamic from 'next/dist/shared/lib/dynamic'
 import { MenuSection } from 'src/components/common/Header/Header'
 import FooterType from 'src/types/data/FooterType'
 import { getInitialPropsData } from 'src/queries/initial'
 import { Fonts } from '@ssupat/components/src/theme/fonts'
-
-const ThemeProvider = dynamic(
-  () => import('@ssupat/components/src/theme').then((mod) => mod.default),
-  {
-    ssr: false,
-  }
-)
+import ThemeProvider from 'src/theme'
 
 axios.defaults.baseURL = BASE_URL
 axios.defaults.headers['Authorization'] = `Bearer ${API_TOKEN}`
@@ -26,8 +19,6 @@ function App({ Component, pageProps }: AppProps) {
   const { locales, locale, defaultLocale } = useRouter()
 
   return (
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     <ThemeProvider>
       <Fonts />
       <AppProvider langs={locales || []} lang={locale || defaultLocale || ''}>

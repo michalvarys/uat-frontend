@@ -7,6 +7,10 @@ export async function getPagesData(locales: string[]): Promise<PageType[]> {
     `/api/pages?${qs.stringify({
       locale: locales,
       populate: '*',
+      // Bez tohoto filtru API vrací i rozepsané koncepty. Ty se pak
+      // předgenerují a jsou veřejně dostupné, přestože redaktor je
+      // nepublikoval.
+      publicationState: 'live',
     })}`
   )
 
@@ -19,6 +23,7 @@ export async function getPageDetail(slug: string, locale: string) {
     `/api/pages?${qs.stringify({
       filters,
       locale,
+      publicationState: 'live',
       populate: {
         localizations: {
           populate: '*',

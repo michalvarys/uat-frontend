@@ -18,7 +18,7 @@ export function HeaderImage({ image }: Props) {
       md: '20px center',
       lg: 'center center',
     },
-    { fallback: 'base', ssr: false }
+    { fallback: 'base', ssr: true }
   )
 
   const imgFit = useBreakpointValue<CSSProperties['objectFit']>(
@@ -26,7 +26,7 @@ export function HeaderImage({ image }: Props) {
       base: 'contain',
       lg: 'cover',
     },
-    { fallback: 'base', ssr: false }
+    { fallback: 'base', ssr: true }
   )
 
   const imgTransform = useBreakpointValue(
@@ -34,7 +34,7 @@ export function HeaderImage({ image }: Props) {
       base: 'scale(2)',
       lg: 'none',
     },
-    { fallback: 'base', ssr: false }
+    { fallback: 'base', ssr: true }
   )
 
   return (
