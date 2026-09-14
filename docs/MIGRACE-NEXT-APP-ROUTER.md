@@ -41,6 +41,31 @@ hluboko pod limitem 50 000 URL, `generateSitemaps` není potřeba.
 `about-school`, `galleries`, `teachers` (žádné query parametry, jen fetch podle
 jazyka → v App Routeru budou statické) a `news/index` (ta má `?year=`, viz níže).
 
+### ⚠️ Zásadní nález: web se na serveru nerenderuje vůbec
+
+`pages/_app.tsx` načítá `ThemeProvider` přes `dynamic(..., { ssr: false })`.
+Protože obaluje **celý** strom aplikace, žádná stránka nemá server-side
+vyrenderovaný obsah. Ověřeno na vygenerovaném HTML:
+
+```html
+<body><div id="__next"></div><script>…</script></body>
+```
+
+Statické generování tedy dnes produkuje **prázdné slupky** — veškerý obsah
+i `<h1>` dorazí až po hydrataci v prohlížeči. Vzniklo commitem `0da3275`
+„fix SSR" (3. 5. 2023), není to regrese z této migrace.
+
+**Dopad na SEO:** Google sice JS renderuje, ale s odkladem a nižší prioritou;
+ostatní roboti (Seznam, sociální sítě, náhledy odkazů) často ne. Metadata
+v `<head>` se generují serverově, takže fungují — ale samotný obsah stránky
+nikoliv. **Bez odstranění `ssr: false` nemá statické generování ani strukturovaná
+data plný smysl.**
+
+Příčina je pravděpodobně v Chakra UI / emotion a hydratačních chybách. V App
+Routeru se to řeší jinak: `ThemeProvider` je klientská komponenta (`'use client'`),
+ale obsah pod ním zůstává serverový. Tím se problém rozpouští sám —
+je to další argument pro App Router, nejen kosmetický upgrade.
+
 ## Co v App Routeru přestane existovat
 
 Tohle jsou body, které nemají mechanickou náhradu a rozhodují o pracnosti:
