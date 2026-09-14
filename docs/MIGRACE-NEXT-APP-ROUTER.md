@@ -2,6 +2,23 @@
 
 Stav k 14. 9. 2026. Cílová verze **Next.js 16.3.5** (aktuální stabilní, vyžaduje Node ≥ 20.9).
 
+## Stav postupu
+
+| Etapa | Stav |
+|---|---|
+| 1 — Příprava (Node 20) | ✅ hotovo |
+| 2 — Next 11 → 15.5.25 | ✅ hotovo |
+| 3 — Next 15 → 16.3.5 | ✅ hotovo |
+| — Zapnutí SSR (mimo plán, viz nález níže) | ✅ hotovo |
+| 4 — SEO komponenta ve Strapi | ⬜ |
+| 5 — App Router skeleton | ⬜ |
+| 6 — Přepis stránek | ⬜ |
+| 7 — SEO výstupy (sitemap, robots, JSON-LD) | ⬜ |
+| 8 — Úklid a nasazení | ⬜ |
+
+Web běží na Next 16.3.5 s Turbopackem, build generuje 658 stránek za ~23 s
+(Next 11 potřeboval jednotky minut) a **nově skutečně renderuje obsah na serveru**.
+
 ## Rozhodnutí
 
 | Téma | Volba |
@@ -206,6 +223,11 @@ Mapování API:
       - `BreadcrumbList` na detailních stránkách
 - [ ] Sémantické HTML — projít nadpisy, právě teď má každá stránka `<h1>`, což je správně, ale ověřit hierarchii h2/h3 v sekcích
 - [ ] `alt` atributy u obrázků z CMS (`next/image` je v nových verzích vyžaduje)
+- [ ] **Vyčistit titulky od typografických znaků.** `src/locales/{sk,en}.ts` obsahují
+      11 měkkých spojovníků (`­`) a jedno `\n` — slouží k zalamování nadpisů,
+      ale propisují se i do `<title>`. Např. `/teachers` má dnes title
+      `"Peda\xadgogický\nzbor SŠUPAT"`. Oddělit prezentační variantu řetězce
+      od té pro metadata.
 
 ## Etapa 8 — Úklid a nasazení
 
