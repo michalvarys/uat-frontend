@@ -118,8 +118,8 @@ function LinkRenderer({ link: linkProps, children, ...props }) {
   const link = useLink({ href: linkProps.href })
 
   return (
-    <Link passHref href={link} {...props}>
-      <a target={linkProps.target}>{children}</a>
+    <Link href={link} target={linkProps.target} {...props}>
+      {children}
     </Link>
   )
 }

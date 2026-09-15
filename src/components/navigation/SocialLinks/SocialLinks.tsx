@@ -27,7 +27,6 @@ type SocialLinkProps = {
 const SocialLink = ({ social, image }: SocialLinkProps) => {
   if (social && social.isVisible) {
     return (
-      // eslint-disable-next-line @next/next/link-passhref
       <Link href={social.url} as={social.url}>
         <div className={styles.single_link_container}>
           <Image src={image} alt="" />

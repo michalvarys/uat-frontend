@@ -9,11 +9,8 @@ type Props = {
 }
 
 const InternalLink = ({ children, path, target }: Props) => (
-  // eslint-disable-next-line @next/next/link-passhref
-  <Link href={path} as={path}>
-    <a className={styles.container} target={target}>
-      {children}
-    </a>
+  <Link href={path} className={styles.container} target={target}>
+    {children}
   </Link>
 )
 

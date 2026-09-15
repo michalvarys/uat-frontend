@@ -17,20 +17,19 @@ const DocumentItem = ({ document, onSelect }: Props) => {
   return (
     <Link
       href={transformLink(document.url)}
-      as={transformLink(document.url)}
-      passHref
+      className={styles.container}
+      target="_blank"
+      rel="noopener noreferrer"
     >
-      <a className={styles.container} target={'_blank'}>
-        <div className={styles.content}>
-          <span className={styles.title}>{`${document.name}`}</span>
-          <span className={styles.date}>
-            {moment(document.updated_at).format('YYYY-MM-DD hh:mm')}
-          </span>
-          <div className={styles.arrow}>
-            <Image src={ArrowRightIcon} alt={'arrow'} />
-          </div>
+      <div className={styles.content}>
+        <span className={styles.title}>{`${document.name}`}</span>
+        <span className={styles.date}>
+          {moment(document.updated_at).format('YYYY-MM-DD hh:mm')}
+        </span>
+        <div className={styles.arrow}>
+          <Image src={ArrowRightIcon} alt={'arrow'} />
         </div>
-      </a>
+      </div>
     </Link>
   )
 }
