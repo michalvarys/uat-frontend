@@ -10,8 +10,8 @@ Stav k 14. 9. 2026. Cílová verze **Next.js 16.3.5** (aktuální stabilní, vy�
 | 2 — Next 11 → 15.5.25 | ✅ hotovo |
 | 3 — Next 15 → 16.3.5 | ✅ hotovo |
 | — Zapnutí SSR (mimo plán, viz nález níže) | ✅ hotovo |
-| 4 — SEO komponenta ve Strapi | ⬜ |
-| 5 — App Router skeleton | ⬜ |
+| 4 — SEO komponenta ve Strapi | ✅ hotovo |
+| 5 — App Router skeleton | ✅ hotovo |
 | 6 — Přepis stránek | ⬜ |
 | 7 — SEO výstupy (sitemap, robots, JSON-LD) | ⬜ |
 | 8 — Úklid a nasazení | ⬜ |
@@ -183,7 +183,30 @@ Oba routery mohou koexistovat, takže tohle jde dělat postupně.
 
 ## Etapa 6 — Přepis stránek
 
-Pořadí od nejjednodušší po nejsložitější, ať se vzory ustálí na malém:
+### ⚠️ Oba routery nemohou běžet zároveň
+
+Ověřeno při Etapě 5: dokud je v `next.config.js` klíč `i18n`, Next aplikuje
+jazykové cesty i na `app/` a build spadne na
+
+```
+Error: The provided export path '/probe' doesn't match the '/[lang]/probe' page.
+```
+
+Bez `i18n` zase přestanou fungovat stránky v `pages/` — `router.locale` je
+prázdný, takže titulky zobrazují klíče (`HOME_PAGE_TITLE`) místo překladů
+a `/en` vrací 404.
+
+**Důsledek pro postup:** postupná migrace stránku po stránce, jak předpokládal
+původní plán, není možná. Etapa 6 musí proběhnout jako jeden celek — převést
+všech 11 stránek, pak odstranit `i18n` klíč i složku `pages/` naráz.
+
+Skeleton z Etapy 5 je ověřený (dočasná stránka se vykreslila se správným
+`lang`, menu i patičkou), takže je na čem stavět. Zbytek přípravy — klientské
+hranice, `useAppRouter`, datový klient — je hotový a odladěný na běžícím webu.
+
+### Pořadí přepisu
+
+Od nejjednodušší po nejsložitější, ať se vzory ustálí na malém:
 
 | # | Stránka | Dnes | Poznámka |
 |---|---|---|---|
@@ -230,6 +253,13 @@ Mapování API:
       od té pro metadata.
 
 ## Etapa 8 — Úklid a nasazení
+
+- [ ] **`strictNullChecks`** — Next 16 si ho při upgradu sám zapsal do
+      `tsconfig.json`, ale projekt na něj není připravený: 33 typových chyb
+      v 18 souborech, z toho 2 přímo v `@ssupat/components`. Dočasně vypnuto
+      (`strictNullChecks: false`), aby build prošel. Zapnout a chyby opravit
+      jako samostatný úkol — většina z nich jsou skutečné díry v ošetření
+      `null`, jen dosud skryté.
 
 - [ ] Smazat `pages/` (kromě případných API routes — žádné tam nejsou)
 - [ ] Odstranit `.babelrc` (Turbopack ho nepotřebuje), pokud nebrání `@ssupat/components`
