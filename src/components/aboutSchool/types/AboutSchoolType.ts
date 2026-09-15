@@ -1,9 +1,11 @@
+import type { SeoComponent } from 'src/utils/seo'
 import EUProjectType from '../../euProjects/types/EUProjectType'
 import YouTubeVideoType from '../../slices/types/YouTubeVideoType'
 import ApplicationsAtUniversityType from './ApplicationsAtUniversityType'
 import EmploymentStatisticsType from './EmploymentStatisticsType'
 
 type AboutSchoolType = {
+  seo?: SeoComponent | null
   id: number
   title: string
   description: string

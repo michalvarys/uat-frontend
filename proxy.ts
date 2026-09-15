@@ -5,15 +5,6 @@ import { LOCALES, DEFAULT_LOCALE } from 'src/i18n/config'
 const PREFIXED = LOCALES.filter((locale) => locale !== DEFAULT_LOCALE)
 
 /**
- * Cesty už převedené do app/[lang]/. Dokud běží obě routovací vrstvy
- * vedle sebe, přepisuje se jen to, co v App Routeru skutečně existuje —
- * jinak by requesty na stránky ve `pages/` končily 404.
- *
- * Při dokončení migrace se seznam zruší a přepisuje se všechno.
- */
-const MIGRATED: string[] = []
-
-/**
  * Mapuje veřejné adresy na interní segment [lang].
  *
  * Slovenština zůstává bez prefixu, takže /news se interně přepíše
@@ -34,20 +25,15 @@ export function proxy(request: NextRequest) {
     return NextResponse.next()
   }
 
-  const isMigrated = MIGRATED.some(
-    (route) => pathname === route || pathname.startsWith(`${route}/`)
-  )
-
-  if (!isMigrated) {
-    return NextResponse.next()
-  }
-
   const url = request.nextUrl.clone()
   url.pathname = `/${DEFAULT_LOCALE}${pathname}`
   return NextResponse.rewrite(url)
 }
 
 export const config = {
-  // Statická aktiva, API a proxy na CMS se nepřepisují.
-  matcher: ['/((?!_next|cms|api|images|favicon.ico|robots.txt|sitemap.xml).*)'],
+  // Nepřepisují se interní cesty Nextu, API, proxy na CMS ani soubory
+  // z public/. Ty se poznají podle přípony — vyjmenovávat složky ručně
+  // je křehké: chyběly tam fonts/ i icons/ a prohlížeč pak na ně
+  // dostával 404.
+  matcher: ['/((?!_next|cms|api|.*\\.[a-zA-Z0-9]+$).*)'],
 }

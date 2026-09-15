@@ -43,6 +43,13 @@ const remotePatterns = [
 module.exports = {
   reactStrictMode: true,
 
+  // SCSS moduly importují sdílené proměnné relativní cestou. Ta se láme,
+  // jakmile se soubor přesune (pages/ -> app/), proto se importy píšou
+  // od kořene projektu a Sass je hledá tady.
+  sassOptions: {
+    includePaths: [__dirname],
+  },
+
   images: {
     remotePatterns,
     // Next 16 blokuje optimalizaci obrázků z lokálních IP kvůli SSRF.
@@ -58,15 +65,6 @@ module.exports = {
   // nativní náhrada.
   transpilePackages: ['@ssupat/components'],
 
-  // i18n klíč funguje pouze pro Pages Router a dokud tam nějaké stránky
-  // zbývají, drží jim jazykové varianty a router.locale.
-  // App Router si jazyk řeší sám segmentem app/[lang]/ + proxy.ts.
-  // Odstraní se až s poslední stránkou v pages/ (Etapa 8).
-  i18n: {
-    locales: ['sk', 'en'],
-    defaultLocale: 'sk',
-    localeDetection: false,
-  },
 
   rewrites() {
     return [

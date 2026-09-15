@@ -115,7 +115,10 @@ export function truncate(text: string, limit = DESCRIPTION_LIMIT): string {
   const cut = clean.slice(0, limit - 1)
   const lastSpace = cut.lastIndexOf(' ')
   // Bez mezery v dohledu (dlouhé slovo) radši tvrdý ořez než prázdný popisek.
-  return `${(lastSpace > limit * 0.6 ? cut.slice(0, lastSpace) : cut).trimEnd()}…`
+  return `${(lastSpace > limit * 0.6
+    ? cut.slice(0, lastSpace)
+    : cut
+  ).trimEnd()}…`
 }
 
 /** Najde první použitelný text napříč sekcemi stránky. */
