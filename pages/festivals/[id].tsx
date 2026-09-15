@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import moment from 'moment'
 
 import styles from './festivals.module.scss'
 
@@ -27,6 +26,7 @@ import {
 import { localesToParams } from 'src/utils/params'
 import { DbImage } from 'src/components/DbImage'
 import { getFestivalDetail, getFestivalList } from '@/queries/festivals'
+import { formatDate } from 'src/utils/date'
 
 type FestivalsProps = {
   festival: FestivalType
@@ -57,7 +57,7 @@ export default function Festival({ festival }: FestivalsProps) {
     <div className={styles.badge}>
       <div className={styles.symbol}>{festival.symbol}</div>
       <div className={styles.date}>
-        <span>{moment(festival.date).format('DD MMM YYYY')}</span>
+        <span>{formatDate(festival.date)}</span>
       </div>
     </div>
   )

@@ -1,4 +1,3 @@
-import 'moment/locale/sk'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import styles from './galleries.module.scss'

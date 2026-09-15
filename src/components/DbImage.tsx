@@ -106,9 +106,12 @@ export function DbImage({ data, format, props: getProps }: Props) {
 
   return (
     <Image
-      alt={img.alternativeText || ''}
       src={transformLink(image.url)}
       {...props}
+      // alt je až za {...props} schválně: volající může předat alt:
+      // undefined a to by ošetřenou hodnotu přepsalo zpět na nic.
+      // next/image alt vyžaduje, prázdný řetězec značí dekorativní obrázek.
+      alt={(props as { alt?: string }).alt ?? img.alternativeText ?? ''}
     />
   )
 }

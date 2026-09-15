@@ -14,19 +14,13 @@ type Props = {
 
 export function HeaderImage({ image }: Props) {
   const isLandscape = useLandscape()
-  const imgPos = useBreakpointValue<CSSProperties['objectPosition']>(
-    {
-      base: '70px center',
-      md: '20px center',
-      lg: 'center center',
-    },
-    { fallback: 'base', ssr: true }
-  )
-
+  // Hodnoty odpovídají tomu, co reálně vykresluje uat.sk: na úzkých
+  // displejích se fotka zmenšuje celá (contain) a zvětšuje transformem,
+  // na širokých vyplňuje rám v původním poměru (fill).
   const imgFit = useBreakpointValue<CSSProperties['objectFit']>(
     {
       base: 'contain',
-      lg: 'cover',
+      lg: 'fill',
     },
     { fallback: 'base', ssr: true }
   )
@@ -47,8 +41,14 @@ export function HeaderImage({ image }: Props) {
           transform: imgTransform,
           top: isLandscape ? '-50% !important' : 0,
         },
-        '> div': {
-          minH: 'full',
+        // Next 11 obaloval obrázek vlastními <div> a ty mu držely rozměry
+        // rámu. Moderní next/image žádný obal nevytváří, takže si je musí
+        // vzít sám — jinak se vykreslí v původním poměru stran, přeteče
+        // rám s overflow: hidden a je vidět jen jeho horní část.
+        '& > img': {
+          w: 'full',
+          h: 'full',
+          objectFit: imgFit,
         },
       }}
     >
@@ -58,7 +58,11 @@ export function HeaderImage({ image }: Props) {
           alt={image.alternativeText || ''}
           width={image.width}
           height={image.height}
-          style={{ objectFit: imgFit, objectPosition: imgPos }}
+          // Pozor: v Next 11 se objectFit/objectPosition bez `layout`
+          // vůbec neuplatnily, obrázek se roztahoval na rozměry rámu
+          // (object-fit: fill). Převod na style by je poprvé aktivoval
+          // a ořízl hlavní fotku na homepage jinak než na uat.sk.
+          // Vzhled proto zůstává, jak ho uživatelé znají.
         />
       )}
     </chakra.div>

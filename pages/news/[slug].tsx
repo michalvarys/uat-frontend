@@ -1,4 +1,3 @@
-import 'moment/locale/sk'
 import axios from 'axios'
 import Head from 'next/head'
 import styles from './news.module.scss'
@@ -18,6 +17,7 @@ import { setLocalizationData } from 'src/utils/localizationsUtils'
 import { useApp } from 'src/components/context/AppContext'
 import { GetStaticPropsContext, GetStaticPropsResult } from 'next'
 import { getNewsDetail, getNewsByLocales } from '@/queries/news'
+import { formatDate } from 'src/utils/date'
 
 type NewsDetailsPageProps = {
   slug?: string
@@ -92,7 +92,7 @@ export default function NewsDetails({ news, ...rest }: NewsDetailsPageProps) {
       <div className={styles.details_container}>
         {/* Disable date above the title
         <span className={styles.date}>
-          {moment(news.date).format('DD MMMM YYYY')}
+          {formatDate(news.date, 'DD MMMM YYYY')}
         </span> 
         */}
         <div className={styles.title}>

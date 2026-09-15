@@ -8,29 +8,48 @@ const beDomain = new URL(API_BASE_URL).hostname
 
 // images.domains bylo v Next 14 označeno za zastaralé ve prospěch
 // remotePatterns, které umožňují omezit i protokol a cestu.
-const imageHosts = [
-  feDomain,
-  beDomain,
+//
+// Pozor na rozdíl: domains port ignorovaly, remotePatterns ho porovnávají.
+// Bez něj vrací /_next/image na http://localhost:1337/... stav 400,
+// proto se u známých adres přebírá port z URL.
+const imageOrigins = [API_BASE_URL, FRONTEND_BASE_URL].filter(Boolean)
+
+const extraHosts = [
   FRONTEND_DOMAIN,
   BACKEND_DOMAIN,
   'devbackend.uat.sk',
   'cms.uat.sk',
-  'localhost',
 ].filter(Boolean)
 
-const remotePatterns = Array.from(new Set(imageHosts)).flatMap((hostname) =>
-  ['https', 'http'].map((protocol) => ({
-    protocol,
-    hostname,
-    pathname: '/**',
-  }))
-)
+const remotePatterns = [
+  ...imageOrigins.map((origin) => {
+    const { protocol, hostname, port } = new URL(origin)
+    return {
+      protocol: protocol.replace(':', ''),
+      hostname,
+      ...(port ? { port } : {}),
+      pathname: '/**',
+    }
+  }),
+  ...extraHosts.flatMap((hostname) =>
+    ['https', 'http'].map((protocol) => ({
+      protocol,
+      hostname,
+      pathname: '/**',
+    }))
+  ),
+]
 
 module.exports = {
   reactStrictMode: true,
 
   images: {
     remotePatterns,
+    // Next 16 blokuje optimalizaci obrázků z lokálních IP kvůli SSRF.
+    // Při vývoji ale CMS běží na localhost:1337, takže by se nenačetl
+    // jediný obrázek. V produkci je backend na veřejné doméně a ochrana
+    // zůstává zapnutá.
+    dangerouslyAllowLocalIP: process.env.NODE_ENV === 'development',
   },
 
   // @ssupat/components se publikuje jako TypeScript zdroj bez zkompilovaného

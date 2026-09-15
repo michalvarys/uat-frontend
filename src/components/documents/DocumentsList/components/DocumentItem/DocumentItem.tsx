@@ -1,12 +1,12 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import moment from 'moment'
 
 import styles from './DocumentItem.module.scss'
 
 import ArrowRightIcon from 'public/icons/common/arrow_right.svg'
 import DocumentType from '../../../types/DocumentType'
 import { transformLink } from 'src/utils/link'
+import { formatDate } from 'src/utils/date'
 
 type Props = {
   document: DocumentType
@@ -24,7 +24,7 @@ const DocumentItem = ({ document, onSelect }: Props) => {
       <div className={styles.content}>
         <span className={styles.title}>{`${document.name}`}</span>
         <span className={styles.date}>
-          {moment(document.updated_at).format('YYYY-MM-DD hh:mm')}
+          {formatDate(document.updated_at, 'YYYY-MM-DD HH:mm')}
         </span>
         <div className={styles.arrow}>
           <Image src={ArrowRightIcon} alt={'arrow'} />

@@ -13,7 +13,6 @@ import { setLocalizationData } from 'src/utils/localizationsUtils'
 import { PageSection } from 'src/sections/pages/PageSection'
 import { getPageDetail, getPagesData } from '@/queries/pages'
 
-import 'moment/locale/sk'
 
 type PageProps = {
   slug?: string

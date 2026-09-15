@@ -96,6 +96,10 @@ const NewsItem = ({ news, onSelect }: NewsItemProps) => {
           {news.title}
         </Text>
         <Text
+          // Náhled je HTML z CMS a obsahuje vlastní <p>. Chakra Text
+          // renderuje <p>, takže by vzniklo neplatné vnoření <p> v <p>
+          // a s ním hydratační chyba.
+          as="div"
           className="sneak_peak"
           color={textColor}
           fontSize="l"

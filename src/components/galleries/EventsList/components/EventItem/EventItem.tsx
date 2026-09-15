@@ -2,7 +2,6 @@
 
 import parse from 'html-react-parser'
 import Image from 'next/image'
-import moment from 'moment'
 
 import styles from './EventItem.module.scss'
 
@@ -10,6 +9,7 @@ import ArrowRightIcon from 'public/icons/common/arrow_right.svg'
 import { GalleryEventType } from '../../../types/GalleryEventType'
 import { transformLink } from 'src/utils/link'
 import { DbImage } from 'src/components/DbImage'
+import { formatDate } from 'src/utils/date'
 
 type Props = {
   event: GalleryEventType
@@ -31,7 +31,7 @@ const EUProjectItem = ({ event, onSelect }: Props) => {
       </div>
       <div className={styles.content}>
         <span className={styles.date}>
-          {moment(event.date).format('DD MMM YYYY')}
+          {formatDate(event.date)}
         </span>
         <span className={styles.title}>{event.title}</span>
         <span className={styles.sneak_peak}>{parse(event.description)}</span>

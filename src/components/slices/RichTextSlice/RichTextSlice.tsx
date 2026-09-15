@@ -190,8 +190,10 @@ function replace(node: DOMNode) {
     }
 
     case 'chakraImage':
-      // eslint-disable-next-line jsx-a11y/alt-text
-      return <Image {...props} />
+      // alt chodí z CMS, ale u starších obrázků chybí. next/image ho
+      // vyžaduje a bez něj hlásí chybu; prázdný řetězec je pro čtečky
+      // korektní označení dekorativního obrázku.
+      return <Image alt="" {...props} />
     case 'tabs':
       // eslint-disable-next-line no-case-declarations
       let tabs = []
@@ -296,14 +298,37 @@ function replace(node: DOMNode) {
             {domToReact(node.children, { replace })}
           </Tbody>
         )
-      case 'table':
+      case 'table': {
+        // Editor ukládá <col> jako přímé potomky <table>. HTML je tam
+        // nepovoluje, prohlížeč je při parsování přesune a vznikne rozdíl
+        // proti serverovému renderu (hydratační chyba). Obalíme je sami.
+        const cols = node.children.filter(
+          (child: any) => child.name === 'col' || child.name === 'colgroup'
+        )
+        const rest = node.children.filter(
+          (child: any) => child.name !== 'col' && child.name !== 'colgroup'
+        )
+
         return (
           <Table className={styles.table} {...props}>
+            {cols.length > 0 && (
+              <colgroup>
+                {/** eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                 * @ts-ignore */}
+                {domToReact(
+                  cols.flatMap((c: any) =>
+                    c.name === 'colgroup' ? c.children : [c]
+                  ),
+                  { replace }
+                )}
+              </colgroup>
+            )}
             {/** eslint-disable-next-line @typescript-eslint/ban-ts-comment
              * @ts-ignore */}
-            {domToReact(node.children, { replace })}
+            {domToReact(rest, { replace })}
           </Table>
         )
+      }
       case 'li':
         return (
           <UnorderedList>
