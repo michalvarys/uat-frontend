@@ -12,12 +12,23 @@ Stav k 14. 9. 2026. Cílová verze **Next.js 16.3.5** (aktuální stabilní, vy�
 | — Zapnutí SSR (mimo plán, viz nález níže) | ✅ hotovo |
 | 4 — SEO komponenta ve Strapi | ✅ hotovo |
 | 5 — App Router skeleton | ✅ hotovo |
-| 6 — Přepis stránek | ⬜ |
-| 7 — SEO výstupy (sitemap, robots, JSON-LD) | ⬜ |
-| 8 — Úklid a nasazení | ⬜ |
+| 6 — Přepis stránek | ✅ hotovo |
+| 7 — SEO výstupy (sitemap, robots, JSON-LD) | ✅ hotovo |
+| 8 — Úklid a příprava nasazení | ✅ hotovo (nasazení čeká) |
 
-Web běží na Next 16.3.5 s Turbopackem, build generuje 658 stránek za ~23 s
-(Next 11 potřeboval jednotky minut) a **nově skutečně renderuje obsah na serveru**.
+Web běží na Next 16.3.5 s Turbopackem a App Routerem, build generuje
+1328 stránek a **nově skutečně renderuje obsah na serveru**.
+
+### Zbývá udělat
+
+1. **Nasadit** — vše je připravené, ale zatím neběží v produkci.
+2. **`alt` v `@ssupat/components`** — `renderJson.tsx:66` renderuje
+   `<Image {...attrs} />` bez `alt`. Je v `node_modules`, takže to vyžaduje
+   vydání nové verze knihovny.
+3. **`strictNullChecks`** — viz Etapa 8 níž.
+4. **Vyčistit měkké spojovníky z titulků** — viz Etapa 7 níž.
+5. **Doplnit SEO pole v CMS** — komponenta `shared.seo` je připravená,
+   ale prázdná; metadata se zatím odvozují z obsahu.
 
 ## Rozhodnutí
 
