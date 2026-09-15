@@ -6,6 +6,7 @@ import { getInitialPropsData } from 'src/queries/initial'
 import { LOCALES, isLocale, type Locale } from 'src/i18n/config'
 import { Providers } from 'src/components/Providers'
 import Layout from 'src/components/common/Layout'
+import { JsonLd, organizationJsonLd } from 'src/components/JsonLd'
 
 export const revalidate = 10
 
@@ -72,6 +73,7 @@ export default async function LangLayout({
   return (
     <html lang={lang}>
       <body>
+        <JsonLd data={organizationJsonLd(lang)} />
         <Providers lang={lang as Locale} langs={LOCALES}>
           <div id="modal-root" />
           <Layout menu={menuData?.menu} footer={menuData?.footer}>

@@ -6,6 +6,10 @@ import NewsType from 'src/components/news/types/NewsType'
 import { resolveSeo } from 'src/utils/seo'
 import { LOCALES } from 'src/i18n/config'
 
+import { JsonLd, articleJsonLd, breadcrumbJsonLd } from 'src/components/JsonLd'
+import { getString, Strings } from 'src/locales'
+import { pageUrl } from 'src/utils/seo'
+
 import NewsDetail from './NewsDetail'
 
 export const revalidate = 10
@@ -82,5 +86,37 @@ export default async function NewsDetailPage({ params }: Props) {
     notFound()
   }
 
-  return <NewsDetail news={news} />
+  const seo = resolveSeo({
+    seo: (news as any).seo,
+    title: news.title,
+    sections: news.sections,
+    path: `/news/${slug}`,
+    locale: lang,
+  })
+
+  return (
+    <>
+      <JsonLd
+        data={articleJsonLd({
+          title: seo.title,
+          description: seo.description,
+          image: seo.image,
+          url: seo.canonical,
+          published: news.date,
+          modified: (news as any).updatedAt,
+        })}
+      />
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: 'SŠUPAT', url: pageUrl('/', lang) },
+          {
+            name: getString(lang, Strings.NEWS) || 'News',
+            url: pageUrl('/news', lang),
+          },
+          { name: seo.title, url: seo.canonical },
+        ])}
+      />
+      <NewsDetail news={news} />
+    </>
+  )
 }
