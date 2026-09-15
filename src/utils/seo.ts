@@ -28,8 +28,14 @@ export type ResolvedSeo = {
 
 const DESCRIPTION_LIMIT = 160
 
-/** Výchozí obrázek pro odkazy bez vlastní grafiky. */
-export const DEFAULT_OG_IMAGE = `${SITE_URL}/images/og-default.jpg`
+/**
+ * Výchozí obrázek pro odkazy bez vlastní grafiky.
+ *
+ * Záměrně undefined: dřív tu byla cesta na /images/og-default.jpg, který
+ * v public/ neexistuje — náhled odkazu by pak byl prázdný čtverec, což je
+ * horší než žádný obrázek. Až grafika vznikne, stačí sem doplnit cestu.
+ */
+export const DEFAULT_OG_IMAGE: string | undefined = undefined
 
 /**
  * Měkké spojovníky a zalomení slouží k zalamování nadpisů v layoutu.

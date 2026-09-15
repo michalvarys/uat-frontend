@@ -43,6 +43,10 @@ const remotePatterns = [
 module.exports = {
   reactStrictMode: true,
 
+  // Standalone build zabalí jen skutečně použité závislosti, takže
+  // produkční image nemusí nést celý node_modules.
+  output: 'standalone',
+
   // SCSS moduly importují sdílené proměnné relativní cestou. Ta se láme,
   // jakmile se soubor přesune (pages/ -> app/), proto se importy píšou
   // od kořene projektu a Sass je hledá tady.
