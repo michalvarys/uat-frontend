@@ -244,7 +244,10 @@ Mapování API:
       - `NewsArticle` na detailu novinky
       - `Event` na festivalech
       - `BreadcrumbList` na detailních stránkách
-- [ ] Sémantické HTML — projít nadpisy, právě teď má každá stránka `<h1>`, což je správně, ale ověřit hierarchii h2/h3 v sekcích
+- [ ] **Sémantické HTML — `/pages/[slug]` nemá `<h1>` vůbec.** Ověřeno na
+      `/pages/historia-skoly`: 0× `<h1>`, 1× `<h2>`, titulek jen v `<title>`.
+      Stránek tohoto typu je 99, tedy většina obsahu webu. Doplnit nadpis
+      z `page.title` a projít hierarchii h2/h3 v sekcích.
 - [ ] `alt` atributy u obrázků z CMS (`next/image` je v nových verzích vyžaduje)
 - [ ] **Vyčistit titulky od typografických znaků.** `src/locales/{sk,en}.ts` obsahují
       11 měkkých spojovníků (`­`) a jedno `\n` — slouží k zalamování nadpisů,
