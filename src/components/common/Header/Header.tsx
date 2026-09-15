@@ -1,3 +1,5 @@
+'use client'
+
 import Image from 'next/image'
 import React, { useMemo, useState } from 'react'
 import { chakra, Flex } from '@chakra-ui/react'

@@ -1,3 +1,5 @@
+'use client'
+
 import styles from './GalleryMenu.module.scss'
 
 type Props = {

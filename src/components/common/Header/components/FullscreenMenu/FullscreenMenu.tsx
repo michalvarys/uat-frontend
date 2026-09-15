@@ -1,5 +1,7 @@
+'use client'
+
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
+import { useAppRouter as useRouter } from 'src/hooks/useAppRouter'
 import Image from 'next/image'
 import classNames from 'classnames'
 import ReactResizeDetector from 'react-resize-detector'

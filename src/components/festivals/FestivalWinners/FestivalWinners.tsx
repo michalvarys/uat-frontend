@@ -1,3 +1,5 @@
+'use client'
+
 import Image from 'next/image'
 
 import styles from './FestivalWinners.module.scss'
@@ -7,7 +9,7 @@ import FestivalWinnerType from '../types/FestivalWinner'
 import { transformLink } from 'src/utils/link'
 import { useState } from 'react'
 import { getString, Strings } from 'src/locales'
-import { useRouter } from 'next/router'
+import { useAppRouter as useRouter } from 'src/hooks/useAppRouter'
 import YearSwitcher from '../../common/YearSwitcher'
 import { YearSwitcherVariant } from '../../common/YearSwitcher/YearSwitcher'
 import { DbImage } from 'src/components/DbImage'

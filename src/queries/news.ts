@@ -1,11 +1,11 @@
-import axios from 'axios'
+import { api } from './client'
 import qs from 'qs'
 
 export async function getNewsByYear(q: Record<string, any>, locale: string) {
   const defaultYear = '' + new Date().getFullYear()
   const { year = defaultYear } = q
 
-  const { data } = await axios(
+  const { data } = await api(
     `/api/news-entries?${qs.stringify({
       locale,
       filters: {
@@ -39,7 +39,7 @@ export async function getNewsData(
   important = false,
   limit = 24
 ) {
-  const { data } = await axios(
+  const { data } = await api(
     `/api/news?${qs.stringify({
       locale,
       populate: '*',
@@ -61,7 +61,7 @@ export async function getNewsData(
 
 export async function getNewsDetail(slug: string, locale: string) {
   const filters = Number.isNaN(Number(slug)) ? { slug } : { id: Number(slug) }
-  const { data } = await axios(
+  const { data } = await api(
     `/api/news?${qs.stringify({
       filters,
       locale,
@@ -99,7 +99,7 @@ export async function getNewsDetail(slug: string, locale: string) {
 }
 
 export async function getNewsByLocales(locales: string[]) {
-  const { data } = await axios(
+  const { data } = await api(
     `/api/news?${qs.stringify({
       filters: {
         locale: {

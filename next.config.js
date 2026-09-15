@@ -39,9 +39,10 @@ module.exports = {
   // nativní náhrada.
   transpilePackages: ['@ssupat/components'],
 
-  // i18n klíč zde podporuje pouze Pages Router. Při přechodu na App Router
-  // ho nahradí segment app/[lang]/ a proxy.ts — viz
-  // docs/MIGRACE-NEXT-APP-ROUTER.md, Etapa 5.
+  // i18n klíč funguje pouze pro Pages Router a dokud tam nějaké stránky
+  // zbývají, drží jim jazykové varianty a router.locale.
+  // App Router si jazyk řeší sám segmentem app/[lang]/ + proxy.ts.
+  // Odstraní se až s poslední stránkou v pages/ (Etapa 8).
   i18n: {
     locales: ['sk', 'en'],
     defaultLocale: 'sk',

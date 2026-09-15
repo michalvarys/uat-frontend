@@ -1,11 +1,11 @@
 import qs from 'qs'
-import axios from 'axios'
+import { api } from './client'
 import FestivalType from '@/components/festivals/types/FestivalType'
 
 export async function getFestivalList(
   locales: string[]
 ): Promise<FestivalType[]> {
-  const { data } = await axios(
+  const { data } = await api(
     `/api/festivals?${qs.stringify({
       locale: locales,
     })}`
@@ -84,7 +84,7 @@ export async function getFestivalDetail(id: string, locale: string) {
     data: {
       data: { attributes },
     },
-  } = await axios(url)
+  } = await api(url)
 
   return attributes
 }

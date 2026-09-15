@@ -1,11 +1,11 @@
 import qs from 'qs'
-import axios from 'axios'
+import { api } from './client'
 import { HomeSectionProps } from 'src/sections/homepage/HomeSection'
 import { getGalleriesData, getGallery, getGalleryEvents } from './galleries'
 import { getNewsData } from './news'
 
 export async function getHomepageData(locale: string) {
-  const { data } = await axios(
+  const { data } = await api(
     `/api/homepage?${qs.stringify({
       locale,
       publicationState: 'live',

@@ -1,3 +1,5 @@
+'use client'
+
 import Image from 'next/image'
 import { transformLink } from 'src/utils/link'
 import { ContainerVariant } from 'src/components/common/Container'

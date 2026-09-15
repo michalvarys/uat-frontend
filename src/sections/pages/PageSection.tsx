@@ -1,3 +1,5 @@
+'use client'
+
 import Container, { ContainerVariant } from 'src/components/common/Container'
 import PageType from 'src/components/pages/types/PageType'
 import { parseSections } from './utils'

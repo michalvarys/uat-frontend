@@ -1,3 +1,5 @@
+'use client'
+
 import { useMemo } from 'react'
 import parse from 'html-react-parser'
 import Image from 'next/image'

@@ -1,12 +1,12 @@
 import qs from 'qs'
-import axios from 'axios'
+import { api } from './client'
 import { FieldOfStudyType } from 'src/types/fieldsOfStudy'
 import { getAttributes } from 'src/utils/data'
 
 export async function getStudyList(
   locales: string[]
 ): Promise<FieldOfStudyType[]> {
-  const { data } = await axios(
+  const { data } = await api(
     `/api/field-of-studies?${qs.stringify(
       {
         locale: locales,
@@ -25,7 +25,7 @@ export async function getStudyList(
 }
 
 export async function getStudiesData(locale: string) {
-  const { data } = await axios(
+  const { data } = await api(
     `/api/field-of-studies?${qs.stringify(
       {
         locale,
@@ -109,7 +109,7 @@ export async function getStudyData(
     data: {
       data: { attributes },
     },
-  } = await axios(url)
+  } = await api(url)
 
   const study: FieldOfStudyType = {
     ...attributes,

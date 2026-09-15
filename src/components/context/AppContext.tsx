@@ -1,5 +1,8 @@
+'use client'
+
 import moment from 'moment'
-import { useRouter } from 'next/router'
+import { useAppRouter as useRouter } from 'src/hooks/useAppRouter'
+import { localePath } from 'src/i18n/config'
 import React, { createContext, useContext, useState } from 'react'
 
 type AppProviderType = {
@@ -40,13 +43,12 @@ const AppProvider = ({ children, langs, lang }: AppProviderType) => {
   const updateLanguage = (newLanguage: string) => {
     setCurrentLanguage(newLanguage)
     moment.locale(newLanguage)
-    if (localePaths && localePaths[newLanguage]) {
-      router.push(localePaths[newLanguage], localePaths[newLanguage], {
-        locale: newLanguage,
-      })
-    } else {
-      router.push(router.asPath, router.asPath, { locale: newLanguage })
-    }
+
+    // V App Routeru je jazyk součástí cesty, ne volbou předanou routeru.
+    // localePaths drží cestu k překladu konkrétního záznamu (jiný slug),
+    // jinak se zůstává na stejné stránce.
+    const target = localePaths?.[newLanguage] ?? router.asPath
+    router.push(localePath(target, newLanguage))
   }
 
   const values: AppContextType = {

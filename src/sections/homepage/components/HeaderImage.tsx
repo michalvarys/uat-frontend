@@ -1,3 +1,5 @@
+'use client'
+
 import Image from 'next/image'
 import type { CSSProperties } from 'react'
 import { chakra, useBreakpointValue } from '@chakra-ui/react'

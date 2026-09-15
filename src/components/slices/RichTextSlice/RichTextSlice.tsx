@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useState, useCallback, useMemo, cloneElement } from 'react'
 import {
   Heading,
@@ -39,7 +41,7 @@ import axios from 'axios'
 import { DbImage } from '@/components/DbImage'
 import { LinkView } from '@ssupat/components/src/components/editor/link/LinkView'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
+import { useAppRouter as useRouter } from 'src/hooks/useAppRouter'
 
 type Props = {
   data: RichTextType

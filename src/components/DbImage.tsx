@@ -1,3 +1,5 @@
+'use client'
+
 import ImageType, { ImageTypeProps } from './common/types/ImageType'
 import { getAttributes } from 'src/utils/data'
 import Image, { ImageProps } from 'next/image'

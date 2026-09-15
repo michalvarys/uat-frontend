@@ -1,3 +1,5 @@
+'use client'
+
 import styles from './TeachersList.module.scss'
 import TeacherType from '../types/TeacherType'
 import TeacherItem from './components/TeacherItem'

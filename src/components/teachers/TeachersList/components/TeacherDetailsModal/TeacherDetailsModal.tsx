@@ -1,3 +1,5 @@
+'use client'
+
 import Image from 'next/image'
 import parse from 'html-react-parser'
 import styles from './TeacherDetailsModal.module.scss'

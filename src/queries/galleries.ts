@@ -1,7 +1,7 @@
 import qs from 'qs'
-import axios from 'axios'
+import { api } from './client'
 export async function getGalleryEvents(locale: string) {
-  const { data } = await axios(
+  const { data } = await api(
     `/api/gallery-events?${qs.stringify({
       locale,
       populate: '*',
@@ -16,7 +16,7 @@ export async function getGalleryEvents(locale: string) {
 }
 
 export async function getGallery(locale: string) {
-  const { data } = await axios(
+  const { data } = await api(
     `/api/gallery?${qs.stringify({
       locale,
       publicationState: 'live',

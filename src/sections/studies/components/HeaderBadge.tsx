@@ -1,3 +1,5 @@
+'use client'
+
 import Image from 'next/image'
 import { Flex } from '@chakra-ui/react'
 import { transformLink } from 'src/utils/link'

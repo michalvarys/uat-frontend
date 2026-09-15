@@ -1,5 +1,7 @@
+'use client'
+
 import Image from 'next/image'
-import { useRouter } from 'next/router'
+import { useAppRouter as useRouter } from 'src/hooks/useAppRouter'
 import { FieldOfStudyType } from 'src/types/fieldsOfStudy'
 
 import { transformLink } from 'src/utils/link'

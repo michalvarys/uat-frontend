@@ -1,3 +1,5 @@
+'use client'
+
 import { useMediaQuery } from '@chakra-ui/react'
 
 export function useLandscape() {

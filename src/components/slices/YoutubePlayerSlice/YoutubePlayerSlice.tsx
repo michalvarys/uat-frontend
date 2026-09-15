@@ -1,3 +1,5 @@
+'use client'
+
 import YoutubePlayer from 'react-youtube'
 import Image from 'next/image'
 import { useCallback, useRef, useState, useLayoutEffect } from 'react'
