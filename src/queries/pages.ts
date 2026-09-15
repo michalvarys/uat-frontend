@@ -25,6 +25,9 @@ export async function getPageDetail(slug: string, locale: string) {
       locale,
       publicationState: 'live',
       populate: {
+        seo: {
+          populate: '*',
+        },
         localizations: {
           populate: '*',
         },

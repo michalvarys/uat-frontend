@@ -9,6 +9,9 @@ export async function getAboutSchoolDetail(
     `/api/about-school?${qs.stringify({
       locale,
       populate: {
+        seo: {
+          populate: '*',
+        },
         applications_at_university: {
           populate: {
             sections: {

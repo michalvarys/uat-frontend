@@ -10,6 +10,9 @@ export async function getHomepageData(locale: string) {
       locale,
       publicationState: 'live',
       populate: {
+        seo: {
+          populate: '*',
+        },
         galleries: {
           populate: {
             image: {

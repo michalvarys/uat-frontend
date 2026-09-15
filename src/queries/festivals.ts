@@ -18,6 +18,9 @@ export async function getFestivalDetail(id: string, locale: string) {
   const url = `/api/festivals/${id}?${qs.stringify({
     locale,
     populate: {
+      seo: {
+        populate: '*',
+      },
       winners: {
         populate: {
           single_winner: {

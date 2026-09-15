@@ -17,6 +17,9 @@ export async function getEventDetail(id: string, locale: string) {
   const url = `/api/gallery-events/${id}?${qs.stringify({
     locale,
     populate: {
+      seo: {
+        populate: '*',
+      },
       gallery: {
         populate: {
           gallery_item: {

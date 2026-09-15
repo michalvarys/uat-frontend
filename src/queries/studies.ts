@@ -51,6 +51,9 @@ export async function getStudyData(
     {
       locale,
       populate: {
+        seo: {
+          populate: '*',
+        },
         galleries: {
           populate: {
             gallery_item: {

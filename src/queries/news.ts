@@ -66,6 +66,9 @@ export async function getNewsDetail(slug: string, locale: string) {
       filters,
       locale,
       populate: {
+        seo: {
+          populate: '*',
+        },
         sections: {
           populate: {
             gallery_item: {
