@@ -169,6 +169,15 @@ export async function getStaticProps({
   try {
     const news = await getNewsDetail(params!.slug as string, locale)
 
+    // Novinka bez překladu do daného jazyka nesmí vrátit prázdnou stránku
+    // se stavem 200 — vyhledávače by ji zaindexovaly jako plnohodnotnou.
+    if (!news) {
+      return {
+        notFound: true,
+        revalidate: REVALIDATE_TIME,
+      }
+    }
+
     return {
       props: {
         news,

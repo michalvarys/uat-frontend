@@ -95,7 +95,10 @@ export async function getNewsDetail(slug: string, locale: string) {
     })}`
   )
 
-  return data[0]
+  // Když záznam v daném jazyce neexistuje, data[0] je undefined.
+  // getStaticProps ho neumí serializovat do JSON a stránka skončí 500,
+  // proto se vrací null.
+  return data[0] ?? null
 }
 
 export async function getNewsByLocales(locales: string[]) {
