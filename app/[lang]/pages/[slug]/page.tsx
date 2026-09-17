@@ -1,10 +1,11 @@
 import type { Metadata } from 'next'
-import { notFound } from 'next/navigation'
+import { notFound, permanentRedirect } from 'next/navigation'
 
 import { PageSection } from 'src/sections/pages/PageSection'
 import { getPageDetail, getPagesData } from '@/queries/pages'
 import { resolveSeo } from 'src/utils/seo'
-import { LOCALES } from 'src/i18n/config'
+import { LOCALES, localePath } from 'src/i18n/config'
+import { findNewSlug } from 'src/queries/slugHistory'
 
 export const revalidate = 10
 
@@ -75,6 +76,13 @@ export default async function Page({ params }: Props) {
   const page = await getData(slug, lang)
 
   if (!page) {
+    // Stránka pod touto adresou neexistuje — než vrátíme 404, ověříme,
+    // jestli nejde o starý slug přejmenovaného záznamu.
+    const newSlug = await findNewSlug(slug, 'page', lang)
+    if (newSlug && newSlug !== slug) {
+      permanentRedirect(localePath(`/pages/${newSlug}`, lang))
+    }
+
     notFound()
   }
 

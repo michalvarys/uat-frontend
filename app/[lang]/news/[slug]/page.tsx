@@ -1,10 +1,11 @@
 import type { Metadata } from 'next'
-import { notFound } from 'next/navigation'
+import { notFound, permanentRedirect } from 'next/navigation'
 
 import { getNewsDetail, getNewsByLocales } from '@/queries/news'
 import NewsType from 'src/components/news/types/NewsType'
 import { resolveSeo } from 'src/utils/seo'
-import { LOCALES } from 'src/i18n/config'
+import { LOCALES, localePath } from 'src/i18n/config'
+import { findNewSlug } from 'src/queries/slugHistory'
 
 import { JsonLd, articleJsonLd, breadcrumbJsonLd } from 'src/components/JsonLd'
 import { getString, Strings } from 'src/locales'
@@ -83,6 +84,13 @@ export default async function NewsDetailPage({ params }: Props) {
   // Novinka nepřeložená do daného jazyka nesmí vrátit prázdnou stránku
   // se stavem 200 — vyhledávače by ji zaindexovaly jako plnohodnotnou.
   if (!news) {
+    // Stránka pod touto adresou neexistuje — než vrátíme 404, ověříme,
+    // jestli nejde o starý slug přejmenovaného záznamu.
+    const newSlug = await findNewSlug(slug, 'news', lang)
+    if (newSlug && newSlug !== slug) {
+      permanentRedirect(localePath(`/news/${newSlug}`, lang))
+    }
+
     notFound()
   }
 
