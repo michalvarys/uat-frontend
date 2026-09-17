@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useAppRouter as useRouter } from 'src/hooks/useAppRouter'
 import Image from 'next/image'
 import classNames from 'classnames'
-import ReactResizeDetector from 'react-resize-detector'
+import { useMediaQuery } from '@chakra-ui/react'
 
 import CloseIconGreen from 'public/icons/common/close_green.svg'
 import CloseIconOrange from 'public/icons/common/close_orange.svg'
@@ -77,6 +77,14 @@ const FullscreenMenu = ({
   sections,
 }: Props) => {
   const router = useRouter()
+  // Dřív se šířka měřila přes react-resize-detector. Ten stojí na
+  // findDOMNode, které vlastní react-dom v Nextu 16 už neexportuje
+  // ("findDOMNode is not a function"). Chakra media query dá stejnou
+  // informaci bez měření DOM.
+  const [isWide] = useMediaQuery('(min-width: 651px)', {
+    ssr: true,
+    fallback: false,
+  })
   const [prevPath, setPrevPath] = useState(router.asPath)
 
   useEffect(() => {
@@ -121,60 +129,58 @@ const FullscreenMenu = ({
           </div>
         </div>
       </div>
-      <ReactResizeDetector>
-        {({ width }: { width: number }) => {
-          if (width > 650) {
-            return (
-              <div className={styles.menu_main_container}>
-                <div className={styles.menu_container}>
-                  {sections.map((item: MenuSection, idx: number) => (
+      {(() => {
+        if (isWide) {
+          return (
+            <div className={styles.menu_main_container}>
+              <div className={styles.menu_container}>
+                {sections.map((item: MenuSection, idx: number) => (
+                  <MenuItem
+                    key={idx}
+                    idx={idx}
+                    currentSection={currentSection}
+                    onChangeSection={onChangeSection}
+                    title={item.title}
+                  />
+                ))}
+              </div>
+            </div>
+          )
+        } else {
+          const res: MenuSection[][] = sections.reduce(
+            (acc: MenuSection[][], item: MenuSection, idx: number) => {
+              if (idx % 2 === 0) {
+                return acc.length === 0 ? [[item]] : [...acc, [item]]
+              } else {
+                return acc.length === 1
+                  ? [[...acc[0], item]]
+                  : [
+                      acc.slice(0, acc.length - 1)[0],
+                      [...acc.slice(-1)[0], item],
+                    ]
+              }
+            },
+            []
+          )
+          return (
+            <div className={styles.menu_main_container}>
+              {res.map((row: MenuSection[], idx: number) => (
+                <div className={styles.menu_container} key={idx}>
+                  {row.map((item: MenuSection, rowIdx: number) => (
                     <MenuItem
-                      key={idx}
-                      idx={idx}
+                      key={idx * 2 + rowIdx}
+                      idx={idx * 2 + rowIdx}
                       currentSection={currentSection}
                       onChangeSection={onChangeSection}
                       title={item.title}
                     />
                   ))}
                 </div>
-              </div>
-            )
-          } else {
-            const res: MenuSection[][] = sections.reduce(
-              (acc: MenuSection[][], item: MenuSection, idx: number) => {
-                if (idx % 2 === 0) {
-                  return acc.length === 0 ? [[item]] : [...acc, [item]]
-                } else {
-                  return acc.length === 1
-                    ? [[...acc[0], item]]
-                    : [
-                        acc.slice(0, acc.length - 1)[0],
-                        [...acc.slice(-1)[0], item],
-                      ]
-                }
-              },
-              []
-            )
-            return (
-              <div className={styles.menu_main_container}>
-                {res.map((row: MenuSection[], idx: number) => (
-                  <div className={styles.menu_container} key={idx}>
-                    {row.map((item: MenuSection, rowIdx: number) => (
-                      <MenuItem
-                        key={idx * 2 + rowIdx}
-                        idx={idx * 2 + rowIdx}
-                        currentSection={currentSection}
-                        onChangeSection={onChangeSection}
-                        title={item.title}
-                      />
-                    ))}
-                  </div>
-                ))}
-              </div>
-            )
-          }
-        }}
-      </ReactResizeDetector>
+              ))}
+            </div>
+          )
+        }
+      })()}
 
       <HeaderSection
         data={sectionData}
