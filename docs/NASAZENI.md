@@ -36,6 +36,29 @@ takže se jen nepřesměruje), ale zbytečně by se logovaly chyby.
 
 ---
 
+## Rychlá varianta: deploy.sh
+
+Celý postup níž zvládne jeden skript na serveru — zazálohuje, nasadí
+a ověří:
+
+```bash
+cd /cesta/k/prod
+./deploy.sh --dry-run      # nejdřív si prohlédnout, co udělá
+./deploy.sh --tag v2.0.0   # ostré nasazení
+```
+
+Zálohuje databázi i uploady, nasadí backend a pak frontend (v tomhle
+pořadí), počká na naběhnutí a ověří, že se obsah renderuje na serveru.
+Když ověření selže, poradí návrat: `./deploy.sh --rollback`.
+
+Další přepínače: `--frontend`, `--backend`, `--skip-backup`.
+Skript odmítne pokračovat, pokud je dump databáze podezřele malý.
+
+Zbytek dokumentu popisuje ty samé kroky ručně — pro případ, že chcete
+mít nad nasazením plnou kontrolu nebo skript z nějakého důvodu selže.
+
+---
+
 ## 1. Záloha databáze
 
 Nasazení backendu přidá tabulku `slug_histories` a sloupce `seo` do sedmi
@@ -51,12 +74,23 @@ Ověřte, že soubor má rozumnou velikost — ne pár bajtů.
 
 ## 2. Backend
 
-Backend **nemá CI workflow**, image se staví ručně.
+Backend má nově **stejné CI jako frontend** — build se spustí pushnutím
+tagu `v*`:
 
 ```bash
 cd admin-v4-ts
 git push origin <větev>
+# merge do master, pak:
+git tag v2.0.0 && git push origin v2.0.0
+```
 
+Workflow postaví a odešle `varyshop/uat-admin`. Průběh v záložce Actions.
+Vyžaduje tajné klíče `DOCKERHUB_USERNAME` a `DOCKERHUB_TOKEN` — stejné,
+jaké už používá frontend.
+
+Ručně (bez CI) to jde takto:
+
+```bash
 docker build -t varyshop/uat-admin:latest .
 docker push varyshop/uat-admin:latest
 ```
