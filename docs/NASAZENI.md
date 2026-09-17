@@ -41,8 +41,19 @@ takže se jen nepřesměruje), ale zbytečně by se logovaly chyby.
 Celý postup níž zvládne jeden skript na serveru — zazálohuje, nasadí
 a ověří:
 
+Skript leží v `prod/deploy.sh`. Ta složka **není git repozitář**
+(a `sync.sh` táhne data ze serveru k vám, ne naopak), takže ho tam
+poprvé nahrajte ručně:
+
 ```bash
-cd /cesta/k/prod
+scp prod/deploy.sh root@185.111.88.136:/root/repo/docker/
+ssh root@185.111.88.136 'chmod +x /root/repo/docker/deploy.sh'
+```
+
+Pak už na serveru:
+
+```bash
+cd /root/repo/docker
 ./deploy.sh --dry-run      # nejdřív si prohlédnout, co udělá
 ./deploy.sh --tag v2.0.0   # ostré nasazení
 ```
