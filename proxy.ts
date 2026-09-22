@@ -53,9 +53,13 @@ export const config = {
   // z public/. Ty se poznají podle přípony — vyjmenovávat složky ručně
   // je křehké: chyběly tam fonts/ i icons/ a prohlížeč pak na ně
   // dostával 404.
-  // /cms se zpracovává uvnitř middleware, takže z matcheru vyjmutý
-  // být nesmí — na rozdíl od interních cest Nextu, API a souborů
-  // z public/. Ty se poznají podle přípony; bez toho pravidla by se
-  // /fonts/x.woff2 přepsalo na /sk/fonts/x.woff2 a vracelo 404.
-  matcher: ['/((?!_next|api|.*\\.[a-zA-Z0-9]+$).*)'],
+  // Dvě pravidla, protože se vylučuje z různých důvodů:
+  //
+  // 1. /cms/** vždy projde middlewarem — proxy na Strapi se dělá tam.
+  //    Přípona tu nesmí rozhodovat: /cms/uploads/x.svg je soubor, ale
+  //    leží na Strapi, ne v public/.
+  // 2. všechno ostatní kromě interních cest Nextu, API a souborů
+  //    s příponou; bez toho by se /fonts/x.woff2 přepsalo
+  //    na /sk/fonts/x.woff2 a vracelo 404.
+  matcher: ['/cms/:path*', '/((?!_next|api|cms|.*\\.[a-zA-Z0-9]+$).*)'],
 }
