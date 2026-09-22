@@ -4,6 +4,7 @@ import { notFound, permanentRedirect } from 'next/navigation'
 import { getNewsDetail, getNewsByLocales } from '@/queries/news'
 import NewsType from 'src/components/news/types/NewsType'
 import { resolveSeo } from 'src/utils/seo'
+import { decodeSlug } from 'src/utils/slug'
 import { LOCALES, localePath } from 'src/i18n/config'
 import { findNewSlug } from 'src/queries/slugHistory'
 
@@ -39,7 +40,7 @@ export async function generateStaticParams() {
 
 async function getData(slug: string, lang: string) {
   try {
-    return await getNewsDetail(slug, lang)
+    return await getNewsDetail(decodeSlug(slug), lang)
   } catch {
     return null
   }

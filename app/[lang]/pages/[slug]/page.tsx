@@ -4,6 +4,7 @@ import { notFound, permanentRedirect } from 'next/navigation'
 import { PageSection } from 'src/sections/pages/PageSection'
 import { getPageDetail, getPagesData } from '@/queries/pages'
 import { resolveSeo } from 'src/utils/seo'
+import { decodeSlug } from 'src/utils/slug'
 import { LOCALES, localePath } from 'src/i18n/config'
 import { findNewSlug } from 'src/queries/slugHistory'
 
@@ -33,7 +34,7 @@ export async function generateStaticParams() {
 
 async function getData(slug: string, lang: string) {
   try {
-    return await getPageDetail(slug, lang)
+    return await getPageDetail(decodeSlug(slug), lang)
   } catch {
     return null
   }
