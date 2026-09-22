@@ -75,6 +75,14 @@ function useLink({ href }) {
       return
     }
 
+    // Odkazy s vlastním schématem (mailto:, tel:) nemíří na stránku webu.
+    // Bez této větve by se "mailto:adresa@domena" rozpadlo na typ a id
+    // a vznikla by cesta /mailto/adresa@domena místo otevření pošty.
+    if (/^(mailto|tel):/i.test(normalized)) {
+      setLink(normalized)
+      return
+    }
+
     const [type, id] = normalized.split(':')
 
     // Bez id nejde o referenci na záznam, ale o holý slug nebo cestu
@@ -192,7 +200,6 @@ function replace(node: DOMNode) {
   // @ts-ignore
   const props = attributesToProps(node.attribs)
   const type = props['data-type']
-  console.log({ type, props, node })
 
   switch (type) {
     case 'flexbox': {
@@ -279,7 +286,6 @@ function replace(node: DOMNode) {
         }))
       }
 
-      console.log('tabs', props, tabs)
       return <TabsView tabs={tabs} />
 
     case 'box':
