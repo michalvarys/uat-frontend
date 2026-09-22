@@ -24,6 +24,9 @@ const beDomain = new URL(API_BASE_URL).hostname
 // proto se u známých adres přebírá port z URL.
 const imageOrigins = [API_BASE_URL, FRONTEND_BASE_URL].filter(Boolean)
 
+// Obrázky z CMS chodí přes relativní /cms, takže se berou jako lokální
+// a remotePatterns se na ně nevztahují. Seznam zůstává jen pro obsah,
+// který v databázi drží plnou adresu z dřívějška.
 const extraHosts = [
   FRONTEND_DOMAIN,
   BACKEND_DOMAIN,

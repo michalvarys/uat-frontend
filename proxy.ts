@@ -17,6 +17,24 @@ const PREFIXED = LOCALES.filter((locale) => locale !== DEFAULT_LOCALE)
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
+  // Proxy na Strapi. Dřív to řešily `rewrites` v next.config.js, jenže
+  // standalone build je zapéká do server.js už při buildu — adresa CMS
+  // v nich zůstala na výchozí 0.0.0.0:1337 a požadavky končily
+  // na ECONNREFUSED. Middleware se vyhodnocuje za běhu, takže proměnnou
+  // přečte správně.
+  if (pathname.startsWith('/cms/')) {
+    const target =
+      process.env.API_URL ||
+      process.env.NEXT_PUBLIC_API_URL ||
+      'http://0.0.0.0:1337'
+
+    const url = new URL(
+      pathname.replace(/^\/cms/, '') + request.nextUrl.search,
+      target
+    )
+    return NextResponse.rewrite(url)
+  }
+
   const hasPrefix = PREFIXED.some(
     (locale) => pathname === `/${locale}` || pathname.startsWith(`/${locale}/`)
   )
@@ -35,5 +53,7 @@ export const config = {
   // z public/. Ty se poznají podle přípony — vyjmenovávat složky ručně
   // je křehké: chyběly tam fonts/ i icons/ a prohlížeč pak na ně
   // dostával 404.
-  matcher: ['/((?!_next|cms|api|.*\\.[a-zA-Z0-9]+$).*)'],
+  // /cms se nově zpracovává uvnitř middleware, takže z matcheru
+  // vyjmutý být nesmí. Statické soubory se poznají podle přípony.
+  matcher: ['/((?!_next|api).*)'],
 }

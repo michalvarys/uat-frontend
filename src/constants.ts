@@ -9,12 +9,27 @@
 // Starší NEXT_PUBLIC_* zůstávají jako záloha, aby fungoval i image
 // postavený před touto změnou.
 
-/** Adresa Strapi. Čte ji jen serverový kód. */
+/**
+ * Adresa Strapi pro serverová volání.
+ *
+ * V Dockeru se míří na vnitřní jméno služby (http://strapi:1337): je
+ * stejné pro každé prostředí, nezávisí na doméně ani certifikátu
+ * a provoz neopouští stroj.
+ */
 export const BASE_URL =
   process.env.API_URL ||
   process.env.NEXT_PUBLIC_API_URL ||
   process.env.NEXT_PUBLIC_BASE_URL ||
   'http://0.0.0.0:1337'
+
+/**
+ * Předpona odkazů na soubory ze Strapi (obrázky, dokumenty).
+ *
+ * Záměrně relativní: prohlížeč si doménu doplní sám, takže hodnota
+ * nezávisí na prostředí ani na tom, co se zapeklo do buildu. Cestu /cms
+ * přepošle middleware na Strapi ve vnitřní síti Dockeru.
+ */
+export const PUBLIC_API_URL = process.env.PUBLIC_API_URL || '/cms'
 
 /**
  * Token pro Strapi. Bez prefixu NEXT_PUBLIC_ schválně — do klientského
