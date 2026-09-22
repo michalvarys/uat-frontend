@@ -64,7 +64,11 @@ function useLink({ href }) {
     setLink(`/${type}/${id}`)
 
     try {
-      const { data } = await axios(`/api/${type}/${id}`)
+      // Volá se z prohlížeče, kde adresa CMS není známá — proměnné
+      // prostředí se do klientského bundlu nedostanou. Cesta /cms se
+      // proto nechává relativní a Next ji přepíše na Strapi
+      // (viz rewrites v next.config.js).
+      const { data } = await axios(`/cms/api/${type}/${id}`)
       setLink(`/${type}/${data.attributes.slug}`)
     } catch (error) {
       // eslint-disable-next-line no-console

@@ -1,22 +1,36 @@
-// publicRuntimeConfig / serverRuntimeConfig byly v Next 16 odstraněny,
-// v App Routeru nikdy nefungovaly. Náhradou je čtení process.env.
+// Konfigurace se čte z proměnných prostředí až za běhu.
 //
-// NEXT_PUBLIC_* se zapéká do klientského bundlu už při buildu.
-// API_TOKEN zůstává bez prefixu, takže se ke klientovi nedostane —
-// smí ho číst jen serverový kód (getStaticProps, Server Components).
+// Proměnné s prefixem NEXT_PUBLIC_ se zapékají do klientského bundlu už
+// při buildu, takže by adresa CMS i vlastní doména byly v image natvrdo
+// a jeden image by neobsloužil staging i produkci. Data se ale stahují
+// v Server Components, kde prefix potřeba není — proto se sem předávají
+// běžné proměnné a obě prostředí sdílejí tentýž image.
+//
+// Starší NEXT_PUBLIC_* zůstávají jako záloha, aby fungoval i image
+// postavený před touto změnou.
+
+/** Adresa Strapi. Čte ji jen serverový kód. */
 export const BASE_URL =
+  process.env.API_URL ||
   process.env.NEXT_PUBLIC_API_URL ||
   process.env.NEXT_PUBLIC_BASE_URL ||
   'http://0.0.0.0:1337'
 
+/**
+ * Token pro Strapi. Bez prefixu NEXT_PUBLIC_ schválně — do klientského
+ * bundlu se nesmí dostat.
+ */
 export const API_TOKEN = process.env.API_TOKEN
 
-// Veřejná adresa webu. Slouží jako metadataBase pro absolutní URL
-// v OG tazích, canonical odkazech a sitemap.xml.
+/**
+ * Veřejná adresa webu. Slouží jako metadataBase pro absolutní URL
+ * v OG tazích, canonical odkazech a sitemap.xml.
+ */
 export const SITE_URL = (
+  process.env.SITE_URL ||
   process.env.NEXT_PUBLIC_SITE_URL ||
-  (process.env.NEXT_FRONTEND_DOMAIN
-    ? `https://${process.env.NEXT_FRONTEND_DOMAIN}`
+  (process.env.FRONTEND_DOMAIN || process.env.NEXT_FRONTEND_DOMAIN
+    ? `https://${process.env.FRONTEND_DOMAIN || process.env.NEXT_FRONTEND_DOMAIN}`
     : 'https://uat.sk')
 ).replace(/\/$/, '')
 

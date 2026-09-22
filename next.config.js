@@ -1,8 +1,18 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://0.0.0.0:1337'
+// Konfigurace se čte z proměnných prostředí. next.config.js se vyhodnocuje
+// i při startu serveru, ne jen při buildu, takže adresy nemusí být
+// v image zapečené a jeden image obslouží staging i produkci.
+//
+// NEXT_PUBLIC_* varianty zůstávají jako záloha kvůli starším image.
+const API_BASE_URL =
+  process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://0.0.0.0:1337'
 const FRONTEND_BASE_URL =
-  process.env.NEXT_PUBLIC_BASE_URL || 'http://0.0.0.0:3000/cms'
-const FRONTEND_DOMAIN = process.env.NEXT_FRONTEND_DOMAIN
-const BACKEND_DOMAIN = process.env.NEXT_BACKEND_DOMAIN
+  process.env.BASE_URL ||
+  process.env.NEXT_PUBLIC_BASE_URL ||
+  'http://0.0.0.0:3000/cms'
+const FRONTEND_DOMAIN =
+  process.env.FRONTEND_DOMAIN || process.env.NEXT_FRONTEND_DOMAIN
+const BACKEND_DOMAIN =
+  process.env.BACKEND_DOMAIN || process.env.NEXT_BACKEND_DOMAIN
 const feDomain = new URL(FRONTEND_BASE_URL).hostname
 const beDomain = new URL(API_BASE_URL).hostname
 

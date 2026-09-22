@@ -1,13 +1,8 @@
 'use client'
 
-import axios from 'axios'
-
 import ThemeProvider from 'src/theme'
 import { Fonts } from '@ssupat/components/src/theme/fonts'
 import { AppProvider } from 'src/components/context/AppContext'
-import { BASE_URL } from 'src/constants'
-
-axios.defaults.baseURL = BASE_URL
 
 type Props = {
   children: React.ReactNode
@@ -20,8 +15,10 @@ type Props = {
  * v prohlížeči, ale obsah pod nimi zůstává serverový — proto je tahle
  * obálka co nejtenčí a nesahá na data stránek.
  *
- * Autorizační hlavička se tu záměrně nenastavuje: API_TOKEN je serverový
- * secret a v klientském bundlu by byl veřejně čitelný.
+ * Konfigurace axiosu se tu záměrně nenastavuje: adresa CMS se čte
+ * z proměnných prostředí, které klientský bundl nevidí. Serverové dotazy
+ * mají vlastního klienta (src/queries/client.ts) a ojedinělá volání
+ * z prohlížeče chodí na relativní /cms, které nginx přesměruje na Strapi.
  */
 export function Providers({ children, lang, langs }: Props) {
   return (
