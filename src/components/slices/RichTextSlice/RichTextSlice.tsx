@@ -55,21 +55,47 @@ function useLink({ href }) {
       return
     }
 
-    if (href.startsWith('http') || href.startsWith('/')) {
-      setLink(href)
+    // Editor ukládá odkazy v několika podobách. Kromě očekávaného
+    // "typ:id" se v obsahu vyskytují i hotové cesty se zpětnými
+    // lomítky (\pages\slug) a absolutní odkazy na produkci.
+    const normalized = href.replace(/\\/g, '/')
+
+    // Odkaz na produkci by ze stagingu vedl na jiný web; ponecháme
+    // jen cestu, ať zůstane na aktuální doméně.
+    const sameSiteMatch = normalized.match(
+      /^https?:\/\/[^/]*uat\.sk(\/.*)$/i
+    )
+    if (sameSiteMatch) {
+      setLink(sameSiteMatch[1])
       return
     }
 
-    const [type, id] = href.split(':')
+    if (normalized.startsWith('http') || normalized.startsWith('/')) {
+      setLink(normalized)
+      return
+    }
+
+    const [type, id] = normalized.split(':')
+
+    // Bez id nejde o referenci na záznam, ale o cestu bez úvodního
+    // lomítka — dohledávání slugu by skončilo na /undefined.
+    if (!id) {
+      setLink(`/${normalized}`)
+      return
+    }
+
     setLink(`/${type}/${id}`)
 
     try {
       // Volá se z prohlížeče, kde adresa CMS není známá — proměnné
       // prostředí se do klientského bundlu nedostanou. Cesta /cms se
-      // proto nechává relativní a Next ji přepíše na Strapi
-      // (viz rewrites v next.config.js).
+      // proto nechává relativní a middleware ji přepíše na Strapi.
       const { data } = await axios(`/cms/api/${type}/${id}`)
-      setLink(`/${type}/${data.attributes.slug}`)
+      const slug = data?.data?.attributes?.slug ?? data?.attributes?.slug
+
+      if (slug) {
+        setLink(`/${type}/${slug}`)
+      }
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error)
