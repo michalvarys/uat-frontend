@@ -53,7 +53,9 @@ export const config = {
   // z public/. Ty se poznají podle přípony — vyjmenovávat složky ručně
   // je křehké: chyběly tam fonts/ i icons/ a prohlížeč pak na ně
   // dostával 404.
-  // /cms se nově zpracovává uvnitř middleware, takže z matcheru
-  // vyjmutý být nesmí. Statické soubory se poznají podle přípony.
-  matcher: ['/((?!_next|api).*)'],
+  // /cms se zpracovává uvnitř middleware, takže z matcheru vyjmutý
+  // být nesmí — na rozdíl od interních cest Nextu, API a souborů
+  // z public/. Ty se poznají podle přípony; bez toho pravidla by se
+  // /fonts/x.woff2 přepsalo na /sk/fonts/x.woff2 a vracelo 404.
+  matcher: ['/((?!_next|api|.*\\.[a-zA-Z0-9]+$).*)'],
 }
