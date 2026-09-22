@@ -77,10 +77,41 @@ function useLink({ href }) {
 
     const [type, id] = normalized.split(':')
 
-    // Bez id nejde o referenci na záznam, ale o cestu bez úvodního
-    // lomítka — dohledávání slugu by skončilo na /undefined.
+    // Bez id nejde o referenci na záznam, ale o holý slug nebo cestu
+    // bez úvodního lomítka — dohledávání by skončilo na /undefined.
     if (!id) {
-      setLink(`/${normalized}`)
+      // Cesta s lomítkem už typ obsahuje, stačí doplnit úvodní znak.
+      if (normalized.includes('/')) {
+        setLink(`/${normalized}`)
+        return
+      }
+
+      // Samotný slug bez prefixu: typ se musí dohledat, jinak by odkaz
+      // vedl na /slug místo /pages/slug a skončil na 404.
+      setLink(`/pages/${normalized}`)
+
+      try {
+        const found = await Promise.all(
+          ['pages', 'news'].map(async (resource) => {
+            const { data } = await axios(
+              `/cms/api/${resource}?filters[slug]=${encodeURIComponent(
+                normalized
+              )}&fields[0]=slug`
+            )
+            const items = Array.isArray(data) ? data : data?.data || []
+            return items.length ? resource : null
+          })
+        )
+
+        const resource = found.find(Boolean)
+        if (resource) {
+          setLink(`/${resource}/${normalized}`)
+        }
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error(error)
+      }
+
       return
     }
 
