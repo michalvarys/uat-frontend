@@ -66,6 +66,11 @@ module.exports = {
 
   images: {
     remotePatterns,
+    // Obrázky z CMS se na klientovi adresují relativně přes /cms, aby
+    // nezávisely na proměnných prostředí (ty v prohlížeči nejsou).
+    // next/image takovou cestu bere jako lokální a od Next 16 ji musí
+    // povolit localPatterns.
+    localPatterns: [{ pathname: '/cms/**' }, { pathname: '/**' }],
     // Next 16 blokuje optimalizaci obrázků z lokálních IP kvůli SSRF.
     // Při vývoji ale CMS běží na localhost:1337, takže by se nenačetl
     // jediný obrázek. V produkci je backend na veřejné doméně a ochrana
