@@ -59,7 +59,13 @@ const TeacherItem = ({ isFixed = false, item, onSelect }: Props) => {
             item.surname
           }`}
         </span>
-        <span className={styles.post}>{item.post}</span>
+        {/* Funkce se v CMS plní do extra_role; pole post zůstalo
+            z dřívějška prázdné u všech pedagogů. Detail v modálním okně
+            ukazuje extra_role, karta v seznamu tedy taky — jinak by se
+            funkce dala zjistit jen po rozkliknutí. */}
+        {(item.extra_role || item.post)?.trim() && (
+          <span className={styles.post}>{item.extra_role || item.post}</span>
+        )}
         <div className={styles.arrow}>
           <Image src={SlantArrowIcon} alt="" />
         </div>
