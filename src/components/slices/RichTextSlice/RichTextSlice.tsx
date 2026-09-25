@@ -1,6 +1,14 @@
 'use client'
 
-import { useEffect, useState, useCallback, useMemo, cloneElement } from 'react'
+import {
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+  cloneElement,
+  Children,
+  isValidElement,
+} from 'react'
 import {
   Heading,
   Text,
@@ -467,6 +475,22 @@ export function renderContent(data: any) {
 }
 
 /**
+ * Doplní chybějící `key` prvkům z renderJSON.
+ *
+ * renderJSON v @ssupat/components mapuje uzly bez klíčů, takže React
+ * hlásí "Each child in a list should have a unique key". V knihovně to
+ * opravit nejde — je to publikovaná závislost. Klíč se proto doplní
+ * u každého volání tady.
+ */
+function keyed(nodes: React.ReactNode): React.ReactNode {
+  return Children.map(nodes, (child, index) =>
+    isValidElement(child) && child.key === null
+      ? cloneElement(child, { key: `n-${index}` })
+      : child
+  )
+}
+
+/**
  * renderJSON vrací u odstavce jen jeho vnitřek (`case 'paragraph'` nevrací
  * žádný element), takže by se všechny odstavce slily do jednoho bloku textu.
  * Odstavce nejvyšší úrovně proto obalíme sami; ostatní uzly (tabulky,
@@ -490,12 +514,12 @@ export function renderDocument(nodes: any[]) {
 
       return (
         <Text key={key} as="p" textAlign={node.attrs?.textAlign}>
-          {renderJSON(node.content)}
+          {keyed(renderJSON(node.content))}
         </Text>
       )
     }
 
-    return <Box key={key}>{renderJSON([node])}</Box>
+    return <Box key={key}>{keyed(renderJSON([node]))}</Box>
   })
 }
 

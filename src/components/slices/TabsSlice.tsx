@@ -18,7 +18,7 @@ import { useApp } from 'src/components/context/AppContext'
 import { getString } from 'src/locales'
 import { getAttributes } from '@/utils/data'
 import { useCallback } from 'react'
-import { renderContent } from './RichTextSlice/RichTextSlice'
+import { CmsContent } from 'src/components/CmsContent'
 
 export function TabsSclice(section) {
   const { currentLanguage } = useApp()
@@ -127,7 +127,7 @@ export function TabsSclice(section) {
                       },
                     }}
                   >
-                    {content ? renderContent(content) : <p>-</p>}
+                    {content ? <CmsContent data={content} /> : <p>-</p>}
                   </Box>
 
                   {renderLinks(links)}
