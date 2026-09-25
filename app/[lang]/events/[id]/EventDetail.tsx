@@ -1,6 +1,5 @@
 'use client'
 
-import parse from 'html-react-parser'
 
 import Container, { ContainerVariant } from 'src/components/common/Container'
 import { GalleryEventType } from 'src/components/galleries/types/GalleryEventType'
@@ -8,6 +7,7 @@ import GallerySlice from 'src/components/slices/GallerySlice'
 import { DbImage } from 'src/components/DbImage'
 
 import styles from '../events.module.scss'
+import { CmsContent } from 'src/components/CmsContent'
 
 type Props = {
   event: GalleryEventType
@@ -33,7 +33,9 @@ export default function EventDetail({ event }: Props) {
           <h1 className={styles.header}>{event.title}</h1>
         </div>
         {description && (
-          <div className={styles.description_content}>{parse(description)}</div>
+          <div className={styles.description_content}>
+            <CmsContent data={description} />
+          </div>
         )}
       </div>
       <div className={styles.bottom_container}>

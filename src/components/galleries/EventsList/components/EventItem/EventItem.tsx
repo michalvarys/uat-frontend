@@ -1,9 +1,9 @@
 'use client'
 
-import parse from 'html-react-parser'
 import Image from 'next/image'
 
 import styles from './EventItem.module.scss'
+import { CmsContent } from 'src/components/CmsContent'
 
 import ArrowRightIcon from 'public/icons/common/arrow_right.svg'
 import { GalleryEventType } from '../../../types/GalleryEventType'
@@ -34,7 +34,9 @@ const EUProjectItem = ({ event, onSelect }: Props) => {
           {formatDate(event.date)}
         </span>
         <span className={styles.title}>{event.title}</span>
-        <span className={styles.sneak_peak}>{parse(event.description)}</span>
+        <span className={styles.sneak_peak}>
+          <CmsContent data={event.description} />
+        </span>
         <Image src={ArrowRightIcon} alt={'arrow'} />
       </div>
     </div>
