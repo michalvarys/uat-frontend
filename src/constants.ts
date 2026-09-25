@@ -29,7 +29,21 @@ export const BASE_URL =
  * nezávisí na prostředí ani na tom, co se zapeklo do buildu. Cestu /cms
  * přepošle middleware na Strapi ve vnitřní síti Dockeru.
  */
-export const PUBLIC_API_URL = process.env.PUBLIC_API_URL || '/cms'
+export const PUBLIC_API_URL = (() => {
+  const configured = process.env.PUBLIC_API_URL?.trim()
+
+  // Absolutní adresu záměrně ignorujeme. Seznam povolených domén pro
+  // optimalizátor obrázků (images.remotePatterns) se zapéká do buildu
+  // v CI, kde doména prostředí není známá — /_next/image by na ni
+  // odpověděl 400 "url parameter is not allowed" a nenačetl by se
+  // jediný obrázek z CMS. Relativní /cms je lokální cesta, kterou
+  // middleware přepošle na Strapi, takže povolení nepotřebuje.
+  if (!configured || /^https?:\/\//i.test(configured)) {
+    return '/cms'
+  }
+
+  return configured
+})()
 
 /**
  * Token pro Strapi. Bez prefixu NEXT_PUBLIC_ schválně — do klientského
