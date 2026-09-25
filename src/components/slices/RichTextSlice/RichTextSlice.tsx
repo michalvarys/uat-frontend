@@ -472,7 +472,7 @@ export function renderContent(data: any) {
  * Odstavce nejvyšší úrovně proto obalíme sami; ostatní uzly (tabulky,
  * galerie, akordeony, nadpisy) necháme na renderJSON.
  */
-function renderDocument(nodes: any[]) {
+export function renderDocument(nodes: any[]) {
   return nodes.map((node, index) => {
     const key = `${node?.type ?? 'node'}-${index}`
 

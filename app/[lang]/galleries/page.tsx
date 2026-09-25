@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 
 import { getString, Strings } from 'src/locales'
 import Container, { ContainerVariant } from 'src/components/common/Container'
+import { CmsContent } from 'src/components/CmsContent'
 import UATGalleriesSlice from 'src/components/slices/UATGalleriesSlice'
 import TextWithImageSlice from 'src/components/slices/TextWithImageSlice'
 import EventsSlice from 'src/components/slices/EventsSlice'
@@ -67,7 +68,7 @@ export default async function GalleriesPage({ params }: Props) {
           {/* Dřív <div> — nadpis stránky patří do h1, ať ho vyhledávače
               rozpoznají jako hlavní téma. */}
           <h1 className={styles.title}>{data.title}</h1>
-          <div className={styles.description}>{data.description}</div>
+          <CmsContent className={styles.description} data={data.description} />
         </div>
       </Container>
 

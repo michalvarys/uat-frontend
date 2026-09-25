@@ -1,6 +1,7 @@
 import ApplicationsAtUniversityType, {
   ApplicationsSectionType,
 } from '../types/ApplicationsAtUniversityType'
+import { CmsContent } from 'src/components/CmsContent'
 
 import styles from './ApplicationsAtUniversity.module.scss'
 
@@ -22,7 +23,7 @@ const ApplicationsAtUniversity = ({ data }: Props) => {
             <div>
               {section.list.map((item) => (
                 <div key={item.id} className={styles.item}>
-                  {item.text}
+                  <CmsContent data={item.text} />
                 </div>
               ))}
             </div>

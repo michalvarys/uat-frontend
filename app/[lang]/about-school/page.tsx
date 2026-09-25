@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 
 import Container, { ContainerVariant } from 'src/components/common/Container'
+import { CmsContent } from 'src/components/CmsContent'
 import YoutubePlayerSlice from 'src/components/slices/YoutubePlayerSlice'
 import EmploymentStatistics from 'src/components/aboutSchool/EmploymentStatistics'
 import ApplicationsAtUniversity from 'src/components/aboutSchool/ApplicationsAtUniversity'
@@ -94,9 +95,10 @@ export default async function AboutSchoolPage({ params }: Props) {
             <div className={styles.video_container}>
               <YoutubePlayerSlice data={data.video} />
             </div>
-            <div className={styles.description_container}>
-              {data.description}
-            </div>
+            <CmsContent
+              className={styles.description_container}
+              data={data.description}
+            />
           </div>
           {data.buttons &&
             data.buttons.length > 0 &&

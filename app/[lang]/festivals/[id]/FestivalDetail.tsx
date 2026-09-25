@@ -11,6 +11,7 @@ import ButtonLink, {
   ButtonLinkVariant,
 } from 'src/components/navigation/ButtonLink'
 import { DbImage } from 'src/components/DbImage'
+import { CmsContent } from 'src/components/CmsContent'
 import { formatDate } from 'src/utils/date'
 
 import styles from '../festivals.module.scss'
@@ -58,7 +59,10 @@ export default function FestivalDetail({ festival }: Props) {
               <div className={styles.slogan}>{festival.slogan}</div>
             </div>
 
-            <div className={styles.description}>{festival.description}</div>
+            <CmsContent
+              className={styles.description}
+              data={festival.description}
+            />
             {festival.buttons &&
               festival.buttons.length > 0 &&
               renderButtons(festival.buttons)}
