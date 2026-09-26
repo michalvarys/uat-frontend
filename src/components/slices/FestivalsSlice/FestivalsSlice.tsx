@@ -1,4 +1,6 @@
-import { useRouter } from 'next/router'
+'use client'
+
+import { useAppRouter as useRouter } from 'src/hooks/useAppRouter'
 import { Flex, Box } from '@chakra-ui/react'
 
 import FestivalType, {

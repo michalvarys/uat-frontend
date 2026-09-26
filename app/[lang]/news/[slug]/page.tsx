@@ -1,0 +1,132 @@
+import type { Metadata } from 'next'
+import { findOrNull } from 'src/queries/errors'
+import { notFound, permanentRedirect } from 'next/navigation'
+
+import { getNewsDetail, getNewsByLocales } from '@/queries/news'
+import NewsType from 'src/components/news/types/NewsType'
+import { resolveSeo } from 'src/utils/seo'
+import { decodeSlug } from 'src/utils/slug'
+import { LOCALES, localePath } from 'src/i18n/config'
+import { findNewSlug } from 'src/queries/slugHistory'
+
+import { JsonLd, articleJsonLd, breadcrumbJsonLd } from 'src/components/JsonLd'
+import { getString, Strings } from 'src/locales'
+import { pageUrl } from 'src/utils/seo'
+
+import NewsDetail from './NewsDetail'
+
+export const revalidate = 300
+export const dynamicParams = true
+
+type Props = {
+  params: Promise<{ lang: string; slug: string }>
+}
+
+export async function generateStaticParams() {
+  try {
+    const news = await getNewsByLocales(LOCALES as unknown as string[])
+
+    // Novinka bez slugu je rozepsaný záznam v CMS; předgenerovat ji nelze.
+    return news
+      .filter(
+        (item: NewsType) => typeof item.slug === 'string' && item.slug !== ''
+      )
+      .flatMap((item: NewsType) =>
+        LOCALES.map((lang) => ({ lang, slug: item.slug }))
+      )
+  } catch {
+    return []
+  }
+}
+
+async function getData(slug: string, lang: string) {
+  // findOrNull vrátí null jen když CMS odpoví 404, tedy když záznam
+  // opravdu neexistuje. Výpadek CMS projde dál jako výjimka — jinak by
+  // se dočasný problém tvářil jako trvale neexistující stránka a Next
+  // by takovou odpověď uložil do cache.
+  return findOrNull(() => getNewsDetail(decodeSlug(slug), lang))
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { lang, slug } = await params
+  const news = await getData(slug, lang)
+
+  if (!news) {
+    return {}
+  }
+
+  const seo = resolveSeo({
+    seo: (news as any).seo,
+    title: news.title,
+    sections: news.sections,
+    path: `/news/${slug}`,
+    locale: lang,
+  })
+
+  return {
+    title: seo.title,
+    description: seo.description,
+    alternates: { canonical: seo.canonical },
+    robots: seo.noindex ? { index: false, follow: true } : undefined,
+    openGraph: {
+      title: seo.title,
+      description: seo.description,
+      url: seo.canonical,
+      type: 'article',
+      publishedTime: news.date,
+      images: seo.image ? [seo.image] : undefined,
+    },
+  }
+}
+
+export default async function NewsDetailPage({ params }: Props) {
+  const { lang, slug } = await params
+  const news = await getData(slug, lang)
+
+  // Novinka nepřeložená do daného jazyka nesmí vrátit prázdnou stránku
+  // se stavem 200 — vyhledávače by ji zaindexovaly jako plnohodnotnou.
+  if (!news) {
+    // Stránka pod touto adresou neexistuje — než vrátíme 404, ověříme,
+    // jestli nejde o starý slug přejmenovaného záznamu.
+    const newSlug = await findNewSlug(slug, 'news', lang)
+    if (newSlug && newSlug !== slug) {
+      permanentRedirect(localePath(`/news/${newSlug}`, lang))
+    }
+
+    notFound()
+  }
+
+  const seo = resolveSeo({
+    seo: (news as any).seo,
+    title: news.title,
+    sections: news.sections,
+    path: `/news/${slug}`,
+    locale: lang,
+  })
+
+  return (
+    <>
+      <JsonLd
+        data={articleJsonLd({
+          title: seo.title,
+          description: seo.description,
+          image: seo.image,
+          url: seo.canonical,
+          published: news.date,
+          modified: (news as any).updatedAt,
+        })}
+      />
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: 'SŠUPAT', url: pageUrl('/', lang) },
+          {
+            name: getString(lang, Strings.NEWS) || 'News',
+            url: pageUrl('/news', lang),
+          },
+          { name: seo.title, url: seo.canonical },
+        ])}
+      />
+      <NewsDetail news={news} />
+    </>
+  )
+}

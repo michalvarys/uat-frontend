@@ -1,4 +1,6 @@
-import { useRouter } from 'next/router'
+'use client'
+
+import { useAppRouter as useRouter } from 'src/hooks/useAppRouter'
 import styles from './FestivalPrizes.module.scss'
 
 import FestivalPrizesType from '../types/FestivalPrizesType'

@@ -10,7 +10,6 @@ type Props = {
 }
 
 const BigButton = ({ image, path, title }: Props) => (
-  // eslint-disable-next-line @next/next/link-passhref
   <Link href={path} as={path}>
     <div className={styles.container}>
       <Image src={image} alt="" />

@@ -1,14 +1,17 @@
 import qs from 'qs'
-import axios from 'axios'
+import { api } from './client'
 import AboutSchoolType from '@/components/aboutSchool/types/AboutSchoolType'
 
 export async function getAboutSchoolDetail(
   locale: string
 ): Promise<AboutSchoolType> {
-  const { data } = await axios(
+  const { data } = await api(
     `/api/about-school?${qs.stringify({
       locale,
       populate: {
+        seo: {
+          populate: '*',
+        },
         applications_at_university: {
           populate: {
             sections: {

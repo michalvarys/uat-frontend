@@ -1,3 +1,5 @@
+'use client'
+
 import parse from 'html-react-parser'
 import {
   chakra,
@@ -16,7 +18,7 @@ import { useApp } from 'src/components/context/AppContext'
 import { getString } from 'src/locales'
 import { getAttributes } from '@/utils/data'
 import { useCallback } from 'react'
-import { renderContent } from './RichTextSlice/RichTextSlice'
+import { CmsContent } from 'src/components/CmsContent'
 
 export function TabsSclice(section) {
   const { currentLanguage } = useApp()
@@ -40,14 +42,12 @@ export function TabsSclice(section) {
                 key={link.id}
                 imageType={ButtonLinkImageType.Arrow}
                 title={getString(currentLanguage, 'READ_MORE')}
+                // App Router nezná zápis { pathname, query } se zástupným
+                // segmentem — ten se vykreslí doslova jako /news/[slug].
+                // Slug proto patří rovnou do cesty.
                 link={{
                   locale: link.locale,
-                  href: {
-                    pathname: `/news/[slug]`,
-                    query: {
-                      slug: link.slug,
-                    },
-                  },
+                  href: `/news/${encodeURIComponent(link.slug)}`,
                 }}
               />
             )
@@ -127,7 +127,7 @@ export function TabsSclice(section) {
                       },
                     }}
                   >
-                    {content ? renderContent(content) : <p>-</p>}
+                    {content ? <CmsContent data={content} /> : <p>-</p>}
                   </Box>
 
                   {renderLinks(links)}

@@ -1,3 +1,5 @@
+'use client'
+
 import { chakra, Flex } from '@chakra-ui/react'
 import { ContainerVariant } from './ContainerVariant'
 

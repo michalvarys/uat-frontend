@@ -10,23 +10,21 @@ type Props = {
 }
 
 const BorderedButton = ({ title, url, isDark = false }: Props) => (
-  // eslint-disable-next-line @next/next/link-passhref
-  <Link href={url}>
-    <a
+  <Link
+    href={url}
+    className={classNames({
+      [styles.container]: true,
+      [styles.container_dark]: isDark,
+    })}
+  >
+    <span
       className={classNames({
-        [styles.container]: true,
-        [styles.container_dark]: isDark,
+        [styles.title]: true,
+        [styles.title_dark]: isDark,
       })}
     >
-      <span
-        className={classNames({
-          [styles.title]: true,
-          [styles.title_dark]: isDark,
-        })}
-      >
-        {title}
-      </span>
-    </a>
+      {title}
+    </span>
   </Link>
 )
 

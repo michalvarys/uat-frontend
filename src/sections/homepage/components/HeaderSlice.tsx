@@ -1,3 +1,5 @@
+'use client'
+
 import Image from 'next/image'
 import { chakra, Flex, VStack } from '@chakra-ui/react'
 

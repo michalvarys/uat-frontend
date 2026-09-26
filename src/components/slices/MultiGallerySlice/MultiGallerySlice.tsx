@@ -1,3 +1,5 @@
+'use client'
+
 import { useState } from 'react'
 import GallerySlice from '../GallerySlice'
 import { GalleryType } from '../types/GalleryType'

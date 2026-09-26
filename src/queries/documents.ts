@@ -1,8 +1,8 @@
 import qs from 'qs'
-import axios from 'axios'
+import { api } from './client'
 
 export async function getDocumentList() {
-  const { data } = await axios(
+  const { data } = await api(
     `/api/upload/files?${qs.stringify({
       sort: 'createdAt:DESC',
       filters: {

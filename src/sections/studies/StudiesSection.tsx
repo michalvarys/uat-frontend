@@ -1,3 +1,5 @@
+'use client'
+
 import { chakra } from '@chakra-ui/react'
 import Container, { ContainerVariant } from 'src/components/common/Container'
 import { FieldOfStudyHeader } from './components/FieldOfStudyHeader'

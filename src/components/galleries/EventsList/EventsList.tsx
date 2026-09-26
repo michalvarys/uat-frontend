@@ -1,3 +1,5 @@
+'use client'
+
 import { GalleryEventType } from '../types/GalleryEventType'
 import EventItem from './components/EventItem'
 

@@ -1,28 +1,26 @@
+'use client'
+
 import moment from 'moment'
-import { useRouter } from 'next/router'
+import { useAppRouter as useRouter } from 'src/hooks/useAppRouter'
+import { localePath } from 'src/i18n/config'
 import React, { createContext, useContext, useState } from 'react'
 
 type AppProviderType = {
   children?: JSX.Element
-  langs: string[]
+  // Next 15 vrací router.locales jako readonly.
+  langs: readonly string[]
   lang: string
 }
 
-type LocalesDictionary = { [name: string]: string }
-
 type AppContextType = {
-  languages: string[]
+  languages: readonly string[]
   setCurrentLanguage(locale: string): void
-  setLocalePaths: React.Dispatch<React.SetStateAction<LocalesDictionary | null>>
   currentLanguage: string
 }
 
 const AppContext = createContext<AppContextType>({
   languages: [],
   setCurrentLanguage() {
-    //empty
-  },
-  setLocalePaths() {
     //empty
   },
   currentLanguage: '',
@@ -33,26 +31,21 @@ AppContext.displayName = 'AppContext'
 const AppProvider = ({ children, langs, lang }: AppProviderType) => {
   const router = useRouter()
   const [currentLanguage, setCurrentLanguage] = useState<string>(lang)
-  const [localePaths, setLocalePaths] = useState<LocalesDictionary | null>(null)
   const languages = langs
 
   const updateLanguage = (newLanguage: string) => {
     setCurrentLanguage(newLanguage)
     moment.locale(newLanguage)
-    if (localePaths && localePaths[newLanguage]) {
-      router.push(localePaths[newLanguage], localePaths[newLanguage], {
-        locale: newLanguage,
-      })
-    } else {
-      router.push(router.asPath, router.asPath, { locale: newLanguage })
-    }
+
+    // V App Routeru je jazyk součástí cesty. Záznamy mají v obou
+    // jazycích stejný slug, takže stačí prohodit jazykový prefix.
+    router.push(localePath(router.asPath, newLanguage))
   }
 
   const values: AppContextType = {
     languages,
     currentLanguage,
     setCurrentLanguage: updateLanguage,
-    setLocalePaths,
   }
 
   return <AppContext.Provider value={values}>{children}</AppContext.Provider>

@@ -21,26 +21,26 @@ const ImageLink = ({
   imageWidth,
   imageHeight,
 }: Props) => (
-  // eslint-disable-next-line @next/next/link-passhref
-  <Link href={url}>
-    <a className={styles.container}>
-      <div className={styles.image}>
-        <Image
-          src={image}
-          alt=""
-          width={imageWidth}
-          height={imageHeight}
-          layout={'responsive'}
-          objectFit={'fill'}
-          objectPosition={'center center'}
-        />
-      </div>
+  <Link href={url} className={styles.container}>
+    <div className={styles.image}>
+      <Image
+        src={image}
+        alt=""
+        width={imageWidth}
+        height={imageHeight}
+        style={{
+          width: '100%',
+          height: 'auto',
+          objectFit: 'fill',
+          objectPosition: 'center center',
+        }}
+      />
+    </div>
 
-      <div className={styles.text_container}>
-        <span className={styles.title}>{title}</span>
-        <span className={styles.subtitle}>{subtitle}</span>
-      </div>
-    </a>
+    <div className={styles.text_container}>
+      <span className={styles.title}>{title}</span>
+      <span className={styles.subtitle}>{subtitle}</span>
+    </div>
   </Link>
 )
 

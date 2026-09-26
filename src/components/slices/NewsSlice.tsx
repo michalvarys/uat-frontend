@@ -1,5 +1,7 @@
+'use client'
+
 import { Box, Heading, useBreakpointValue } from '@chakra-ui/react'
-import { useRouter } from 'next/router'
+import { useAppRouter as useRouter } from 'src/hooks/useAppRouter'
 
 import NewsType from '../news/types/NewsType'
 import { getString, Strings } from '../../locales'
