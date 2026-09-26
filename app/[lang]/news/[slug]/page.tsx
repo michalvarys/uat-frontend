@@ -15,7 +15,7 @@ import { pageUrl } from 'src/utils/seo'
 
 import NewsDetail from './NewsDetail'
 
-export const revalidate = 10
+export const revalidate = 300
 export const dynamicParams = true
 
 type Props = {

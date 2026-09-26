@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { skipDuringBuild } from 'src/queries/buildTime'
 
 import { getDocumentList } from '@/queries/documents'
 import { getString, Strings } from 'src/locales'
@@ -8,7 +9,7 @@ import DocumentsView from './DocumentsView'
 
 // Next vyhodnocuje segment config staticky, takže tu musí být literál,
 // ne import z konstant (REVALIDATE_TIME = 10).
-export const revalidate = 10
+export const revalidate = 300
 
 type Props = {
   params: Promise<{ lang: string }>
@@ -40,7 +41,10 @@ export default async function DocumentsPage({ params }: Props) {
 
   // Dřív běželo přes getServerSideProps, přestože se nic nefiltruje podle
   // requestu — stránka se tak generovala znovu při každém načtení.
-  const documents = await getDocumentList()
+  const documents = await skipDuringBuild(
+    () => getDocumentList(),
+    []
+  )
 
   return <DocumentsView documents={documents} lang={lang} />
 }

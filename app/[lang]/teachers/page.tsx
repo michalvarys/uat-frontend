@@ -1,4 +1,5 @@
 import { Suspense } from 'react'
+import { skipDuringBuild } from 'src/queries/buildTime'
 import type { Metadata } from 'next'
 
 import { getTeachersData } from 'src/queries/teachers'
@@ -7,7 +8,7 @@ import { resolveSeo } from 'src/utils/seo'
 
 import TeachersView from './TeachersView'
 
-export const revalidate = 10
+export const revalidate = 300
 
 type Props = {
   params: Promise<{ lang: string }>
@@ -36,7 +37,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function TeachersPage({ params }: Props) {
   const { lang } = await params
-  const teachers = await getTeachersData(lang)
+  const teachers = await skipDuringBuild(
+    () => getTeachersData(lang),
+    []
+  )
 
   // TeachersView čte ?id= přes useSearchParams; při statickém generování
   // to Next vyžaduje uvnitř Suspense.

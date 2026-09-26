@@ -67,4 +67,16 @@ export const EDUPAGE_URL = 'https://ssuat.edupage.org/login/'
 export const EDUPAGE_TITLE = 'EDUPAGE'
 export const SCHOOL_SHORT_TITLE = 'SŠUPAT'
 
-export const REVALIDATE_TIME = 10
+/**
+ * Jak dlouho platí vygenerovaná stránka, než se na pozadí obnoví.
+ *
+ * Delší okno je pojistka proti výpadku CMS: dokud stránka v cache
+ * platí, Next ji vydá i když se obnovení nepovede, a o nová data se
+ * pokusí až při dalším požadavku. S krátkým oknem (dřív 10 s) se
+ * mezitím musí vykreslit znovu — a při nedostupném CMS z toho místo
+ * obsahu vypadne chyba.
+ *
+ * Obsah se v CMS mění řádově jednou za den, takže pět minut zpoždění
+ * nikomu nevadí. Okamžitou aktualizaci umí revalidatePath.
+ */
+export const REVALIDATE_TIME = 300

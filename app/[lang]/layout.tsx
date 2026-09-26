@@ -8,7 +8,7 @@ import { Providers } from 'src/components/Providers'
 import Layout from 'src/components/common/Layout'
 import { JsonLd, organizationJsonLd } from 'src/components/JsonLd'
 
-export const revalidate = 10
+export const revalidate = 300
 
 // Předgenerují se obě jazykové varianty.
 export function generateStaticParams() {

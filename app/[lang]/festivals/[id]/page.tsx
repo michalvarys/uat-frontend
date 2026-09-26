@@ -8,7 +8,7 @@ import { LOCALES } from 'src/i18n/config'
 
 import FestivalDetail from './FestivalDetail'
 
-export const revalidate = 10
+export const revalidate = 300
 export const dynamicParams = true
 
 type Props = {

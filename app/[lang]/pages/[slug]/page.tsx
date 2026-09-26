@@ -9,7 +9,7 @@ import { decodeSlug } from 'src/utils/slug'
 import { LOCALES, localePath } from 'src/i18n/config'
 import { findNewSlug } from 'src/queries/slugHistory'
 
-export const revalidate = 10
+export const revalidate = 300
 
 // Slug, který není v seznamu, se dogeneruje při prvním požadavku —
 // odpovídá to původnímu fallback: 'blocking'.

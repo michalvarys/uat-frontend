@@ -1,4 +1,5 @@
 import { Suspense } from 'react'
+import { skipDuringBuild } from 'src/queries/buildTime'
 import type { Metadata } from 'next'
 
 import { getNewsByYear } from '@/queries/news'
@@ -41,7 +42,10 @@ export default async function NewsPage({ params, searchParams }: Props) {
   // Chybu záměrně nepolykáme: prázdný seznam novinek vypadá jako
   // „žádné novinky nejsou", ačkoli jde o výpadek CMS. Výjimka spustí
   // error.tsx a při dalším požadavku se data načtou znovu.
-  const data = await getNewsByYear(query, lang)
+  const data = await skipDuringBuild(
+    () => getNewsByYear(query, lang),
+    { news: [], years: [], year: '' }
+  )
 
   // NewsListView čte ?year= přes useSearchParams — viz Suspense výš.
   return (

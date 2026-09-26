@@ -2,8 +2,6 @@ import { NextResponse, type NextRequest } from 'next/server'
 
 import { LOCALES, DEFAULT_LOCALE } from 'src/i18n/config'
 
-const PREFIXED = LOCALES.filter((locale) => locale !== DEFAULT_LOCALE)
-
 /**
  * Mapuje veřejné adresy na interní segment [lang].
  *
@@ -35,7 +33,10 @@ export function proxy(request: NextRequest) {
     return NextResponse.rewrite(url)
   }
 
-  const hasPrefix = PREFIXED.some(
+  // Segment jazyka už v cestě je — přepisovat není co. Kontrolují se
+  // všechny jazyky včetně výchozího: /sk je sice interní tvar, ale dá
+  // se na něj přijít odkazem a dvojitý přepis na /sk/sk by skončil 404.
+  const hasPrefix = LOCALES.some(
     (locale) => pathname === `/${locale}` || pathname.startsWith(`/${locale}/`)
   )
 

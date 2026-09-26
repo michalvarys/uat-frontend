@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { isBuildPhase, skipDuringBuild } from 'src/queries/buildTime'
 import { notFound } from 'next/navigation'
 
 import Container, { ContainerVariant } from 'src/components/common/Container'
@@ -16,7 +17,7 @@ import { resolveSeo } from 'src/utils/seo'
 
 import styles from './about-school.module.scss'
 
-export const revalidate = 10
+export const revalidate = 300
 
 type Props = {
   params: Promise<{ lang: string }>
@@ -31,7 +32,10 @@ type Props = {
  * a Next se o obsah pokusí znovu při dalším požadavku.
  */
 async function getData(lang: string) {
-  return getAboutSchoolDetail(lang)
+  // Při buildu v CI žádné CMS neběží. Stránka se tehdy nepředgeneruje
+  // a vykreslí se až při prvním požadavku, kdy už CMS dostupné je.
+  // Za běhu se chyba naopak propustí dál — viz skipDuringBuild.
+  return skipDuringBuild(() => getAboutSchoolDetail(lang), null)
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -85,10 +89,18 @@ export default async function AboutSchoolPage({ params }: Props) {
   const { lang } = await params
   const data = await getData(lang)
 
-  // Dotaz už chybu nepolyká, takže sem se dojde jen když CMS obsah
-  // opravdu nemá. Prázdná stránka se stavem 200 by se zaindexovala
+  // Za běhu sem dojdeme jen když CMS obsah opravdu nemá — chyby už
+  // getData nepolyká. Prázdná stránka se stavem 200 by se zaindexovala
   // jako plnohodnotná, proto 404.
+  //
+  // Při buildu je null očekávaný stav (CMS v CI neběží). Stránka se
+  // tehdy předgeneruje prázdná a `revalidate` ji naplní při prvním
+  // požadavku; 404 by se do statického výstupu zapekla natrvalo.
   if (!data) {
+    if (isBuildPhase()) {
+      return null
+    }
+
     notFound()
   }
 
