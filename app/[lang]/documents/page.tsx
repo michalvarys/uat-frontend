@@ -40,7 +40,7 @@ export default async function DocumentsPage({ params }: Props) {
 
   // Dřív běželo přes getServerSideProps, přestože se nic nefiltruje podle
   // requestu — stránka se tak generovala znovu při každém načtení.
-  const documents = await getDocumentList().catch(() => [])
+  const documents = await getDocumentList()
 
   return <DocumentsView documents={documents} lang={lang} />
 }

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { findOrNull } from 'src/queries/errors'
 import { notFound } from 'next/navigation'
 
 import { StudiesSection } from 'src/sections/studies/StudiesSection'
@@ -25,11 +26,11 @@ export async function generateStaticParams() {
 }
 
 async function getData(id: string, lang: string) {
-  try {
-    return await getStudyData(id, lang)
-  } catch {
-    return null
-  }
+  // findOrNull vrátí null jen když CMS odpoví 404, tedy když záznam
+  // opravdu neexistuje. Výpadek CMS projde dál jako výjimka — jinak by
+  // se dočasný problém tvářil jako trvale neexistující stránka a Next
+  // by takovou odpověď uložil do cache.
+  return findOrNull(() => getStudyData(id, lang))
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

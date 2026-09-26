@@ -38,11 +38,10 @@ export default async function NewsPage({ params, searchParams }: Props) {
   const query = await searchParams
 
   // Přehled zůstává dynamický, protože ročník se vybírá přes ?year=.
-  const data = await getNewsByYear(query, lang).catch(() => ({
-    news: [],
-    years: [],
-    year: '',
-  }))
+  // Chybu záměrně nepolykáme: prázdný seznam novinek vypadá jako
+  // „žádné novinky nejsou", ačkoli jde o výpadek CMS. Výjimka spustí
+  // error.tsx a při dalším požadavku se data načtou znovu.
+  const data = await getNewsByYear(query, lang)
 
   // NewsListView čte ?year= přes useSearchParams — viz Suspense výš.
   return (

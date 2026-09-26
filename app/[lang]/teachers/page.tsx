@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function TeachersPage({ params }: Props) {
   const { lang } = await params
-  const teachers = await getTeachersData(lang).catch(() => [])
+  const teachers = await getTeachersData(lang)
 
   // TeachersView čte ?id= přes useSearchParams; při statickém generování
   // to Next vyžaduje uvnitř Suspense.

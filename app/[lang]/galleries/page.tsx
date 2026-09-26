@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 
 import { getString, Strings } from 'src/locales'
 import Container, { ContainerVariant } from 'src/components/common/Container'
@@ -18,12 +19,16 @@ type Props = {
   params: Promise<{ lang: string }>
 }
 
+/**
+ * Stránka galerií v CMS vždy existuje, takže selhání dotazu znamená výpadek,
+ * ne chybějící obsah. Chybu proto nepolykáme: kdyby se vrátilo null,
+ * vykreslila by se prázdná stránka se stavem 200 — a ta by se navíc
+ * na `revalidate` sekund uložila do cache, takže by prázdná zůstala
+ * i pro další návštěvníky. Výjimka místo toho spustí error.tsx
+ * a Next se o obsah pokusí znovu při dalším požadavku.
+ */
 async function getData(lang: string) {
-  try {
-    return await getGalleriesData(lang)
-  } catch {
-    return null
-  }
+  return getGalleriesData(lang)
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -55,8 +60,11 @@ export default async function GalleriesPage({ params }: Props) {
   const { lang } = await params
   const data = await getData(lang)
 
+  // Dotaz už chybu nepolyká, takže sem se dojde jen když CMS obsah
+  // opravdu nemá. Prázdná stránka se stavem 200 by se zaindexovala
+  // jako plnohodnotná, proto 404.
   if (!data) {
-    return null
+    notFound()
   }
 
   const firstEvent = data.galleryEvents?.length ? data.galleryEvents[0] : null
