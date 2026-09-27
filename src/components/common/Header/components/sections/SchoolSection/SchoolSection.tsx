@@ -1,5 +1,5 @@
-import parse from 'html-react-parser'
 import styles from './SchoolSection.module.scss'
+import { CmsContent } from 'src/components/CmsContent'
 
 import LinksSection from '../LinksSection'
 import { MenuSection } from '../../../Header'
@@ -27,7 +27,7 @@ const SchoolSection = ({ data }: Props) => {
         {data.contactSections?.map((item: RichTextType) => (
           <div className={styles.section} key={item.id}>
             {item.title && <span className={styles.title}>{item.title}</span>}
-            {parse(item.content)}
+            <CmsContent data={item.content} />
           </div>
         ))}
       </div>

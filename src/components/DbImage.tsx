@@ -36,9 +36,16 @@ export function DbImage({ data, format, props: getProps }: Props) {
   const props = typeof getProps === 'function' ? getProps(image) : getProps
   return (
     <Image
-      alt={img.alternativeText}
       src={transformLink(image.url)}
       {...(props || { width: image.width, height: image.height })}
+      // alt je až za {...props} schválně: volající může předat alt:
+      // undefined a to by ošetřenou hodnotu přepsalo zpět na nic.
+      // Prázdný řetězec značí dekorativní obrázek.
+      alt={
+        (props as { alt?: string } | undefined)?.alt ??
+        img.alternativeText ??
+        ''
+      }
     />
   )
 }

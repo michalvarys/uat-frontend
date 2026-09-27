@@ -1,9 +1,10 @@
 import Head from 'next/head'
-import moment from 'moment'
 
 import styles from './festivals.module.scss'
 
 import Container, { ContainerVariant } from 'src/components/common/Container'
+import { CmsContent } from 'src/components/CmsContent'
+import { formatDate } from 'src/utils/date'
 import FestivalType from 'src/components/festivals/types/FestivalType'
 import axios from 'axios'
 import { REVALIDATE_TIME } from 'src/constants'
@@ -57,7 +58,7 @@ export default function Festival({ festival }: FestivalsProps) {
     <div className={styles.badge}>
       <div className={styles.symbol}>{festival.symbol}</div>
       <div className={styles.date}>
-        <span>{moment(festival.date).format('DD MMM YYYY')}</span>
+        <span>{formatDate(festival.date)}</span>
       </div>
     </div>
   )
@@ -98,7 +99,10 @@ export default function Festival({ festival }: FestivalsProps) {
               <div className={styles.slogan}>{festival.slogan}</div>
             </div>
 
-            <div className={styles.description}>{festival.description}</div>
+            <CmsContent
+              className={styles.description}
+              data={festival.description}
+            />
             {festival.buttons &&
               festival.buttons.length > 0 &&
               renderButtons(festival.buttons)}

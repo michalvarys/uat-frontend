@@ -53,17 +53,85 @@ function useLink({ href }) {
       return
     }
 
-    if (href.startsWith('http') || href.startsWith('/')) {
-      setLink(href)
+    // Editor ukládá odkazy v několika podobách. Kromě očekávaného
+    // "typ:id" se v obsahu vyskytují i hotové cesty se zpětnými
+    // lomítky (\pages\slug) a absolutní odkazy na produkci.
+    const normalized = href.replace(/\\/g, '/')
+
+    // Odkaz na produkci by ze stagingu vedl na jiný web; ponecháme
+    // jen cestu, ať zůstane na aktuální doméně.
+    const sameSiteMatch = normalized.match(/^https?:\/\/[^/]*uat\.sk(\/.*)$/i)
+    if (sameSiteMatch) {
+      setLink(sameSiteMatch[1])
       return
     }
 
-    const [type, id] = href.split(':')
+    if (normalized.startsWith('http') || normalized.startsWith('/')) {
+      setLink(normalized)
+      return
+    }
+
+    // Odkazy s vlastním schématem (mailto:, tel:) nemíří na stránku webu.
+    // Bez této větve by se "mailto:adresa@domena" rozpadlo na typ a id
+    // a vznikla by cesta /mailto/adresa@domena místo otevření pošty.
+    if (/^(mailto|tel):/i.test(normalized)) {
+      setLink(normalized)
+      return
+    }
+
+    const [type, id] = normalized.split(':')
+
+    // Bez id nejde o referenci na záznam, ale o holý slug nebo cestu
+    // bez úvodního lomítka — dohledávání by skončilo na /undefined.
+    if (!id) {
+      // Cesta s lomítkem už typ obsahuje, stačí doplnit úvodní znak.
+      if (normalized.includes('/')) {
+        setLink(`/${normalized}`)
+        return
+      }
+
+      // Samotný slug bez prefixu: typ se musí dohledat, jinak by odkaz
+      // vedl na /slug místo /pages/slug a skončil na 404.
+      setLink(`/pages/${normalized}`)
+
+      try {
+        const found = await Promise.all(
+          ['pages', 'news'].map(async (resource) => {
+            const { data } = await axios(
+              `/cms/api/${resource}?filters[slug]=${encodeURIComponent(
+                normalized
+              )}&fields[0]=slug`
+            )
+            const items = Array.isArray(data) ? data : data?.data || []
+            return items.length ? resource : null
+          })
+        )
+
+        const resource = found.find(Boolean)
+        if (resource) {
+          setLink(`/${resource}/${normalized}`)
+        }
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error(error)
+      }
+
+      return
+    }
+
     setLink(`/${type}/${id}`)
 
     try {
-      const { data } = await axios(`/api/${type}/${id}`)
-      setLink(`/${type}/${data.attributes.slug}`)
+      // Volá se z prohlížeče, kde adresa CMS není známá — proměnné
+      // prostředí se do klientského bundlu nedostanou. Cesta /cms se
+      // proto nechává relativní a Next ji přepíše na Strapi
+      // (viz rewrites v next.config.js).
+      const { data } = await axios(`/cms/api/${type}/${id}`)
+      const slug = data?.data?.attributes?.slug ?? data?.attributes?.slug
+
+      if (slug) {
+        setLink(`/${type}/${slug}`)
+      }
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error)
@@ -129,7 +197,6 @@ function replace(node: DOMNode) {
   // @ts-ignore
   const props = attributesToProps(node.attribs)
   const type = props['data-type']
-  console.log({ type, props, node })
 
   switch (type) {
     case 'flexbox': {
@@ -188,8 +255,9 @@ function replace(node: DOMNode) {
     }
 
     case 'chakraImage':
-      // eslint-disable-next-line jsx-a11y/alt-text
-      return <Image {...props} />
+      // alt chodí z CMS, ale u starších obrázků chybí. Prázdný řetězec
+      // je pro čtečky korektní označení dekorativního obrázku.
+      return <Image alt="" {...props} />
     case 'tabs':
       // eslint-disable-next-line no-case-declarations
       let tabs = []
@@ -214,7 +282,6 @@ function replace(node: DOMNode) {
         }))
       }
 
-      console.log('tabs', props, tabs)
       return <TabsView tabs={tabs} />
 
     case 'box':
@@ -294,14 +361,36 @@ function replace(node: DOMNode) {
             {domToReact(node.children, { replace })}
           </Tbody>
         )
-      case 'table':
+      case 'table': {
+        // Editor ukládá <col> jako přímé potomky <table>. HTML je tam
+        // nepovoluje, prohlížeč je při parsování přesune a vznikne rozdíl
+        // proti serverovému renderu (hydratační chyba). Obalíme je sami.
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const children: any[] = (node as any).children ?? []
+        const cols = children
+          .filter((child) => child.name === 'col' || child.name === 'colgroup')
+          .flatMap((child) =>
+            child.name === 'colgroup' ? child.children : [child]
+          )
+        const rest = children.filter(
+          (child) => child.name !== 'col' && child.name !== 'colgroup'
+        )
+
         return (
           <Table className={styles.table} {...props}>
+            {cols.length > 0 && (
+              <colgroup>
+                {/** eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                 * @ts-ignore */}
+                {domToReact(cols, { replace })}
+              </colgroup>
+            )}
             {/** eslint-disable-next-line @typescript-eslint/ban-ts-comment
              * @ts-ignore */}
-            {domToReact(node.children, { replace })}
+            {domToReact(rest, { replace })}
           </Table>
         )
+      }
       case 'li':
         return (
           <UnorderedList>
@@ -360,6 +449,13 @@ function replace(node: DOMNode) {
 }
 
 export function renderContent(data: any) {
+  // Obsah ze Strapi nemusí být řetězec: tiptap ukládá dokument jako objekt
+  // a starší záznamy mohou mít pole prázdné. html-react-parser v takovém
+  // případě vyhodí "First argument must be a string" a shodí celý build.
+  if (typeof data !== 'string') {
+    return null
+  }
+
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   return parse(data, { replace })
@@ -371,7 +467,7 @@ export function renderContent(data: any) {
  * Odstavce nejvyšší úrovně proto obalíme sami; ostatní uzly (tabulky,
  * galerie, akordeony, nadpisy) necháme na renderJSON.
  */
-function renderDocument(nodes: any[]) {
+export function renderDocument(nodes: any[]) {
   return nodes.map((node, index) => {
     const key = `${node?.type ?? 'node'}-${index}`
 

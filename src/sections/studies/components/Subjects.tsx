@@ -1,7 +1,7 @@
 import Image from 'next/image'
-import parse from 'html-react-parser'
 
 import styles from './Subjects.module.scss'
+import { CmsContent } from 'src/components/CmsContent'
 
 import { transformLink } from 'src/utils/link'
 import { SubjectsType } from 'src/types/fieldsOfStudy'
@@ -24,7 +24,9 @@ export const Subjects = ({ subjects }: Props) => {
           height={image.height}
         />
       )}
-      <div className={styles.sponsor_text}>{parse(subjects.sponsor.text)}</div>
+      <div className={styles.sponsor_text}>
+        <CmsContent data={subjects.sponsor.text} />
+      </div>
     </div>
   )
 
@@ -37,7 +39,7 @@ export const Subjects = ({ subjects }: Props) => {
         <div className={styles.subjects_header}>{item.title}</div>
         {item.list.map((subject) => (
           <div className={styles.subject} key={`subject-text-${subject.id}`}>
-            {subject.text}
+            <CmsContent data={subject.text} />
           </div>
         ))}
       </div>

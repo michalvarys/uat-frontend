@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import styles from './about-school.module.scss'
 
 import Container, { ContainerVariant } from 'src/components/common/Container'
+import { CmsContent } from 'src/components/CmsContent'
 
 import YoutubePlayerSlice from 'src/components/slices/YoutubePlayerSlice'
 import AboutSchoolType from 'src/components/aboutSchool/types/AboutSchoolType'
@@ -70,9 +71,10 @@ export default function AboutSchoolPage({ data }: AboutSchoolPageProps) {
             <div className={styles.video_container}>
               <YoutubePlayerSlice data={data.video} />
             </div>
-            <div className={styles.description_container}>
-              {data.description}
-            </div>
+            <CmsContent
+              className={styles.description_container}
+              data={data.description}
+            />
           </div>
           {data.buttons &&
             data.buttons.length > 0 &&

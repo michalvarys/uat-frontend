@@ -64,5 +64,6 @@ export async function getPageDetail(slug: string, locale: string) {
       },
     })}`
   )
-  return data[0]
+  // undefined nelze serializovat v getStaticProps, viz news.ts
+  return data[0] ?? null
 }
