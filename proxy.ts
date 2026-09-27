@@ -1,16 +1,19 @@
 import { NextResponse, type NextRequest } from 'next/server'
+import { i18nRouter } from 'next-i18n-router'
 
-import { LOCALES, DEFAULT_LOCALE } from 'src/i18n/config'
+import i18nConfig from './i18nConfig'
 
 /**
- * Mapuje veřejné adresy na interní segment [lang].
+ * Proxy na Strapi a směrování podle jazyka.
  *
- * Slovenština zůstává bez prefixu, takže /news se interně přepíše
- * na /sk/news. Používá se rewrite, ne redirect — adresa v prohlížeči
- * i ve výsledcích vyhledávání zůstává beze změny a existující odkazy
- * na web nepotřebují 301.
+ * Jazyk řeší next-i18n-router: slovenština běží bez prefixu (/news),
+ * ostatní jazyky s ním (/en/news). Volba jazyka se ukládá do cookie
+ * NEXT_LOCALE, takže přepínač funguje napříč stránkami.
  *
- * Ostatní jazyky prefix mají (/en/news) a propouštějí se beze změny.
+ * Interní tvar /sk/... se z middlewaru vynechává (viz matcher níž),
+ * takže se z něj na veřejnou adresu nepřesměrovává. Odkazy na webu
+ * na něj nevedou; kdyby to vadilo kvůli duplicitnímu obsahu,
+ * patří to do nginxu před aplikaci.
  */
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -20,6 +23,9 @@ export function proxy(request: NextRequest) {
   // v nich zůstala na výchozí 0.0.0.0:1337 a požadavky končily
   // na ECONNREFUSED. Middleware se vyhodnocuje za běhu, takže proměnnou
   // přečte správně.
+  //
+  // Musí zůstat před směrováním jazyka: /cms/... nejsou stránky webu
+  // a prefix jazyka by na nich neměl co dělat.
   if (pathname.startsWith('/cms/')) {
     const target =
       process.env.API_URL ||
@@ -33,20 +39,7 @@ export function proxy(request: NextRequest) {
     return NextResponse.rewrite(url)
   }
 
-  // Segment jazyka už v cestě je — přepisovat není co. Kontrolují se
-  // všechny jazyky včetně výchozího: /sk je sice interní tvar, ale dá
-  // se na něj přijít odkazem a dvojitý přepis na /sk/sk by skončil 404.
-  const hasPrefix = LOCALES.some(
-    (locale) => pathname === `/${locale}` || pathname.startsWith(`/${locale}/`)
-  )
-
-  if (hasPrefix) {
-    return NextResponse.next()
-  }
-
-  const url = request.nextUrl.clone()
-  url.pathname = `/${DEFAULT_LOCALE}${pathname}`
-  return NextResponse.rewrite(url)
+  return i18nRouter(request, i18nConfig)
 }
 
 export const config = {
@@ -62,5 +55,14 @@ export const config = {
   // 2. všechno ostatní kromě interních cest Nextu, API a souborů
   //    s příponou; bez toho by se /fonts/x.woff2 přepsalo
   //    na /sk/fonts/x.woff2 a vracelo 404.
-  matcher: ['/cms/:path*', '/((?!_next|api|cms|.*\\.[a-zA-Z0-9]+$).*)'],
+  // 3. /sk/** se vynechává schválně. Přepis /news → /sk/news projde
+  //    middlewarem podruhé a knihovna by ho poslala zpět na /news,
+  //    tedy dokola; oba průchody jsou přitom nerozlišitelné. Veřejné
+  //    adresy prefix výchozího jazyka nemají, takže se tím nic
+  //    nepřístupného nestává — jen /sk/news zůstane v adrese místo
+  //    přesměrování na /news.
+  matcher: [
+    '/cms/:path*',
+    '/((?!_next|api|cms|sk(?:/|$)|.*\\.[a-zA-Z0-9]+$).*)',
+  ],
 }
