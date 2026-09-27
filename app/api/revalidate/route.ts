@@ -74,15 +74,20 @@ const PATHS: Record<string, (entry: Record<string, any>) => string[]> = {
 /**
  * Doplní jazykové varianty.
  *
- * Slovenština běží bez prefixu, ostatní jazyky s ním — obojí je
- * v cache zvlášť, takže nestačí obnovit jen jednu.
+ * V cache leží každá stránka pod jazykovým prefixem (/sk/news, /en/news) —
+ * i slovenština, přestože se v adrese návštěvníkovi neukazuje: middleware
+ * na ni přepisuje veřejné /news. Revalidovat jen cestu bez prefixu proto
+ * nestačí, žádný takový záznam v cache není.
  */
 function withLocales(path: string): string[] {
-  const prefixed = LOCALES.filter((locale) => locale !== 'sk').map(
+  const prefixed = LOCALES.map(
     (locale) => `/${locale}${path === '/' ? '' : path}`
   )
 
-  return [path, ...prefixed]
+  // Cesta bez prefixu se přidává taky: v cache sice obvykle není,
+  // ale revalidace neexistujícího záznamu nic nestojí a pokryje to
+  // případ, kdy se stránka uloží pod veřejnou adresou.
+  return [...prefixed, path]
 }
 
 export async function POST(request: NextRequest) {
