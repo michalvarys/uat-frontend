@@ -1,8 +1,8 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import parse from 'html-react-parser'
 
 import styles from './UATGalleriesSlice.module.scss'
+import { CmsContent } from 'src/components/CmsContent'
 import UATGalleryType from '../types/UATGalleryType'
 import { GalleryEventType } from '../../galleries/types/GalleryEventType'
 
@@ -46,7 +46,9 @@ const GalleryEventItem = ({ event, onSelect }: GalleryEventProps) => {
     <div className={styles.item_container} onClick={() => onSelect(event)}>
       <div className={styles.content}>
         <span className={styles.title}>{event.title}</span>
-        <span className={styles.sneak_peak}>{parse(event.description)}</span>
+        <span className={styles.sneak_peak}>
+          <CmsContent data={event.description} />
+        </span>
       </div>
       <div className={styles.arrow}>
         <Image src={ArrowRightIcon} alt={'arrow'} />

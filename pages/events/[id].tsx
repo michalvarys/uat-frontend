@@ -1,10 +1,10 @@
 import Image from 'next/image'
 import Head from 'next/head'
-import parse from 'html-react-parser'
 import axios from 'axios'
 import styles from './events.module.scss'
 
 import Container, { ContainerVariant } from 'src/components/common/Container'
+import { CmsContent } from 'src/components/CmsContent'
 import FestivalType from 'src/components/festivals/types/FestivalType'
 import { GalleryEventType } from 'src/components/galleries/types/GalleryEventType'
 import { REVALIDATE_TIME } from 'src/constants'
@@ -64,7 +64,7 @@ export default function GalleryEvent({ galleryEvent }: GalleryEventProps) {
           </div>
           {description && (
             <div className={styles.description_content}>
-              {parse(description)}
+              <CmsContent data={description} />
             </div>
           )}
         </div>

@@ -1,10 +1,10 @@
-import 'moment/locale/sk'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import styles from './galleries.module.scss'
 
 import { getString, Strings } from 'src/locales'
 import Container, { ContainerVariant } from 'src/components/common/Container'
+import { CmsContent } from 'src/components/CmsContent'
 import GalleriesOverviewType from 'src/components/galleries/types/GalleriesOverviewType'
 import UATGalleriesSlice from 'src/components/slices/UATGalleriesSlice'
 import TextWithImageSlice from 'src/components/slices/TextWithImageSlice'
@@ -43,7 +43,7 @@ export default function GalleriesOverview({ data }: PageProps) {
       <Container variant={ContainerVariant.Black}>
         <div className={styles.top_container}>
           <div className={styles.title}>{data.title}</div>
-          <div className={styles.description}>{data.description}</div>
+          <CmsContent className={styles.description} data={data.description} />
         </div>
       </Container>
 
