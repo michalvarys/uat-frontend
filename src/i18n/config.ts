@@ -15,5 +15,12 @@ export function isLocale(value: string): value is Locale {
 /** Cesta ke stránce v daném jazyce, respektuje bezprefixovou slovenštinu. */
 export function localePath(path: string, locale: string): string {
   const clean = `/${path}`.replace(/\/+/g, '/').replace(/\/$/, '') || '/'
-  return locale === DEFAULT_LOCALE ? clean : `/${locale}${clean}`
+
+  if (locale === DEFAULT_LOCALE) {
+    return clean
+  }
+
+  // Kořen by jinak skončil na /en/ — s lomítkem navíc je to jiná adresa
+  // než /en a v cache leží zvlášť.
+  return clean === '/' ? `/${locale}` : `/${locale}${clean}`
 }

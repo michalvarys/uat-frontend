@@ -8,6 +8,7 @@ import ArrowIcon from 'public/icons/common/arrow_right_light.svg'
 import ArrowDarkIcon from 'public/icons/common/arrow_right.svg'
 
 import { isExternalLink, transformLink } from 'src/utils/link'
+import { useAppRouter } from 'src/hooks/useAppRouter'
 import { DEFAULT_LOCALE } from 'src/i18n/config'
 import { ButtonLinkVariant } from './ButtonLinkVariant'
 import { ButtonLinkImageType } from './ButtonLinkImageType'
@@ -67,6 +68,12 @@ const ButtonLink = ({
   link,
   target,
 }: Props) => {
+  // Bez jazyka aktuální stránky vedly odkazy z anglické verze na
+  // slovenské adresy a návštěvník se po prvním kliknutí propadl zpět
+  // do slovenštiny. `link.locale` se předává jen u odkazů na záznam
+  // v konkrétním jazyce, jinak platí jazyk stránky, na které stojíme.
+  const { locale } = useAppRouter()
+
   const url =
     imageType === ButtonLinkImageType.Download ? transformLink(path) : path
 
@@ -83,7 +90,7 @@ const ButtonLink = ({
     // proto ho pro odkazy na cizojazyčné záznamy doplňuje localizedHref.
     <chakra.a
       as={Link}
-      href={localizedHref(link?.href || url?.trim() || '#', link?.locale)}
+      href={localizedHref(link?.href || url?.trim() || '#', link?.locale || locale)}
       target={target || linkTarget}
     >
       <ImageButton
@@ -107,6 +114,21 @@ function localizedHref(href: LinkProps['href'], locale?: string | false) {
   }
 
   if (typeof href === 'string') {
+    // Cizí weby, soubory z CMS (/cms/...), kotvy a mailto: nejsou
+    // stránky webu — prefix jazyka by z nich udělal nefunkční adresu.
+    if (
+      href.startsWith('http') ||
+      href.startsWith('/cms/') ||
+      href.startsWith('#') ||
+      href.includes(':')
+    ) {
+      return href
+    }
+
+    if (href === '/') {
+      return `/${locale}`
+    }
+
     return `/${locale}${href.startsWith('/') ? href : `/${href}`}`
   }
 
