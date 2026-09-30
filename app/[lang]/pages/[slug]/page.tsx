@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { LocalizedPaths } from 'src/components/LocalizedPaths'
 import { findOrNull } from 'src/queries/errors'
 import { notFound, permanentRedirect } from 'next/navigation'
 
@@ -88,5 +89,16 @@ export default async function Page({ params }: Props) {
     notFound()
   }
 
-  return <PageSection {...page} />
+  return (
+    <>
+      {/* Překlad má vlastní slug, takže přepnutí jazyka nemůže jen
+          prohodit prefix a nechat původní adresu. */}
+      <LocalizedPaths
+        localizations={(page as { localizations?: unknown })
+          .localizations as never}
+        basePath="/pages"
+      />
+      <PageSection {...page} />
+    </>
+  )
 }

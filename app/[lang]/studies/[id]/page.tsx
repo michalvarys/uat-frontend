@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation'
 import { StudiesSection } from 'src/sections/studies/StudiesSection'
 import { getStudyData, getStudyList } from 'src/queries/studies'
 import { resolveSeo } from 'src/utils/seo'
+import { LocalizedPaths } from 'src/components/LocalizedPaths'
 import { LOCALES } from 'src/i18n/config'
 
 export const revalidate = 300
@@ -73,5 +74,17 @@ export default async function StudyPage({ params }: Props) {
     notFound()
   }
 
-  return <StudiesSection {...study} />
+  return (
+    <>
+      {/* Obor má v každém jazyce vlastní id, takže přepínač jazyka
+          potřebuje vědět, kam vede — prohození prefixu nestačí. */}
+      <LocalizedPaths
+        localizations={(study as { localizations?: unknown })
+          .localizations as never}
+        basePath="/studies"
+      />
+      <StudiesSection {...study} />
+    </>
+  )
 }
+

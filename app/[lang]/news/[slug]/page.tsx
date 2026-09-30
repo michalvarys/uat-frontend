@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { LocalizedPaths } from 'src/components/LocalizedPaths'
 import { findOrNull } from 'src/queries/errors'
 import { notFound, permanentRedirect } from 'next/navigation'
 
@@ -106,6 +107,13 @@ export default async function NewsDetailPage({ params }: Props) {
 
   return (
     <>
+      {/* Překlad má vlastní slug, takže přepnutí jazyka nemůže jen
+          prohodit prefix a nechat původní adresu. */}
+      <LocalizedPaths
+        localizations={(news as { localizations?: unknown })
+          .localizations as never}
+        basePath="/news"
+      />
       <JsonLd
         data={articleJsonLd({
           title: seo.title,
