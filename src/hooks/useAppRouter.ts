@@ -22,8 +22,11 @@ export function useAppRouter() {
   const [locale, asPath] = useMemo(() => {
     const [, maybeLocale, ...rest] = pathname.split('/')
 
-    if (isLocale(maybeLocale) && maybeLocale !== DEFAULT_LOCALE) {
-      return [maybeLocale, `/${rest.join('/')}`]
+    // Prefix se odstraňuje u všech jazyků včetně výchozího. Kdyby se
+    // /sk nechalo v cestě, přepnutí do angličtiny by z něj udělalo
+    // /en/sk — adresu, která neexistuje.
+    if (isLocale(maybeLocale)) {
+      return [maybeLocale, `/${rest.join('/')}`.replace(/\/$/, '') || '/']
     }
 
     return [DEFAULT_LOCALE, pathname]

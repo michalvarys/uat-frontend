@@ -26,6 +26,17 @@ const i18nConfig: Config = {
   // Až bude překladů dost, stačí tenhle řádek smazat a detekce podle
   // hlavičky Accept-Language se zapne sama.
   localeDetector: false,
+
+  // Cookie se nepoužívá. Pro adresu bez prefixu má přednost před
+  // výchozím jazykem, takže po jednom přepnutí do angličtiny se i /news
+  // přesměrovalo na /en/news — slovenština pak nešla vrátit ani ručním
+  // přepsáním adresy, ani přepínačem (ten míří právě na /news).
+  //
+  // Jazyk drží adresa, což je pro vyhledávače i sdílení odkazů
+  // jednoznačnější než stav schovaný v prohlížeči.
+  // Prázdný název cookie ji vypne — `undefined` by se přepsalo
+  // výchozím 'NEXT_LOCALE'.
+  localeCookie: '',
 }
 
 export default i18nConfig
