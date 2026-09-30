@@ -1,3 +1,5 @@
+'use client'
+
 import { useState } from 'react'
 import EUProjectType from '../types/EUProjectType'
 import EUProjectItem from './components/EUProjectItem'

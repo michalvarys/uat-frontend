@@ -1,7 +1,9 @@
+'use client'
+
 import styles from './EUProjectsSlice.module.scss'
 
 import { getString, Strings } from '../../../locales'
-import { useRouter } from 'next/router'
+import { useAppRouter as useRouter } from 'src/hooks/useAppRouter'
 import EUProjectsList from '../../euProjects/EUProjectsList'
 import EUProjectType from '../../euProjects/types/EUProjectType'
 import { useState } from 'react'

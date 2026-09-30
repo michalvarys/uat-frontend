@@ -1,4 +1,8 @@
+'use client'
+
 import Image from 'next/image'
+
+import { CmsContent } from 'src/components/CmsContent'
 import { transformLink } from 'src/utils/link'
 import { ContainerVariant } from 'src/components/common/Container'
 import { FieldOfStudyType } from 'src/types/fieldsOfStudy'
@@ -71,6 +75,8 @@ export const FieldOfStudyHeader = ({ data }: Props) => {
             </chakra.span>
           </Flex>
 
+          {/* whiteSpace="pre-wrap" drží zalomení u prostého textu;
+              u bloků si odstavce nese vykreslený obsah sám. */}
           <chakra.span
             display="flex"
             flex="0 1 50%"
@@ -78,7 +84,7 @@ export const FieldOfStudyHeader = ({ data }: Props) => {
             whiteSpace="pre-wrap"
             fontSize="md"
           >
-            {data.description}
+            <CmsContent data={data.description} />
           </chakra.span>
 
           <Flex flexWrap="wrap" w="full" gap="20px" pt={8}>

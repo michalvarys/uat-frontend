@@ -1,3 +1,5 @@
+'use client'
+
 import { chakra } from '@chakra-ui/react'
 import DocumentType from '../types/DocumentType'
 import DocumentItem from './components/DocumentItem'

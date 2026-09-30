@@ -1,3 +1,5 @@
+'use client'
+
 import classNames from 'classnames'
 import { MouseEventHandler } from 'react'
 import styles from './HeaderItem.module.scss'

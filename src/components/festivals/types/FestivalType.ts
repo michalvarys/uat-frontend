@@ -1,3 +1,4 @@
+import type { SeoComponent } from 'src/utils/seo'
 import ImageType from '../../common/types/ImageType'
 import TextWithImageType from '../../slices/types/TextWithImageType'
 import FestivalPrizesType from './FestivalPrizesType'
@@ -10,6 +11,7 @@ export type FestivalRelationship = {
 }
 
 type FestivalType = {
+  seo?: SeoComponent | null
   id: number
   title: string
   subtitle: string

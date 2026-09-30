@@ -1,10 +1,12 @@
+'use client'
+
 import { getString, Strings } from '../../../locales'
 import TeacherItem from '../TeachersList/components/TeacherItem'
 import TeacherType from '../types/TeacherType'
 import { Scrollbars } from 'react-custom-scrollbars'
 
 import styles from './TeachersCarusel.module.scss'
-import { useRouter } from 'next/router'
+import { useAppRouter as useRouter } from 'src/hooks/useAppRouter'
 
 type Props = {
   isTitle: boolean

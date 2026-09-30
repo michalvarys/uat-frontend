@@ -1,8 +1,8 @@
 import qs from 'qs'
-import axios from 'axios'
+import { api } from './client'
 
 export async function getTeachersData(locale: string) {
-  const { data } = await axios(
+  const { data } = await api(
     `/api/teachers?${qs.stringify(
       {
         locale,

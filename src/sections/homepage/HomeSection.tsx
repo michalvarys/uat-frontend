@@ -1,3 +1,5 @@
+'use client'
+
 import { chakra, Flex } from '@chakra-ui/react'
 import { useMemo } from 'react'
 import Container, { ContainerVariant } from 'src/components/common/Container'

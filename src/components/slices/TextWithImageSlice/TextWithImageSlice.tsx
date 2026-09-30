@@ -1,10 +1,12 @@
+'use client'
+
 import Image from 'next/image'
 import classNames from 'classnames'
 
 import styles from './TextWithImageSlice.module.scss'
 
 import { transformLink } from 'src/utils/link'
-import { useRouter } from 'next/router'
+import { useAppRouter as useRouter } from 'src/hooks/useAppRouter'
 import TextWithImageType from '../types/TextWithImageType'
 import { ContainerVariant } from '../../common/Container'
 import DescriptionSection from '../../common/DescriptionSection'

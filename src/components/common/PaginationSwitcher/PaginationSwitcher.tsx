@@ -1,3 +1,5 @@
+'use client'
+
 import classNames from 'classnames'
 import styles from './PaginationSwitcher.module.scss'
 

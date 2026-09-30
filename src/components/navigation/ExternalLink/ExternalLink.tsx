@@ -8,9 +8,8 @@ type Props = {
 }
 
 const ExternalLink = ({ children, url }: Props) => (
-  // eslint-disable-next-line @next/next/link-passhref
-  <Link href={url}>
-    <a className={styles.container}>{children}</a>
+  <Link href={url} className={styles.container}>
+    {children}
   </Link>
 )
 

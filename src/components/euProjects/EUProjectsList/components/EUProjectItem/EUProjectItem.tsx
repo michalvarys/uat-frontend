@@ -1,6 +1,9 @@
+'use client'
+
 import Image from 'next/image'
 
 import styles from './EUProjectItem.module.scss'
+import { CmsContent } from 'src/components/CmsContent'
 
 import EUProjectType from '../../../types/EUProjectType'
 
@@ -21,7 +24,9 @@ const EUProjectItem = ({ project, onSelect }: Props) => {
     >
       <div className={styles.content}>
         <span className={styles.title}>{project.title}</span>
-        <span className={styles.sneak_peak}>{project.description}</span>
+        <span className={styles.sneak_peak}>
+          <CmsContent data={project.description} />
+        </span>
       </div>
 
       <Image src={ArrowRightIcon} alt={'arrow'} />

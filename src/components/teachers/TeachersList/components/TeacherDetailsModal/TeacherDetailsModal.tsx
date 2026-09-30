@@ -1,6 +1,8 @@
+'use client'
+
 import Image from 'next/image'
-import parse from 'html-react-parser'
 import styles from './TeacherDetailsModal.module.scss'
+import { CmsContent } from 'src/components/CmsContent'
 
 import Modal from '../../../../common/Modal'
 import TeacherType from '../../../types/TeacherType'
@@ -53,7 +55,9 @@ const TeacherDetailsModal = ({ data, isOpen, onClose }: Props) => {
           {data.extra_role && (
             <span className={styles.role}>{data.extra_role}</span>
           )}
-          <div className={styles.bio}>{parse(data.bio)}</div>
+          <div className={styles.bio}>
+            <CmsContent data={data.bio} />
+          </div>
         </div>
       </div>
     </Modal>

@@ -1,3 +1,5 @@
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
 // import { keyframes } from '@emotion/react'
@@ -19,45 +21,48 @@ export function HeaderLinks({ news }) {
   //   : `${blink} 2s ease-in-out infinite`
 
   return news.map(({ slug, id, title, blinking }) => (
-    <Link key={id} href={`/news/${slug}`} passHref>
-      <chakra.a
-        className={blinking ? styles.blinking : undefined}
-        // animation={blinking ? animation : undefined}
-        display="flex"
-        flexDir="row"
-        textDecoration="unset"
-        gap={2}
-        _hover={{
-          textDecoration: 'underline',
-          textDecorationStyle: 'solid',
-        }}
-        justifyContent={{ base: 'space-between', md: 'flex-start' }}
-        p={{ base: '12px 8px', md: '0 8px 0 0' }}
-        maxW={{ base: 'full', md: '45%' }}
-        borderColor="black"
-        borderBottom={{ base: '2px solid', md: 'none' }}
-        sx={{
-          '&:first-of-type': {
-            pt: 0,
-          },
-          '&:last-of-type': {
-            border: 'none',
-          },
-        }}
+    // Next 16 nepodporuje <Link> s vnořeným <a> ani passHref, proto se
+    // Chakra styly aplikují rovnou na Link přes `as`.
+    <chakra.a
+      key={id}
+      as={Link}
+      href={`/news/${slug}`}
+      className={blinking ? styles.blinking : undefined}
+      // animation={blinking ? animation : undefined}
+      display="flex"
+      flexDir="row"
+      textDecoration="unset"
+      gap={2}
+      _hover={{
+        textDecoration: 'underline',
+        textDecorationStyle: 'solid',
+      }}
+      justifyContent={{ base: 'space-between', md: 'flex-start' }}
+      p={{ base: '12px 8px', md: '0 8px 0 0' }}
+      maxW={{ base: 'full', md: '45%' }}
+      borderColor="black"
+      borderBottom={{ base: '2px solid', md: 'none' }}
+      sx={{
+        '&:first-of-type': {
+          pt: 0,
+        },
+        '&:last-of-type': {
+          border: 'none',
+        },
+      }}
+    >
+      <chakra.span
+        fontSize={{ base: 'lg', md: 'md' }}
+        fontWeight={{ base: 'semibold', md: 'medium' }}
+        overflow="hidden"
+        textOverflow="ellipsis"
+        textTransform="uppercase"
+        whiteSpace="nowrap"
+        maxW="90%"
       >
-        <chakra.span
-          fontSize={{ base: 'lg', md: 'md' }}
-          fontWeight={{ base: 'semibold', md: 'medium' }}
-          overflow="hidden"
-          textOverflow="ellipsis"
-          textTransform="uppercase"
-          whiteSpace="nowrap"
-          maxW="90%"
-        >
-          {title}
-        </chakra.span>
-        <Image src={RightArrowIcon} alt="" />
-      </chakra.a>
-    </Link>
+        {title}
+      </chakra.span>
+      <Image src={RightArrowIcon} alt="" />
+    </chakra.a>
   ))
 }

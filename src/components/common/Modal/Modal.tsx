@@ -1,3 +1,5 @@
+'use client'
+
 import Image from 'next/image'
 import ReactModal from 'react-modal'
 import { MouseEvent, KeyboardEvent } from 'react'

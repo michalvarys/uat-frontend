@@ -1,3 +1,5 @@
+'use client'
+
 import Container, { ContainerVariant } from 'src/components/common/Container'
 import PageType from 'src/components/pages/types/PageType'
 import { parseSections } from './utils'
@@ -37,6 +39,10 @@ export function PageSection(page: PageType) {
       >
         {page.title && (
           <Heading
+            // Chakra Heading bez `as` renderuje <h2>, takže stránky typu
+            // /pages/[slug] neměly h1 vůbec — a je jich 99, tedy většina
+            // obsahu webu.
+            as="h1"
             lineHeight={1.1}
             fontWeight={600}
             fontSize={{ base: '3xl', sm: '4xl', lg: '6xl' }}

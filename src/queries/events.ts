@@ -1,5 +1,5 @@
 import qs from 'qs'
-import axios from 'axios'
+import { api } from './client'
 import { GalleryEventType } from '@/components/galleries/types/GalleryEventType'
 
 export async function getEventList(
@@ -9,7 +9,7 @@ export async function getEventList(
     locale: locales,
   })}`
 
-  const { data } = await axios(url)
+  const { data } = await api(url)
   return data.data.map((item) => ({ id: item.id, ...item.attributes }))
 }
 
@@ -17,6 +17,9 @@ export async function getEventDetail(id: string, locale: string) {
   const url = `/api/gallery-events/${id}?${qs.stringify({
     locale,
     populate: {
+      seo: {
+        populate: '*',
+      },
       gallery: {
         populate: {
           gallery_item: {
@@ -43,7 +46,7 @@ export async function getEventDetail(id: string, locale: string) {
     data: {
       data: { attributes },
     },
-  } = await axios(url)
+  } = await api(url)
 
   return { ...attributes, id }
 }

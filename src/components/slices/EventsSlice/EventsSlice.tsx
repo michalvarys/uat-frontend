@@ -1,7 +1,9 @@
+'use client'
+
 import styles from './EventsSlice.module.scss'
 
 import { getString, Strings } from '../../../locales'
-import { useRouter } from 'next/router'
+import { useAppRouter as useRouter } from 'src/hooks/useAppRouter'
 import { useState } from 'react'
 import PaginationSwitcher from '../../common/PaginationSwitcher'
 import { PaginationSwitcherVariant } from '../../common/PaginationSwitcher/PaginationSwitcher'

@@ -1,20 +1,30 @@
+'use client'
+
 import moment from 'moment'
-import { useRouter } from 'next/router'
+import { useAppRouter as useRouter } from 'src/hooks/useAppRouter'
+import { localePath } from 'src/i18n/config'
 import React, { createContext, useContext, useState } from 'react'
 
 type AppProviderType = {
   children?: JSX.Element
-  langs: string[]
+  // Next 15 vrací router.locales jako readonly.
+  langs: readonly string[]
   lang: string
 }
 
-type LocalesDictionary = { [name: string]: string }
-
 type AppContextType = {
-  languages: string[]
+  languages: readonly string[]
   setCurrentLanguage(locale: string): void
-  setLocalePaths: React.Dispatch<React.SetStateAction<LocalesDictionary | null>>
   currentLanguage: string
+  /**
+   * Kam vede přepnutí jazyka na aktuální stránce.
+   *
+   * Detaily záznamů mají v každém jazyce vlastní adresu — obor 6 je
+   * slovensky, anglicky je to obor 17 — takže nestačí prohodit prefix.
+   * Stránka sem proto může předat cestu pro každý jazyk; když ji
+   * nepředá, prohodí se prefix jako dřív.
+   */
+  setLocalizedPaths(paths: Record<string, string> | null): void
 }
 
 const AppContext = createContext<AppContextType>({
@@ -22,10 +32,10 @@ const AppContext = createContext<AppContextType>({
   setCurrentLanguage() {
     //empty
   },
-  setLocalePaths() {
+  currentLanguage: '',
+  setLocalizedPaths() {
     //empty
   },
-  currentLanguage: '',
 })
 
 AppContext.displayName = 'AppContext'
@@ -33,26 +43,30 @@ AppContext.displayName = 'AppContext'
 const AppProvider = ({ children, langs, lang }: AppProviderType) => {
   const router = useRouter()
   const [currentLanguage, setCurrentLanguage] = useState<string>(lang)
-  const [localePaths, setLocalePaths] = useState<LocalesDictionary | null>(null)
+  const [localizedPaths, setLocalizedPaths] = useState<Record<
+    string,
+    string
+  > | null>(null)
   const languages = langs
 
   const updateLanguage = (newLanguage: string) => {
     setCurrentLanguage(newLanguage)
     moment.locale(newLanguage)
-    if (localePaths && localePaths[newLanguage]) {
-      router.push(localePaths[newLanguage], localePaths[newLanguage], {
-        locale: newLanguage,
-      })
-    } else {
-      router.push(router.asPath, router.asPath, { locale: newLanguage })
-    }
+
+    // Detail záznamu má v každém jazyce vlastní adresu, protože jde
+    // o samostatné záznamy s vlastními id. Když stránka cíl zná,
+    // použije se; jinak stačí prohodit jazykový prefix — u přehledů
+    // a statických stránek je adresa v obou jazycích stejná.
+    const target = localizedPaths?.[newLanguage]
+
+    router.push(target ?? localePath(router.asPath, newLanguage))
   }
 
   const values: AppContextType = {
     languages,
     currentLanguage,
     setCurrentLanguage: updateLanguage,
-    setLocalePaths,
+    setLocalizedPaths,
   }
 
   return <AppContext.Provider value={values}>{children}</AppContext.Provider>

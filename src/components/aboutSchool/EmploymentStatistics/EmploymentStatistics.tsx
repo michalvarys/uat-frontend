@@ -1,4 +1,6 @@
-import { useRouter } from 'next/router'
+'use client'
+
+import { useAppRouter as useRouter } from 'src/hooks/useAppRouter'
 import { useState } from 'react'
 import { Strings, getString } from '../../../locales'
 import YearSwitcher from '../../common/YearSwitcher'

@@ -1,6 +1,7 @@
+'use client'
+
 import Image from 'next/image'
-import parse from 'html-react-parser'
-import { useRouter } from 'next/router'
+import { useAppRouter as useRouter } from 'src/hooks/useAppRouter'
 import classNames from 'classnames'
 
 import FooterType from 'src/types/data/FooterType'
@@ -17,6 +18,7 @@ import GenericLink from '../../navigation/GenericLink'
 import { chakra } from '@chakra-ui/react'
 
 import styles from './Footer.module.scss'
+import { CmsContent } from 'src/components/CmsContent'
 import { DbImage } from '@/components/DbImage'
 
 type Props = {
@@ -68,7 +70,9 @@ const Footer = ({ data }: Props) => {
                   {item.title && (
                     <div className={styles.title}>{item.title}</div>
                   )}
-                  <div className={styles.content}>{parse(item.content)}</div>
+                  <div className={styles.content}>
+                    <CmsContent data={item.content} />
+                  </div>
                 </div>
               ))}
             </div>
